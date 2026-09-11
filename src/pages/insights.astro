@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const posts = [
+  { category: 'META ADS', title: 'Meta Ads for clinics: what actually affects enquiry cost', date: '2026' },
+  { category: 'GOOGLE ADS', title: 'Google Ads for clinics: capturing high-intent patient demand', date: '2026' },
+  { category: 'WEBSITES', title: 'What makes a clinic website convert visitors into enquiries', date: '2026' }
+];
+---
+<BaseLayout title="Insights | RM CREATIVES" description="Practical insights on patient acquisition, Meta Ads, Google Ads and clinic websites.">
+  <main class="shell page">
+    <header><a href="/">← RM CREATIVES</a><span class="eyebrow">INSIGHTS</span></header>
+    <h1>Useful thinking.<br/>No marketing noise.</h1>
+    <section>
+      {posts.map((post, i) => <article>
+        <span class="eyebrow">0{i + 1} / {post.category}</span>
+        <h2>{post.title}</h2>
+        <span class="eyebrow">{post.date} ↗</span>
+      </article>)}
+    </section>
+  </main>
+</BaseLayout>
+<style>
+  .page{padding:32px 0 110px}header{display:flex;justify-content:space-between;font-size:13px}.eyebrow{font-family:monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(60px,9vw,138px);line-height:.86;letter-spacing:-.07em;margin:120px 0 100px;font-weight:600;max-width:1250px}section{border-top:1px solid var(--line)}article{display:grid;grid-template-columns:.7fr 2fr auto;gap:30px;align-items:start;padding:32px 0 52px;border-bottom:1px solid var(--line)}article h2{font-size:clamp(28px,3.2vw,50px);line-height:1.03;letter-spacing:-.05em;margin:0;font-weight:550;max-width:850px}@media(max-width:700px){h1{margin-top:90px}article{grid-template-columns:1fr}article h2{margin:20px 0}}
+</style>
