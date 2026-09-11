@@ -134,7 +134,7 @@ const canonical = new URL(Astro.url.pathname, 'https://rmcreatives.com');
           const [type, service, status] = events[Math.floor(Math.random() * events.length)];
           const row = document.createElement('div');
           row.className = 'feed-row fresh-enquiry';
-          row.innerHTML = `<div><b>${type}</b><span>${service}</span></div><em>${status}</em>`;
+          row.innerHTML = `<div class="feed-copy"><b>${type}</b><span>${service}</span></div><em>${status}</em>`;
 
           const header = feed.querySelector('.feed-head');
           if (header) header.insertAdjacentElement('afterend', row);
@@ -206,6 +206,49 @@ const canonical = new URL(Astro.url.pathname, 'https://rmcreatives.com');
   }
   .counter-flash.show { animation: counterFlash 1.5s ease both; }
   .counter-hit strong { animation: counterHit .42s ease; }
+
+  .system-panel .feed-row {
+    min-height: 58px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+  }
+  .system-panel .feed-row:last-child { border-bottom: 0; }
+  .system-panel .feed-row .feed-copy,
+  .system-panel .feed-row > div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .system-panel .feed-row b {
+    display: block;
+    font-size: 11px;
+    line-height: 1.2;
+    letter-spacing: .08em;
+  }
+  .system-panel .feed-row span {
+    display: block;
+    font-size: 10px;
+    line-height: 1.25;
+    color: var(--muted);
+    letter-spacing: .05em;
+    overflow-wrap: anywhere;
+  }
+  .system-panel .feed-row em {
+    align-self: center;
+    justify-self: end;
+    white-space: nowrap;
+    font-style: normal;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 9px;
+    line-height: 1;
+    border: 1px solid var(--line);
+    padding: 6px 8px;
+  }
 
   .system-panel .panel-stat,
   .system-panel .feed-row {
