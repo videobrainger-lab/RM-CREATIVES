@@ -42,10 +42,12 @@ const canonical = new URL(Astro.url.pathname, 'https://rmcreatives.com');
 
     <script is:inline>
       (() => {
-        const stat = document.querySelector('.system-panel .panel-stat');
+        const panel = document.querySelector('.system-panel');
+        const stat = panel?.querySelector('.panel-stat');
         const counter = stat?.querySelector('strong');
         const label = stat?.querySelector('.eyebrow');
-        if (!stat || !counter || !label) return;
+        const feed = panel?.querySelector('.feed');
+        if (!panel || !stat || !counter || !label || !feed) return;
 
         const isRu = document.documentElement.lang === 'ru';
         const BASE_COUNT = 10000;
@@ -68,6 +70,26 @@ const canonical = new URL(Astro.url.pathname, 'https://rmcreatives.com');
         flash.textContent = isRu ? '+1 ОБРАЩЕНИЕ' : '+1 ENQUIRY';
         stat.appendChild(flash);
 
+        const events = isRu
+          ? [
+              ['СТОМАТОЛОГИЯ', 'ИМПЛАНТАЦИЯ', 'НОВОЕ'],
+              ['ЭСТЕТИКА', 'ЛАЗЕРНАЯ ПРОЦЕДУРА', 'ЦЕЛЕВОЕ'],
+              ['МЕДИЦИНА', 'КОНСУЛЬТАЦИЯ ВРАЧА', 'НОВОЕ'],
+              ['СТОМАТОЛОГИЯ', 'ВИНИРЫ', 'НОВОЕ'],
+              ['ЭСТЕТИКА', 'ИНЪЕКЦИОННАЯ КОСМЕТОЛОГИЯ', 'ЦЕЛЕВОЕ'],
+              ['МЕДИЦИНА', 'ДИАГНОСТИКА', 'НОВОЕ'],
+              ['BEAUTY', 'ЛАЗЕРНАЯ ЭПИЛЯЦИЯ', 'НОВОЕ']
+            ]
+          : [
+              ['DENTAL', 'IMPLANT CONSULTATION', 'NEW'],
+              ['AESTHETIC', 'LASER TREATMENT', 'QUALIFIED'],
+              ['MEDICAL', 'SPECIALIST CONSULTATION', 'NEW'],
+              ['DENTAL', 'VENEERS', 'NEW'],
+              ['AESTHETIC', 'INJECTABLE TREATMENT', 'QUALIFIED'],
+              ['MEDICAL', 'DIAGNOSTICS', 'NEW'],
+              ['BEAUTY', 'LASER HAIR REMOVAL', 'NEW']
+            ];
+
         const format = (value) => new Intl.NumberFormat(isRu ? 'ru-RU' : 'en-US').format(value);
         const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -87,26 +109,53 @@ const canonical = new URL(Astro.url.pathname, 'https://rmcreatives.com');
         }
 
         let displayed = target;
-        const msPerLead = 86400000 / AVG_PER_DAY;
-        const elapsedSinceLastEstimate = Math.max(0, now - BASE_TIME) % msPerLead;
-        const firstDelay = Math.max(1000, msPerLead - elapsedSinceLastEstimate);
 
-        const increment = () => {
+        const pulse = (element) => {
+          element.classList.remove('enquiry-flash');
+          void element.offsetWidth;
+          element.classList.add('enquiry-flash');
+          window.setTimeout(() => element.classList.remove('enquiry-flash'), 950);
+        };
+
+        const addEnquiry = () => {
           displayed += 1;
           counter.textContent = format(displayed);
+
           stat.classList.remove('counter-hit');
           void stat.offsetWidth;
           stat.classList.add('counter-hit');
+
           flash.classList.remove('show');
           void flash.offsetWidth;
           flash.classList.add('show');
-          window.setTimeout(() => flash.classList.remove('show'), 1800);
+          window.setTimeout(() => flash.classList.remove('show'), 1500);
+          pulse(stat);
+
+          const [type, service, status] = events[Math.floor(Math.random() * events.length)];
+          const row = document.createElement('div');
+          row.className = 'feed-row fresh-enquiry';
+          row.innerHTML = `<div><b>${type}</b><span>${service}</span></div><em>${status}</em>`;
+
+          const header = feed.querySelector('.feed-head');
+          if (header) header.insertAdjacentElement('afterend', row);
+          else feed.prepend(row);
+
+          pulse(row);
+
+          const rows = [...feed.querySelectorAll('.feed-row')];
+          rows.slice(3).forEach((oldRow) => oldRow.remove());
         };
 
-        window.setTimeout(() => {
-          increment();
-          window.setInterval(increment, msPerLead);
-        }, firstDelay);
+        const scheduleNext = () => {
+          const delay = 3500 + Math.floor(Math.random() * 4500);
+          window.setTimeout(() => {
+            addEnquiry();
+            scheduleNext();
+          }, delay);
+        };
+
+        window.setTimeout(addEnquiry, 1800);
+        scheduleNext();
       })();
     </script>
   </body>
@@ -155,8 +204,16 @@ const canonical = new URL(Astro.url.pathname, 'https://rmcreatives.com');
     transform: translateY(8px);
     pointer-events: none;
   }
-  .counter-flash.show { animation: counterFlash 1.8s ease both; }
+  .counter-flash.show { animation: counterFlash 1.5s ease both; }
   .counter-hit strong { animation: counterHit .42s ease; }
+
+  .system-panel .panel-stat,
+  .system-panel .feed-row {
+    transition: background-color .3s ease, color .3s ease;
+  }
+  .system-panel .enquiry-flash { animation: enquiryPulse .95s ease; }
+  .system-panel .fresh-enquiry { animation: enquirySlide .42s ease both; }
+
   @keyframes counterFlash {
     0% { opacity: 0; transform: translateY(8px); }
     18%, 72% { opacity: 1; transform: translateY(0); }
@@ -167,9 +224,24 @@ const canonical = new URL(Astro.url.pathname, 'https://rmcreatives.com');
     40% { transform: translateY(-3px); }
     100% { transform: translateY(0); }
   }
+  @keyframes enquiryPulse {
+    0% { background: var(--accent); color: #101010; }
+    45% { background: var(--accent); color: #101010; }
+    100% { background: transparent; color: inherit; }
+  }
+  @keyframes enquirySlide {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    .counter-flash, .live-counter-stat strong { animation: none !important; transition: none !important; }
+    .counter-flash,
+    .live-counter-stat strong,
+    .system-panel .enquiry-flash,
+    .system-panel .fresh-enquiry {
+      animation: none !important;
+      transition: none !important;
+    }
   }
 
   @media (max-width: 760px) {
