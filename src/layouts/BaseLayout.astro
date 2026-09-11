@@ -1,30 +1,44 @@
 ---
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
 interface Props {
   title?: string;
   description?: string;
+  lang?: 'en' | 'ru';
 }
+const inferredLang = Astro.url.pathname.startsWith('/ru') ? 'ru' : 'en';
 const {
-  title = 'RM CREATIVES — Patient acquisition for clinics',
-  description = 'Meta Ads, Google Ads and high-converting websites for medical and beauty clinics.'
+  title = inferredLang === 'ru' ? 'RM CREATIVES — Привлечение пациентов для клиник' : 'RM CREATIVES — Patient acquisition for clinics',
+  description = inferredLang === 'ru'
+    ? 'Meta Ads, Google Ads и конверсионные сайты для медицинских и beauty-клиник.'
+    : 'Meta Ads, Google Ads and high-converting websites for medical and beauty clinics.',
+  lang = inferredLang
 } = Astro.props;
+const canonical = new URL(Astro.url.pathname, 'https://rmcreatives.com');
 ---
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0b0b0b" />
-    <link rel="canonical" href={Astro.url} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href="https://rmcreatives.com/" />
+    <link rel="alternate" hreflang="ru" href="https://rmcreatives.com/ru/" />
+    <link rel="alternate" hreflang="x-default" href="https://rmcreatives.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={Astro.url} />
+    <meta property="og:url" content={canonical} />
     <title>{title}</title>
   </head>
   <body>
+    <SiteHeader />
     <slot />
+    <SiteFooter />
   </body>
 </html>
 
@@ -37,14 +51,14 @@ const {
     --accent: #c8ff1a;
     --dark: #0c0c0c;
     --white: #f8f8f4;
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { margin: 0; background: var(--bg); color: var(--ink); }
   a { color: inherit; text-decoration: none; }
-  button, input, textarea { font: inherit; }
+  button, input, textarea, select { font: inherit; }
   ::selection { background: var(--accent); color: #000; }
 
   .shell { width: min(100% - 40px, 1480px); margin: 0 auto; }
