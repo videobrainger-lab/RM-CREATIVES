@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ConsentCheckbox from '../components/ConsentCheckbox.astro';
+---
+<BaseLayout title="Discuss a project | RM CREATIVES" description="Tell RM CREATIVES about your clinic and patient acquisition goals.">
+  <main class="contact shell">
+    <div class="intro">
+      <span class="eyebrow">START A PROJECT / RM CREATIVES</span>
+      <h1>Let’s talk.</h1>
+      <p>Tell us a little about your clinic and what you want to improve. We’ll review it and get back to you.</p>
+    </div>
+    <form name="project-enquiry" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="form">
+      <input type="hidden" name="form-name" value="project-enquiry" />
+      <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+      <label><span>Name *</span><input type="text" name="name" autocomplete="name" required /></label>
+      <label><span>Clinic / company *</span><input type="text" name="company" autocomplete="organization" required /></label>
+      <div class="split">
+        <label><span>Email *</span><input type="email" name="email" autocomplete="email" required /></label>
+        <label><span>Phone</span><input type="tel" name="phone" autocomplete="tel" /></label>
+      </div>
+      <label><span>What are you interested in? *</span><select name="service" required><option value="">Select</option><option>RM Performance — Meta Ads</option><option>RM Search — Google Ads</option><option>RM Sites — Website</option><option>Several products</option></select></label>
+      <label><span>Tell us briefly about the task</span><textarea name="message" rows="5"></textarea></label>
+      <ConsentCheckbox lang="en" />
+      <button type="submit">Send enquiry ↗</button>
+    </form>
+  </main>
+</BaseLayout>
+<style>
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:9vw;padding:90px 0 130px;min-height:760px}.eyebrow{font-family:monospace;font-size:11px;letter-spacing:.12em}.intro h1{font-size:clamp(72px,9vw,140px);line-height:.86;letter-spacing:-.07em;margin:42px 0 34px;font-weight:600}.intro p{font-size:22px;line-height:1.35;color:var(--muted);max-width:520px}.form{border-top:1px solid var(--ink);padding-top:4px}.form>label,.split label{display:flex;flex-direction:column;border-bottom:1px solid var(--line);padding:22px 0 14px;gap:10px}.form label span{font-family:monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}input,select,textarea{width:100%;border:0;background:transparent;color:var(--ink);font:inherit;font-size:18px;padding:4px 0;outline:none;resize:vertical}select{cursor:pointer}.split{display:grid;grid-template-columns:1fr 1fr;gap:30px}button{margin-top:28px;border:0;background:var(--ink);color:var(--white);min-height:58px;padding:0 28px;font:inherit;font-weight:700;cursor:pointer}.hidden{position:absolute;left:-9999px}@media(max-width:800px){.contact{grid-template-columns:1fr;gap:60px;padding:60px 0 90px}.split{grid-template-columns:1fr}.intro h1{margin-top:30px}}
+</style>
