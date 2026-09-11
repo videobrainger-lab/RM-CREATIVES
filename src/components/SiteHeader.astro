@@ -23,7 +23,12 @@ const ruHref = '/ru/';
     <a class="site-cta" href={isRu ? '/ru/contact' : '/contact'}>{isRu ? 'Обсудить проект' : 'Discuss a project'} ↗</a>
   </div>
 </header>
-
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const target = document.documentElement.lang === 'ru' ? '/ru/contact' : '/contact';
+    document.querySelectorAll('a[href^="mailto:hello@rmcreatives.com"]').forEach((link) => link.setAttribute('href', target));
+  });
+</script>
 <style>
   .site-header { height: 82px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border-bottom: 1px solid var(--line); font-size: 13px; }
   .site-brand { font-size: 18px; font-weight: 850; letter-spacing: -.045em; white-space: nowrap; }
