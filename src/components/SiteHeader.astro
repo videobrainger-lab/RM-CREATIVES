@@ -20,7 +20,7 @@ const ruHref = '/ru/';
       <span>/</span>
       <a class:list={[isRu && 'active']} href={ruHref}>RU</a>
     </div>
-    <a class="site-cta" href="mailto:hello@rmcreatives.com">{isRu ? 'Обсудить проект' : 'Discuss a project'} ↗</a>
+    <a class="site-cta" href={isRu ? '/ru/contact' : '/contact'}>{isRu ? 'Обсудить проект' : 'Discuss a project'} ↗</a>
   </div>
 </header>
 
