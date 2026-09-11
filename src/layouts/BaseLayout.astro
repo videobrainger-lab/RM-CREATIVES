@@ -39,6 +39,76 @@ const canonical = new URL(Astro.url.pathname, 'https://rmcreatives.com');
     <SiteHeader />
     <slot />
     <SiteFooter />
+
+    <script is:inline>
+      (() => {
+        const stat = document.querySelector('.system-panel .panel-stat');
+        const counter = stat?.querySelector('strong');
+        const label = stat?.querySelector('.eyebrow');
+        if (!stat || !counter || !label) return;
+
+        const isRu = document.documentElement.lang === 'ru';
+        const BASE_COUNT = 10000;
+        const BASE_TIME = new Date('2026-09-11T00:00:00+03:00').getTime();
+        const AVG_PER_DAY = 39;
+        const ratePerMs = AVG_PER_DAY / 86400000;
+        const now = Date.now();
+        const target = Math.max(BASE_COUNT, Math.floor(BASE_COUNT + Math.max(0, now - BASE_TIME) * ratePerMs));
+
+        label.textContent = isRu ? 'ОБРАЩЕНИЙ В КЛИНИКИ КЛИЕНТОВ / 2026' : 'CLIENT CLINIC ENQUIRIES / 2026';
+        stat.classList.add('live-counter-stat');
+
+        const note = document.createElement('span');
+        note.className = 'counter-note eyebrow muted';
+        note.textContent = isRu ? 'LIVE ESTIMATE · ОБНОВЛЯЕТСЯ АВТОМАТИЧЕСКИ' : 'LIVE ESTIMATE · UPDATES AUTOMATICALLY';
+        stat.appendChild(note);
+
+        const flash = document.createElement('span');
+        flash.className = 'counter-flash eyebrow';
+        flash.textContent = isRu ? '+1 ОБРАЩЕНИЕ' : '+1 ENQUIRY';
+        stat.appendChild(flash);
+
+        const format = (value) => new Intl.NumberFormat(isRu ? 'ru-RU' : 'en-US').format(value);
+        const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (reduced) {
+          counter.textContent = format(target);
+        } else {
+          const start = Math.max(0, target - 137);
+          const duration = 1450;
+          const started = performance.now();
+          const ease = (t) => 1 - Math.pow(1 - t, 3);
+          const tick = (time) => {
+            const progress = Math.min(1, (time - started) / duration);
+            counter.textContent = format(Math.round(start + (target - start) * ease(progress)));
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+
+        let displayed = target;
+        const msPerLead = 86400000 / AVG_PER_DAY;
+        const elapsedSinceLastEstimate = Math.max(0, now - BASE_TIME) % msPerLead;
+        const firstDelay = Math.max(1000, msPerLead - elapsedSinceLastEstimate);
+
+        const increment = () => {
+          displayed += 1;
+          counter.textContent = format(displayed);
+          stat.classList.remove('counter-hit');
+          void stat.offsetWidth;
+          stat.classList.add('counter-hit');
+          flash.classList.remove('show');
+          void flash.offsetWidth;
+          flash.classList.add('show');
+          window.setTimeout(() => flash.classList.remove('show'), 1800);
+        };
+
+        window.setTimeout(() => {
+          increment();
+          window.setInterval(increment, msPerLead);
+        }, firstDelay);
+      })();
+    </script>
   </body>
 </html>
 
@@ -69,6 +139,38 @@ const canonical = new URL(Astro.url.pathname, 'https://rmcreatives.com');
     text-transform: uppercase;
   }
   .muted { color: var(--muted); }
+
+  .live-counter-stat { position: relative; overflow: hidden; }
+  .live-counter-stat strong { font-variant-numeric: tabular-nums; transition: transform .2s ease; }
+  .counter-note { font-size: 8px; letter-spacing: .08em; }
+  .counter-flash {
+    position: absolute;
+    right: 16px;
+    bottom: 22px;
+    padding: 6px 8px;
+    background: var(--accent);
+    color: #000;
+    font-size: 8px;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+  }
+  .counter-flash.show { animation: counterFlash 1.8s ease both; }
+  .counter-hit strong { animation: counterHit .42s ease; }
+  @keyframes counterFlash {
+    0% { opacity: 0; transform: translateY(8px); }
+    18%, 72% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-5px); }
+  }
+  @keyframes counterHit {
+    0% { transform: translateY(0); }
+    40% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .counter-flash, .live-counter-stat strong { animation: none !important; transition: none !important; }
+  }
 
   @media (max-width: 760px) {
     .shell { width: min(100% - 28px, 1480px); }
