@@ -1,0 +1,20 @@
+---
+interface Props {
+  lang?: 'en' | 'ru';
+  name?: string;
+}
+const { lang = 'en', name = 'privacy_consent' } = Astro.props;
+---
+<label class="consent-row">
+  <input type="checkbox" name={name} required />
+  <span>
+    {lang === 'ru' ? 'Я согласен(на) с ' : 'I agree to the '}
+    <a href="/privacy">{lang === 'ru' ? 'политикой конфиденциальности' : 'privacy policy'}</a>.
+  </span>
+</label>
+
+<style>
+  .consent-row { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; line-height: 1.45; color: var(--muted); }
+  .consent-row input { margin: 2px 0 0; width: 15px; height: 15px; accent-color: var(--ink); flex: 0 0 auto; }
+  .consent-row a { color: var(--ink); border-bottom: 1px solid currentColor; }
+</style>
