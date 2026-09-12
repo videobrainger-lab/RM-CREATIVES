@@ -11,15 +11,15 @@ const isRu = Astro.url.pathname.startsWith('/ru');
     <div class="footer-col">
       <span class="footer-label">{isRu ? 'Навигация' : 'Navigation'}</span>
       <a href={isRu ? '/ru/#services' : '/#services'}>{isRu ? 'Услуги' : 'Services'}</a>
-      <a href={isRu ? '/ru/#cases' : '/#cases'}>{isRu ? 'Кейсы' : 'Cases'}</a>
-      <a href="/insights">Insights</a>
+      <a href={isRu ? '/ru/cases' : '/cases'}>{isRu ? 'Кейсы' : 'Cases'}</a>
+      <a href={isRu ? '/ru/insights' : '/insights'}>{isRu ? 'Материалы' : 'Insights'}</a>
     </div>
 
     <div class="footer-col">
       <span class="footer-label">{isRu ? 'Документы' : 'Legal'}</span>
-      <a href="/privacy">{isRu ? 'Политика конфиденциальности' : 'Privacy policy'}</a>
-      <a href="/cookies">{isRu ? 'Cookie policy' : 'Cookie policy'}</a>
-      <a href="/terms">{isRu ? 'Условия использования' : 'Terms of use'}</a>
+      <a href={isRu ? '/ru/privacy' : '/privacy'}>{isRu ? 'Политика конфиденциальности' : 'Privacy policy'}</a>
+      <a href={isRu ? '/ru/cookies' : '/cookies'}>{isRu ? 'Политика cookie' : 'Cookie policy'}</a>
+      <a href={isRu ? '/ru/terms' : '/terms'}>{isRu ? 'Условия использования' : 'Terms of use'}</a>
       <a href="/sitemap-index.xml">Sitemap</a>
     </div>
 
