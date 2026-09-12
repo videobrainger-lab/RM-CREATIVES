@@ -44,7 +44,14 @@ const isRu = Astro.url.pathname.startsWith('/ru');
 </footer>
 
 <script is:inline>
-  const applyAccentContrast = () => {
+  const applySitePolish = () => {
+    if (location.pathname === '/') {
+      const heroLabel = document.querySelector('.hero-top span:first-child');
+      const heroCopy = document.querySelector('.hero-bottom p');
+      if (heroLabel) heroLabel.textContent = 'FOR MEDICAL & AESTHETIC CLINICS';
+      if (heroCopy) heroCopy.textContent = 'Meta Ads, Google Ads and high-converting websites built exclusively for medical and aesthetic clinics.';
+    }
+
     const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim().toLowerCase();
     const probe = document.createElement('span');
     probe.style.color = accent;
@@ -55,8 +62,8 @@ const isRu = Astro.url.pathname.startsWith('/ru');
       if (getComputedStyle(el).backgroundColor === accentRgb) el.classList.add('rm-on-accent');
     });
   };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyAccentContrast);
-  else applyAccentContrast();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applySitePolish);
+  else applySitePolish();
 </script>
 
 <style is:global>
