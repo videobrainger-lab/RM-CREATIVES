@@ -5,7 +5,7 @@ const isRu = Astro.url.pathname.startsWith('/ru');
   <div class="shell footer-grid">
     <div class="footer-brand-block">
       <a class="footer-brand" href={isRu ? '/ru/' : '/'}>RM CREATIVES</a>
-      <p>{isRu ? 'Привлечение пациентов для клиник' : 'Patient acquisition for clinics'}</p>
+      <p>{isRu ? 'Привлечение пациентов в клиники' : 'Patient acquisition for clinics'}</p>
     </div>
 
     <div class="footer-col">
@@ -42,6 +42,26 @@ const isRu = Astro.url.pathname.startsWith('/ru');
     <span>RIGA / EUROPE</span>
   </div>
 </footer>
+
+<script is:inline>
+  const applyAccentContrast = () => {
+    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim().toLowerCase();
+    const probe = document.createElement('span');
+    probe.style.color = accent;
+    document.body.appendChild(probe);
+    const accentRgb = getComputedStyle(probe).color;
+    probe.remove();
+    document.querySelectorAll('body *').forEach((el) => {
+      if (getComputedStyle(el).backgroundColor === accentRgb) el.classList.add('rm-on-accent');
+    });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyAccentContrast);
+  else applyAccentContrast();
+</script>
+
+<style is:global>
+  .rm-on-accent, .rm-on-accent * { color: #fff !important; }
+</style>
 
 <style>
   .site-footer { background: var(--dark); color: var(--white); padding: 68px 0 26px; }
