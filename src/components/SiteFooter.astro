@@ -111,38 +111,34 @@ const isRu = Astro.url.pathname.startsWith('/ru');
         feedIndex += 1;
       };
 
-      const animateToTarget = () => {
-        if (displayed >= target) return;
+      const popCounter = () => {
         displayed += 1;
         counter.textContent = format(displayed);
         counter.classList.remove('counter-pop');
         void counter.offsetWidth;
         counter.classList.add('counter-pop');
+      };
+
+      const animateToTarget = () => {
+        if (displayed >= target) return;
+        popCounter();
         setTimeout(animateToTarget, 90);
       };
       setTimeout(animateToTarget, 250);
 
-      const liveTick = () => {
-        displayed += 1;
-        counter.textContent = format(displayed);
-        counter.classList.remove('counter-pop');
-        void counter.offsetWidth;
-        counter.classList.add('counter-pop');
+      const enquiryEvent = () => {
+        popCounter();
         if (flash) {
           flash.classList.remove('counter-flash-show');
           void flash.offsetWidth;
           flash.classList.add('counter-flash-show');
         }
         animateFeed();
-        const next = 11000 + Math.random() * 9000;
-        setTimeout(liveTick, next);
+        const next = 8000 + Math.random() * 9000;
+        setTimeout(enquiryEvent, next);
       };
 
-      setTimeout(() => {
-        animateFeed();
-        setInterval(animateFeed, 7200);
-      }, 3200);
-      setTimeout(liveTick, 9000 + Math.random() * 5000);
+      setTimeout(enquiryEvent, 6500 + Math.random() * 4500);
     }
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applySitePolish);
