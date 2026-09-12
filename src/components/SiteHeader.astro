@@ -1,16 +1,16 @@
 ---
 const path = Astro.url.pathname;
-const isRu = path.startsWith('/ru');
-const enHref = isRu ? '/' : path;
-const ruHref = '/ru/';
+const isRu = path === '/ru' || path.startsWith('/ru/');
+const enHref = isRu ? (path.replace(/^\/ru(?=\/|$)/, '') || '/') : path;
+const ruHref = isRu ? path : (path === '/' ? '/ru/' : `/ru${path}`);
 ---
 <header class="site-header shell">
   <a class="site-brand" href={isRu ? '/ru/' : '/'} aria-label="RM CREATIVES home">RM CREATIVES</a>
 
   <nav class="site-nav" aria-label="Primary navigation">
     <a href={isRu ? '/ru/#services' : '/#services'}>{isRu ? 'Услуги' : 'Services'}</a>
-    <a href={isRu ? '/ru/#cases' : '/#cases'}>{isRu ? 'Кейсы' : 'Cases'}</a>
-    <a href="/insights">Insights</a>
+    <a href={isRu ? '/ru/cases' : '/cases'}>{isRu ? 'Кейсы' : 'Cases'}</a>
+    <a href={isRu ? '/ru/insights' : '/insights'}>{isRu ? 'Материалы' : 'Insights'}</a>
     <a href={isRu ? '/ru/#about' : '/#about'}>{isRu ? 'О нас' : 'About'}</a>
   </nav>
 
