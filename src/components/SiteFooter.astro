@@ -65,6 +65,7 @@ const isRu = Astro.url.pathname.startsWith('/ru');
     const panel = document.querySelector('.system-panel');
     const counter = panel?.querySelector('.panel-stat strong');
     const flash = panel?.querySelector('.counter-flash');
+    const rows = panel ? Array.from(panel.querySelectorAll('.feed-row')) : [];
     if (counter) {
       const ru = document.documentElement.lang === 'ru';
       const format = (value) => new Intl.NumberFormat(ru ? 'ru-RU' : 'en-US').format(value);
@@ -74,6 +75,41 @@ const isRu = Astro.url.pathname.startsWith('/ru');
       const target = Math.max(BASE_COUNT, Math.floor(BASE_COUNT + Math.max(0, Date.now() - BASE_TIME) * (AVG_PER_DAY / 86400000)));
       let displayed = Math.max(BASE_COUNT, target - 9);
       counter.textContent = format(displayed);
+
+      const feedData = ru ? [
+        ['ЭСТЕТИКА','КОНСУЛЬТАЦИЯ КОСМЕТОЛОГА','НОВОЕ'],
+        ['СТОМАТОЛОГИЯ','ИМПЛАНТАЦИЯ','ЦЕЛЕВОЕ'],
+        ['МЕДИЦИНА','КОНСУЛЬТАЦИЯ ВРАЧА','НОВОЕ'],
+        ['ЭСТЕТИКА','ЛАЗЕРНАЯ ПРОЦЕДУРА','ЦЕЛЕВОЕ'],
+        ['СТОМАТОЛОГИЯ','КОНСУЛЬТАЦИЯ ПО ВИНИРАМ','НОВОЕ'],
+        ['МЕДИЦИНА','ПРИЁМ СПЕЦИАЛИСТА','ЦЕЛЕВОЕ']
+      ] : [
+        ['AESTHETIC','AESTHETIC CONSULTATION','NEW'],
+        ['DENTAL','IMPLANT CONSULTATION','QUALIFIED'],
+        ['MEDICAL','SPECIALIST CONSULTATION','NEW'],
+        ['AESTHETIC','LASER TREATMENT','QUALIFIED'],
+        ['DENTAL','VENEERS CONSULTATION','NEW'],
+        ['MEDICAL','DOCTOR APPOINTMENT','QUALIFIED']
+      ];
+
+      let feedIndex = 0;
+      const animateFeed = () => {
+        if (!rows.length) return;
+        const row = rows[feedIndex % rows.length];
+        const data = feedData[(feedIndex + 3) % feedData.length];
+        const title = row.querySelector('b');
+        const service = row.querySelector('span');
+        const status = row.querySelector('em');
+        row.classList.remove('feed-live-pulse');
+        void row.offsetWidth;
+        row.classList.add('feed-live-pulse');
+        setTimeout(() => {
+          if (title) title.textContent = data[0];
+          if (service) service.textContent = data[1];
+          if (status) status.textContent = data[2];
+        }, 180);
+        feedIndex += 1;
+      };
 
       const animateToTarget = () => {
         if (displayed >= target) return;
@@ -97,10 +133,16 @@ const isRu = Astro.url.pathname.startsWith('/ru');
           void flash.offsetWidth;
           flash.classList.add('counter-flash-show');
         }
-        const next = 18000 + Math.random() * 17000;
+        animateFeed();
+        const next = 11000 + Math.random() * 9000;
         setTimeout(liveTick, next);
       };
-      setTimeout(liveTick, 16000 + Math.random() * 9000);
+
+      setTimeout(() => {
+        animateFeed();
+        setInterval(animateFeed, 7200);
+      }, 3200);
+      setTimeout(liveTick, 9000 + Math.random() * 5000);
     }
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applySitePolish);
@@ -112,8 +154,13 @@ const isRu = Astro.url.pathname.startsWith('/ru');
   .system-panel .panel-stat strong.counter-pop { animation: rmCounterPop .35s ease; }
   .system-panel .counter-flash { opacity: 0; transform: translateY(4px); }
   .system-panel .counter-flash.counter-flash-show { animation: rmCounterFlash 1.5s ease; }
+  .system-panel .feed-row { position: relative; overflow: hidden; }
+  .system-panel .feed-row.feed-live-pulse { animation: rmFeedText .7s ease; }
+  .system-panel .feed-row.feed-live-pulse::after { content:''; position:absolute; inset:0; background:var(--accent); opacity:0; pointer-events:none; animation:rmFeedBlue .75s ease; }
   @keyframes rmCounterPop { 0% { transform: translateY(0); } 45% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
   @keyframes rmCounterFlash { 0% { opacity: 0; transform: translateY(4px); } 18% { opacity: 1; transform: translateY(0); } 72% { opacity: 1; } 100% { opacity: 0; transform: translateY(-3px); } }
+  @keyframes rmFeedText { 0% { transform:translateY(0); } 35% { transform:translateY(2px); } 100% { transform:translateY(0); } }
+  @keyframes rmFeedBlue { 0% { opacity:0; } 22% { opacity:.20; } 55% { opacity:.10; } 100% { opacity:0; } }
 </style>
 
 <style>
