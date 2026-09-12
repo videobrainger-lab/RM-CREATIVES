@@ -1,24 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const posts = [
-  { category: 'META ADS', title: 'Meta Ads for clinics: what actually affects enquiry cost', date: '2026' },
-  { category: 'GOOGLE ADS', title: 'Google Ads for clinics: capturing high-intent patient demand', date: '2026' },
-  { category: 'WEBSITES', title: 'What makes a clinic website convert visitors into enquiries', date: '2026' }
-];
 ---
-<BaseLayout title="Insights | RM CREATIVES" description="Practical insights on patient acquisition, Meta Ads, Google Ads and clinic websites.">
-  <main class="shell page">
-    <header><a href="/">← RM CREATIVES</a><span class="eyebrow">INSIGHTS</span></header>
-    <h1>Useful thinking.<br/>No marketing noise.</h1>
-    <section>
-      {posts.map((post, i) => <article>
-        <span class="eyebrow">0{i + 1} / {post.category}</span>
-        <h2>{post.title}</h2>
-        <span class="eyebrow">{post.date} ↗</span>
-      </article>)}
+<BaseLayout title="Insights | RM CREATIVES" description="Practical insights on patient acquisition, Meta Ads, Google Ads, SEO and clinic websites.">
+  <main class="page shell">
+    <div class="top eyebrow"><span>INSIGHTS</span><span>RM CREATIVES / KNOWLEDGE</span></div>
+
+    <section class="hero">
+      <h1>Practical marketing<br/>for clinics.</h1>
+      <p>Breakdowns of advertising, websites, SEO and patient acquisition systems. No agency noise — only what we actually use in real projects.</p>
+    </section>
+
+    <section class="soon">
+      <div><span class="eyebrow">COMING SOON</span><h2>New articles<br/>are on the way.</h2></div>
+      <div class="subscribe">
+        <p>We're preparing new practical articles and case-based breakdowns. In the meantime, subscribe and we'll keep you posted when new material is published.</p>
+        <a href="/contact">Subscribe for updates ↗</a>
+      </div>
     </section>
   </main>
 </BaseLayout>
 <style>
-  .page{padding:32px 0 110px}header{display:flex;justify-content:space-between;font-size:13px}.eyebrow{font-family:monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(60px,9vw,138px);line-height:.86;letter-spacing:-.07em;margin:120px 0 100px;font-weight:600;max-width:1250px}section{border-top:1px solid var(--line)}article{display:grid;grid-template-columns:.7fr 2fr auto;gap:30px;align-items:start;padding:32px 0 52px;border-bottom:1px solid var(--line)}article h2{font-size:clamp(28px,3.2vw,50px);line-height:1.03;letter-spacing:-.05em;margin:0;font-weight:550;max-width:850px}@media(max-width:700px){h1{margin-top:90px}article{grid-template-columns:1fr}article h2{margin:20px 0}}
+.page{padding:38px 0 140px}.top{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:15px}.hero{padding:100px 0 110px;display:grid;grid-template-columns:1.45fr .55fr;gap:70px;align-items:end}.hero h1{font-size:clamp(58px,8vw,120px);line-height:.88;letter-spacing:-.065em;margin:0;font-weight:650}.hero p{font-size:18px;line-height:1.5;color:var(--muted);margin:0}.soon{border-top:1px solid var(--ink);padding:40px 0 0;display:grid;grid-template-columns:1.25fr .75fr;gap:80px}.soon h2{font-size:clamp(48px,6vw,88px);line-height:.9;letter-spacing:-.06em;margin:35px 0 0}.subscribe{padding-top:35px}.subscribe p{font-size:18px;line-height:1.55;color:var(--muted);margin:0 0 35px;max-width:520px}.subscribe a{display:inline-block;background:var(--ink);color:white;padding:17px 21px;font-weight:650}@media(max-width:800px){.hero,.soon{grid-template-columns:1fr}.hero{padding:70px 0}.soon{gap:35px}.top span:last-child{display:none}}
 </style>
