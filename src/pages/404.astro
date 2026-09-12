@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page not found | RM CREATIVES" description="The page you requested could not be found." noindex={true}>
+  <main class="not-found shell">
+    <div class="eyebrow top"><span>ERROR / 404</span><span>RM CREATIVES</span></div>
+    <section class="hero" data-en>
+      <div>
+        <span class="eyebrow">PAGE NOT FOUND</span>
+        <h1>Wrong turn.<br/>Good system.</h1>
+      </div>
+      <div class="copy">
+        <p>This page does not exist or has moved. Start from the homepage, explore our clinic marketing products or open the case library.</p>
+        <div class="actions"><a class="primary" href="/">HOME ↗</a><a href="/cases/">VIEW CASES</a></div>
+      </div>
+    </section>
+    <section class="hero" data-ru hidden>
+      <div>
+        <span class="eyebrow">СТРАНИЦА НЕ НАЙДЕНА</span>
+        <h1>Не туда.<br/>Бывает.</h1>
+      </div>
+      <div class="copy">
+        <p>Такой страницы нет или она была перемещена. Вернитесь на главную, посмотрите продукты RM CREATIVES или откройте библиотеку кейсов.</p>
+        <div class="actions"><a class="primary" href="/ru/">НА ГЛАВНУЮ ↗</a><a href="/ru/cases/">СМОТРЕТЬ КЕЙСЫ</a></div>
+      </div>
+    </section>
+    <div class="code">404</div>
+  </main>
+  <script is:inline>
+    (()=>{const ru=location.pathname.startsWith('/ru/');const en=document.querySelector('[data-en]');const ruBlock=document.querySelector('[data-ru]');if(ru&&en&&ruBlock){en.hidden=true;ruBlock.hidden=false;document.documentElement.lang='ru';document.title='Страница не найдена | RM CREATIVES';}})();
+  </script>
+</BaseLayout>
+<style>
+.not-found{padding:38px 0 100px;min-height:72vh;overflow:hidden}.top{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:15px}.hero{padding:90px 0 60px;display:grid;grid-template-columns:1.35fr .65fr;gap:70px;align-items:end}.hero h1{font-size:clamp(68px,10vw,150px);line-height:.82;letter-spacing:-.075em;margin:28px 0 0;max-width:1000px}.copy{padding-bottom:12px}.copy p{font-size:18px;line-height:1.55;color:var(--muted);margin:0 0 30px;max-width:520px}.actions{display:flex;gap:10px;flex-wrap:wrap}.actions a{border:1px solid var(--ink);padding:16px 18px;font:11px monospace;letter-spacing:.08em}.actions .primary{background:var(--ink);color:#fff}.code{font-size:clamp(180px,34vw,520px);line-height:.68;letter-spacing:-.09em;font-weight:700;color:transparent;-webkit-text-stroke:1px var(--line);user-select:none;margin-top:15px}@media(max-width:800px){.hero{grid-template-columns:1fr;padding:65px 0 45px;gap:38px}.hero h1{font-size:clamp(64px,20vw,105px)}.top span:last-child{display:none}.code{font-size:45vw}}
+</style>
