@@ -25,9 +25,8 @@ const isRu = Astro.url.pathname.startsWith('/ru');
 
     <div class="footer-col">
       <span class="footer-label">{isRu ? 'Соцсети' : 'Social'}</span>
-      <a href="#" aria-disabled="true" data-social-pending>Instagram ↗</a>
-      <a href="#" aria-disabled="true" data-social-pending>Facebook ↗</a>
-      <a href="#" aria-disabled="true" data-social-pending>LinkedIn ↗</a>
+      <a href="https://www.instagram.com/rm_bureau/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+      <a href="https://www.facebook.com/marketing.roast" target="_blank" rel="noopener noreferrer">Facebook ↗</a>
     </div>
 
     <div class="footer-company">
@@ -53,7 +52,6 @@ const isRu = Astro.url.pathname.startsWith('/ru');
   .footer-label { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #70706d; margin-bottom: 8px; }
   .footer-col a, .footer-company a { color: #d7d7d2; transition: opacity .2s ease; }
   .footer-col a:hover, .footer-company a:hover { opacity: .55; }
-  .footer-col [data-social-pending] { opacity: .45; cursor: default; }
   .footer-company strong { font-size: 13px; }
   .footer-company address { font-style: normal; color: #9b9b96; line-height: 1.55; }
   .footer-bottom { border-top: 1px solid #292929; padding-top: 22px; display: flex; justify-content: space-between; color: #6f6f6b; font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 10px; letter-spacing: .1em; }
