@@ -1,5 +1,4 @@
 // SendPulse subscription endpoint for RM CREATIVES Insights.
-// Redeploy after updating SendPulse client credentials.
 const ADDRESS_BOOK_ID = '900922';
 const SENDPULSE_API = 'https://api.sendpulse.com';
 
@@ -33,7 +32,6 @@ exports.handler = async (event) => {
   }
 
   const email = String(payload.email || '').trim().toLowerCase();
-  const language = payload.language === 'ru' ? 'ru' : 'en';
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) {
     return json(400, { ok: false, error: 'Invalid email' });
@@ -62,19 +60,11 @@ exports.handler = async (event) => {
         authorization: `Bearer ${tokenData.access_token}`,
         'content-type': 'application/json'
       },
-      body: JSON.stringify({
-        emails: [{
-          email,
-          variables: {
-            language,
-            source: 'rmcreatives-insights'
-          }
-        }]
-      })
+      body: JSON.stringify({ emails: [email] })
     });
 
     const subscribeData = await subscribeResponse.json().catch(() => ({}));
-    if (!subscribeResponse.ok || subscribeData.result === false) {
+    if (!subscribeResponse.ok || subscribeData.result !== true) {
       console.error('SendPulse subscribe error', subscribeResponse.status, subscribeData);
       return json(502, { ok: false, error: 'Could not add subscriber' });
     }
