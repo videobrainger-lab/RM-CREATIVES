@@ -61,6 +61,47 @@ const isRu = Astro.url.pathname.startsWith('/ru');
     document.querySelectorAll('body *').forEach((el) => {
       if (getComputedStyle(el).backgroundColor === accentRgb) el.classList.add('rm-on-accent');
     });
+
+    const panel = document.querySelector('.system-panel');
+    const counter = panel?.querySelector('.panel-stat strong');
+    const flash = panel?.querySelector('.counter-flash');
+    if (counter) {
+      const ru = document.documentElement.lang === 'ru';
+      const format = (value) => new Intl.NumberFormat(ru ? 'ru-RU' : 'en-US').format(value);
+      const BASE_COUNT = 10000;
+      const BASE_TIME = new Date('2026-09-11T00:00:00+03:00').getTime();
+      const AVG_PER_DAY = 39;
+      const target = Math.max(BASE_COUNT, Math.floor(BASE_COUNT + Math.max(0, Date.now() - BASE_TIME) * (AVG_PER_DAY / 86400000)));
+      let displayed = Math.max(BASE_COUNT, target - 9);
+      counter.textContent = format(displayed);
+
+      const animateToTarget = () => {
+        if (displayed >= target) return;
+        displayed += 1;
+        counter.textContent = format(displayed);
+        counter.classList.remove('counter-pop');
+        void counter.offsetWidth;
+        counter.classList.add('counter-pop');
+        setTimeout(animateToTarget, 90);
+      };
+      setTimeout(animateToTarget, 250);
+
+      const liveTick = () => {
+        displayed += 1;
+        counter.textContent = format(displayed);
+        counter.classList.remove('counter-pop');
+        void counter.offsetWidth;
+        counter.classList.add('counter-pop');
+        if (flash) {
+          flash.classList.remove('counter-flash-show');
+          void flash.offsetWidth;
+          flash.classList.add('counter-flash-show');
+        }
+        const next = 18000 + Math.random() * 17000;
+        setTimeout(liveTick, next);
+      };
+      setTimeout(liveTick, 16000 + Math.random() * 9000);
+    }
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applySitePolish);
   else applySitePolish();
@@ -68,6 +109,11 @@ const isRu = Astro.url.pathname.startsWith('/ru');
 
 <style is:global>
   .rm-on-accent, .rm-on-accent * { color: #fff !important; }
+  .system-panel .panel-stat strong.counter-pop { animation: rmCounterPop .35s ease; }
+  .system-panel .counter-flash { opacity: 0; transform: translateY(4px); }
+  .system-panel .counter-flash.counter-flash-show { animation: rmCounterFlash 1.5s ease; }
+  @keyframes rmCounterPop { 0% { transform: translateY(0); } 45% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
+  @keyframes rmCounterFlash { 0% { opacity: 0; transform: translateY(4px); } 18% { opacity: 1; transform: translateY(0); } 72% { opacity: 1; } 100% { opacity: 0; transform: translateY(-3px); } }
 </style>
 
 <style>
