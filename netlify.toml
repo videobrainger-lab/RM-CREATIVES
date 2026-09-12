@@ -1,4 +1,3 @@
-# Redeploy marker: SendPulse credentials rotated 2026-09-12
 [build]
   command = "npm run build"
   publish = "dist"
@@ -6,6 +5,7 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Canonical host redirects.
 [[redirects]]
   from = "http://rmcreatives.com/*"
   to = "https://rmcreatives.com/:splat"
@@ -23,6 +23,142 @@
   to = "https://rmcreatives.com/:splat"
   status = 301
   force = true
+
+# Legacy sitemap discovered in Google Search Console.
+[[redirects]]
+  from = "/image2.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+
+# Legacy language and navigation URLs.
+[[redirects]]
+  from = "/en/"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/lv/"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/en/contacts/"
+  to = "/contact/"
+  status = 301
+[[redirects]]
+  from = "/kontakty/"
+  to = "/ru/contact/"
+  status = 301
+[[redirects]]
+  from = "/lv/kontakti/"
+  to = "/contact/"
+  status = 301
+[[redirects]]
+  from = "/en/services/"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/en/case-studies/"
+  to = "/cases/"
+  status = 301
+[[redirects]]
+  from = "/kejsy-rm-creatives-prevrashhaem-idei-v-uspeh/"
+  to = "/ru/cases/"
+  status = 301
+[[redirects]]
+  from = "/en/blog/"
+  to = "/insights/"
+  status = 301
+[[redirects]]
+  from = "/blog-2/"
+  to = "/ru/insights/"
+  status = 301
+
+# Highest-value legacy service and article URLs mapped to the closest current destination.
+[[redirects]]
+  from = "/en/facebook-advertising-restrictions-for-healthcare-sectors/"
+  to = "/cases/consilium-medicum/medical-google-ads/"
+  status = 301
+[[redirects]]
+  from = "/chto-nelzya-reklamirovat-klinikam-v-facebook/"
+  to = "/ru/cases/consilium-medicum/medical-google-ads/"
+  status = 301
+[[redirects]]
+  from = "/en/digital-marketing-for-dentistry/"
+  to = "/cases/denta/"
+  status = 301
+[[redirects]]
+  from = "/en/pay-per-click-advertising/"
+  to = "/search/"
+  status = 301
+[[redirects]]
+  from = "/gugl-reklama-dlya-vashego-biznesa-google-ads/"
+  to = "/ru/search/"
+  status = 301
+[[redirects]]
+  from = "/lv/google-reklama-jusu-biznesam-google-ads/"
+  to = "/search/"
+  status = 301
+[[redirects]]
+  from = "/en/social-media-advertising/"
+  to = "/performance/"
+  status = 301
+[[redirects]]
+  from = "/en/retargeting/"
+  to = "/performance/"
+  status = 301
+[[redirects]]
+  from = "/en/marketing-for-aesthetic-and-beauty-clinics/"
+  to = "/performance/"
+  status = 301
+[[redirects]]
+  from = "/kak-privlech-klientov-v-kliniku-krasoty-i-apparatnoj-kosmetologii/"
+  to = "/ru/performance/"
+  status = 301
+[[redirects]]
+  from = "/en/seo-search-engine-optimization-service/"
+  to = "/cases/denta/seo/"
+  status = 301
+[[redirects]]
+  from = "/en/dentistry-promotion-top-5-in-seo-4792-applications/"
+  to = "/cases/denta/seo/"
+  status = 301
+[[redirects]]
+  from = "/en/a-website-for-a-clinic-on-a-limited-budget/"
+  to = "/cases/union-klinika/website/"
+  status = 301
+[[redirects]]
+  from = "/case/sajt-dlya-kliniki-s-ogranichennym-byudzhetom/"
+  to = "/ru/cases/union-klinika/website/"
+  status = 301
+[[redirects]]
+  from = "/en/how-to-attract-patients-to-the-clinic-case-consilium-medicum/"
+  to = "/cases/consilium-medicum/"
+  status = 301
+[[redirects]]
+  from = "/kak-privlech-paczientov-v-kliniku-kejs-consilium-medicum/"
+  to = "/ru/cases/consilium-medicum/"
+  status = 301
+[[redirects]]
+  from = "/en/case/epiline-beauty-studio/"
+  to = "/cases/epiline/"
+  status = 301
+
+# Legacy legal and utility URLs.
+[[redirects]]
+  from = "/en/privacy/"
+  to = "/privacy/"
+  status = 301
+[[redirects]]
+  from = "/en/terms-of-use/"
+  to = "/terms/"
+  status = 301
+[[redirects]]
+  from = "/en/cookies-policy/"
+  to = "/cookies/"
+  status = 301
+[[redirects]]
+  from = "/en/thank-you/"
+  to = "/thank-you/"
+  status = 301
 
 [[headers]]
   for = "/*"
