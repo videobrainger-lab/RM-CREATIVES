@@ -5,149 +5,84 @@ interface Props { title?: string; description?: string; lang?: 'en' | 'ru'; noin
 const pathname = Astro.url.pathname;
 const inferredLang = pathname.startsWith('/ru') ? 'ru' : 'en';
 const seoByPath: Record<string, { title: string; description: string }> = {
-  '/': {
-    title: 'Patient Acquisition for Clinics | RM CREATIVES',
-    description: 'Patient acquisition for medical, dental and aesthetic clinics through Meta Ads, Google Ads and high-converting clinic websites.'
-  },
-  '/ru/': {
-    title: 'Привлечение пациентов для клиник | RM CREATIVES',
-    description: 'Привлечение пациентов для медицинских, стоматологических и эстетических клиник через Meta Ads, Google Ads и конверсионные сайты.'
-  },
-  '/performance/': {
-    title: 'Meta Ads for Clinics — Pay per Enquiry | RM CREATIVES',
-    description: 'Meta Ads for clinics with a transparent pay-per-enquiry model. Strategy, creatives, campaign management and optimisation focused on qualified enquiries.'
-  },
-  '/ru/performance/': {
-    title: 'Meta Ads для клиник — оплата за обращения | RM CREATIVES',
-    description: 'Meta Ads для клиник с прозрачной оплатой за обращения. Стратегия, креативы, запуск и оптимизация рекламы с фокусом на целевые заявки.'
-  },
-  '/search/': {
-    title: 'Google Ads for Clinics | RM Search by RM CREATIVES',
-    description: 'Google Search Ads for clinics that capture existing patient demand. Forecasting, campaign structure, optimisation and measurable conversion performance.'
-  },
-  '/ru/search/': {
-    title: 'Google Ads для клиник | RM Search by RM CREATIVES',
-    description: 'Поисковая реклама Google Ads для клиник: прогноз до запуска, структура кампаний, оптимизация и привлечение пациентов с существующим спросом.'
-  },
-  '/sites/': {
-    title: 'Clinic Website Design & Development | RM CREATIVES',
-    description: 'High-converting websites for medical, dental and aesthetic clinics. Fast launch, clear patient journeys, mobile-first UX and SEO-ready architecture.'
-  },
-  '/ru/sites/': {
-    title: 'Разработка сайтов для клиник | RM CREATIVES',
-    description: 'Конверсионные сайты для медицинских, стоматологических и эстетических клиник: быстрый запуск, понятный путь пациента, mobile-first UX и SEO-архитектура.'
-  },
-  '/cases/': {
-    title: 'Clinic Marketing Cases & Results | RM CREATIVES',
-    description: 'Real clinic marketing case studies across Meta Ads, Google Ads, SEO, websites and CRM. Problems solved, systems built and measurable results.'
-  },
-  '/ru/cases/': {
-    title: 'Кейсы маркетинга клиник и результаты | RM CREATIVES',
-    description: 'Реальные кейсы клиник: Meta Ads, Google Ads, SEO, сайты и CRM. Решённые задачи, построенные системы и измеримые результаты.'
-  },
-  '/insights/': {
-    title: 'Clinic Marketing Insights & Guides | RM CREATIVES',
-    description: 'Practical insights on clinic marketing, patient acquisition, Meta Ads, Google Ads, SEO, websites and conversion systems from real projects.'
-  },
-  '/ru/insights/': {
-    title: 'Маркетинг клиник: статьи и разборы | RM CREATIVES',
-    description: 'Практические материалы о маркетинге клиник, привлечении пациентов, Meta Ads, Google Ads, SEO, сайтах и системах конверсии.'
-  },
-  '/contact/': {
-    title: 'Discuss a Clinic Marketing Project | RM CREATIVES',
-    description: 'Tell us about your clinic, current acquisition channels and growth goals. We will review the task and suggest the most relevant next step.'
-  },
-  '/ru/contact/': {
-    title: 'Обсудить маркетинг клиники | RM CREATIVES',
-    description: 'Расскажите о клинике, текущих каналах привлечения и целях роста. Мы изучим задачу и предложим наиболее подходящий следующий шаг.'
-  }
+  '/': { title: 'Patient Acquisition for Clinics | RM CREATIVES', description: 'Patient acquisition for medical, dental and aesthetic clinics through Meta Ads, Google Ads and high-converting clinic websites.' },
+  '/ru/': { title: 'Привлечение пациентов для клиник | RM CREATIVES', description: 'Привлечение пациентов для медицинских, стоматологических и эстетических клиник через Meta Ads, Google Ads и конверсионные сайты.' },
+  '/performance/': { title: 'Meta Ads for Clinics — Pay per Enquiry | RM CREATIVES', description: 'Meta Ads for clinics with a transparent pay-per-enquiry model. Strategy, creatives, campaign management and optimisation focused on qualified enquiries.' },
+  '/ru/performance/': { title: 'Meta Ads для клиник — оплата за обращения | RM CREATIVES', description: 'Meta Ads для клиник с прозрачной оплатой за обращения. Стратегия, креативы, запуск и оптимизация рекламы с фокусом на целевые заявки.' },
+  '/search/': { title: 'Google Ads for Clinics | RM Search by RM CREATIVES', description: 'Google Search Ads for clinics that capture existing patient demand. Forecasting, campaign structure, optimisation and measurable conversion performance.' },
+  '/ru/search/': { title: 'Google Ads для клиник | RM Search by RM CREATIVES', description: 'Поисковая реклама Google Ads для клиник: прогноз до запуска, структура кампаний, оптимизация и привлечение пациентов с существующим спросом.' },
+  '/sites/': { title: 'Clinic Website Design & Development | RM CREATIVES', description: 'High-converting websites for medical, dental and aesthetic clinics. Fast launch, clear patient journeys, mobile-first UX and SEO-ready architecture.' },
+  '/ru/sites/': { title: 'Разработка сайтов для клиник | RM CREATIVES', description: 'Конверсионные сайты для медицинских, стоматологических и эстетических клиник: быстрый запуск, понятный путь пациента, mobile-first UX и SEO-архитектура.' },
+  '/cases/': { title: 'Clinic Marketing Cases & Results | RM CREATIVES', description: 'Real clinic marketing case studies across Meta Ads, Google Ads, SEO, websites and CRM. Problems solved, systems built and measurable results.' },
+  '/ru/cases/': { title: 'Кейсы маркетинга клиник и результаты | RM CREATIVES', description: 'Реальные кейсы клиник: Meta Ads, Google Ads, SEO, сайты и CRM. Решённые задачи, построенные системы и измеримые результаты.' },
+  '/insights/': { title: 'Clinic Marketing Insights & Guides | RM CREATIVES', description: 'Practical insights on clinic marketing, patient acquisition, Meta Ads, Google Ads, SEO, websites and conversion systems from real projects.' },
+  '/ru/insights/': { title: 'Маркетинг клиник: статьи и разборы | RM CREATIVES', description: 'Практические материалы о маркетинге клиник, привлечении пациентов, Meta Ads, Google Ads, SEO, сайтах и системах конверсии.' },
+  '/contact/': { title: 'Discuss a Clinic Marketing Project | RM CREATIVES', description: 'Tell us about your clinic, current acquisition channels and growth goals. We will review the task and suggest the most relevant next step.' },
+  '/ru/contact/': { title: 'Обсудить маркетинг клиники | RM CREATIVES', description: 'Расскажите о клинике, текущих каналах привлечения и целях роста. Мы изучим задачу и предложим наиболее подходящий следующий шаг.' },
+  '/cases/epiline/': { title: 'Epiline Clinic Marketing Case Study | RM CREATIVES', description: 'How RM CREATIVES built a patient acquisition system for Epiline across Meta Ads, Google Ads, SEO, website and CRM.' },
+  '/cases/epiline/meta-ads/': { title: 'Meta Ads for a Beauty Clinic — Epiline Case | RM CREATIVES', description: 'Epiline Meta Ads case: 2,970 enquiries from January to August 2026 with a weighted cost per lead of €5.85.' },
+  '/cases/epiline/google-ads/': { title: 'Google Ads for a Beauty Clinic — Epiline Case | RM CREATIVES', description: 'Epiline Google Ads case: 1,343 conversions with a weighted CPA of $5.35 across January–August 2026.' },
+  '/cases/epiline/seo/': { title: 'SEO for a Beauty Clinic — Epiline Case | RM CREATIVES', description: 'How Epiline reached TOP 10 search visibility and generated 275 organic enquiries with a bilingual clinic SEO strategy.' },
+  '/cases/epiline/website/': { title: 'Clinic Website Redesign — Epiline Case | RM CREATIVES', description: 'A 44-page bilingual WordPress clinic website built from scratch with SEO migration, redirects and preserved TOP-5 visibility.' },
+  '/cases/epiline/crm-booking/': { title: 'Clinic CRM & Booking Automation — Epiline Case | RM CREATIVES', description: 'How ads, website, Kommo CRM, WhatsApp follow-up and Altegio booking were connected into one patient acquisition system.' },
+  '/cases/denta/': { title: 'Denta Dental Clinic Marketing Case | RM CREATIVES', description: 'Denta dental marketing case: 16,227 tracked enquiries in 2025 across Google Ads, Meta Ads, SEO and website.' },
+  '/cases/denta/google-ads/': { title: 'Google Ads for a Dental Clinic — Denta Case | RM CREATIVES', description: 'Denta Google Ads case: 10,601 conversions in 2025 at a weighted CPA of €2.07.' },
+  '/cases/denta/meta-ads/': { title: 'Meta Ads for a Dental Clinic — Denta Case | RM CREATIVES', description: 'Denta Meta Ads case: 1,639 enquiries in 2025 and 1,902 more from January to August 2026.' },
+  '/cases/denta/seo/': { title: 'Dental Clinic SEO — Denta Case | RM CREATIVES', description: 'Denta SEO case: TOP-5 search visibility and 3,831 organic enquiries generated in 2025.' },
+  '/cases/denta/website/': { title: 'Dental Clinic Website — Denta Case | RM CREATIVES', description: 'How the Denta website supports a measurable acquisition system across paid search, Meta Ads and organic traffic.' },
+  '/cases/consilium-medicum/': { title: 'Consilium Medicum Marketing Case | RM CREATIVES', description: 'A medical clinic growth case across Google Ads, Meta Ads and SEO, including 3,356 Google Ads conversions in 2024.' },
+  '/cases/consilium-medicum/google-ads/': { title: 'Google Ads for a Medical Clinic — Consilium Case | RM CREATIVES', description: 'Consilium Medicum Google Ads case: 3,356 conversions in 2024 with a €3.25 CPA and structured medical search campaigns.' },
+  '/cases/consilium-medicum/medical-google-ads/': { title: 'Medical Google Ads Restrictions — Consilium Case | RM CREATIVES', description: 'A practical case on running Google Ads for healthcare while navigating medical advertising restrictions, blocks and policy constraints.' },
+  '/cases/consilium-medicum/meta-ads/': { title: 'Meta Ads for a Medical Clinic — Consilium Case | RM CREATIVES', description: 'How Meta Ads supported patient acquisition for Consilium Medicum within the constraints of healthcare advertising.' },
+  '/cases/consilium-medicum/seo/': { title: 'Medical Clinic SEO — Consilium Case | RM CREATIVES', description: 'Consilium Medicum SEO case: 24,632 organic clicks from January to August 2026 and strong rankings for medical search queries.' },
+  '/cases/union-klinika/': { title: 'Union Klinika Marketing Case Study | RM CREATIVES', description: 'Union Klinika patient acquisition case across Meta Ads, Google Ads and clinic website development.' },
+  '/cases/union-klinika/meta-ads/': { title: 'Meta Ads for a Clinic — Union Klinika Case | RM CREATIVES', description: 'Union Klinika Meta Ads case: 1,021 enquiries from May to December 2024 at a weighted cost per lead of €2.75.' },
+  '/cases/union-klinika/google-ads/': { title: 'Google Ads for a Clinic — Union Klinika Case | RM CREATIVES', description: 'How Google Search Ads captured existing patient demand for Union Klinika as part of a multi-channel acquisition system.' },
+  '/cases/union-klinika/website/': { title: 'Clinic Website on a Limited Budget — Union Klinika Case | RM CREATIVES', description: 'How RM CREATIVES designed a practical clinic website for Union Klinika around patient journeys and acquisition needs.' },
+  '/ru/cases/epiline/': { title: 'Маркетинг клиники Epiline — кейс | RM CREATIVES', description: 'Как для Epiline построили систему привлечения пациентов через Meta Ads, Google Ads, SEO, сайт и CRM.' },
+  '/ru/cases/epiline/meta-ads/': { title: 'Meta Ads для бьюти-клиники — кейс Epiline | RM CREATIVES', description: 'Кейс Epiline: 2 970 обращений из Meta Ads за январь–август 2026 при средней стоимости обращения €5,85.' },
+  '/ru/cases/epiline/google-ads/': { title: 'Google Ads для бьюти-клиники — кейс Epiline | RM CREATIVES', description: 'Кейс Google Ads Epiline: 1 343 конверсии за январь–август 2026 при средневзвешенном CPA $5,35.' },
+  '/ru/cases/epiline/seo/': { title: 'SEO для бьюти-клиники — кейс Epiline | RM CREATIVES', description: 'Как Epiline вышла в TOP 10 поиска и получила 275 органических обращений благодаря SEO на двух языках.' },
+  '/ru/cases/epiline/website/': { title: 'Разработка сайта клиники — кейс Epiline | RM CREATIVES', description: 'Новый двуязычный сайт Epiline на 44 страницы: WordPress, SEO-миграция, редиректы и сохранение позиций TOP-5.' },
+  '/ru/cases/epiline/crm-booking/': { title: 'CRM и онлайн-запись клиники — кейс Epiline | RM CREATIVES', description: 'Как связали рекламу, сайт, Kommo CRM, WhatsApp и Altegio в единую систему работы с обращениями пациентов.' },
+  '/ru/cases/denta/': { title: 'Маркетинг стоматологии Denta — кейс | RM CREATIVES', description: 'Кейс Denta: 16 227 отслеживаемых обращений в 2025 году через Google Ads, Meta Ads, SEO и сайт.' },
+  '/ru/cases/denta/google-ads/': { title: 'Google Ads для стоматологии — кейс Denta | RM CREATIVES', description: 'Кейс Denta: 10 601 конверсия из Google Ads в 2025 году при средневзвешенном CPA €2,07.' },
+  '/ru/cases/denta/meta-ads/': { title: 'Meta Ads для стоматологии — кейс Denta | RM CREATIVES', description: 'Кейс Meta Ads Denta: 1 639 обращений в 2025 году и ещё 1 902 обращения за январь–август 2026.' },
+  '/ru/cases/denta/seo/': { title: 'SEO для стоматологии — кейс Denta | RM CREATIVES', description: 'Кейс SEO Denta: видимость в TOP-5 и 3 831 органическое обращение в 2025 году.' },
+  '/ru/cases/denta/website/': { title: 'Сайт стоматологической клиники — кейс Denta | RM CREATIVES', description: 'Как сайт Denta работает внутри измеримой системы привлечения пациентов из платного и органического поиска.' },
+  '/ru/cases/consilium-medicum/': { title: 'Маркетинг Consilium Medicum — кейс клиники | RM CREATIVES', description: 'Кейс медицинской клиники: Google Ads, Meta Ads и SEO, включая 3 356 конверсий Google Ads в 2024 году.' },
+  '/ru/cases/consilium-medicum/google-ads/': { title: 'Google Ads для медицинской клиники — Consilium | RM CREATIVES', description: 'Кейс Consilium Medicum: 3 356 конверсий Google Ads в 2024 году при CPA €3,25.' },
+  '/ru/cases/consilium-medicum/medical-google-ads/': { title: 'Ограничения Google Ads в медицине — кейс | RM CREATIVES', description: 'Практический кейс о рекламе медицинской клиники в Google Ads: ограничения, блокировки и работа с политиками платформы.' },
+  '/ru/cases/consilium-medicum/meta-ads/': { title: 'Meta Ads для медицинской клиники — Consilium | RM CREATIVES', description: 'Как Meta Ads использовались для привлечения обращений в Consilium Medicum с учётом ограничений медицинской рекламы.' },
+  '/ru/cases/consilium-medicum/seo/': { title: 'SEO медицинской клиники — Consilium Medicum | RM CREATIVES', description: 'Кейс SEO Consilium Medicum: 24 632 органических клика за январь–август 2026 и сильные позиции по медицинским запросам.' },
+  '/ru/cases/union-klinika/': { title: 'Маркетинг Union Klinika — кейс клиники | RM CREATIVES', description: 'Кейс Union Klinika: система привлечения пациентов через Meta Ads, Google Ads и сайт клиники.' },
+  '/ru/cases/union-klinika/meta-ads/': { title: 'Meta Ads для клиники — кейс Union Klinika | RM CREATIVES', description: 'Кейс Union Klinika: 1 021 обращение из Meta Ads за май–декабрь 2024 при средневзвешенном CPL €2,75.' },
+  '/ru/cases/union-klinika/google-ads/': { title: 'Google Ads для клиники — кейс Union Klinika | RM CREATIVES', description: 'Как поисковая реклама Google Ads забирала существующий спрос пациентов для Union Klinika.' },
+  '/ru/cases/union-klinika/website/': { title: 'Сайт клиники с ограниченным бюджетом — Union | RM CREATIVES', description: 'Кейс разработки практичного сайта Union Klinika вокруг пути пациента и задач привлечения обращений.' }
 };
 const normalizedPath = pathname === '/' ? '/' : pathname.endsWith('/') ? pathname : `${pathname}/`;
 const mappedSeo = seoByPath[normalizedPath];
-const {
-  title: rawTitle = inferredLang === 'ru' ? 'Привлечение пациентов для клиник | RM CREATIVES' : 'Patient Acquisition for Clinics | RM CREATIVES',
-  description: rawDescription = inferredLang === 'ru'
-    ? 'Привлечение пациентов через Meta Ads, Google Ads и конверсионные сайты для медицинских клиник и бьюти-студий.'
-    : 'Patient acquisition through Meta Ads, Google Ads and high-converting websites for medical clinics and beauty studios.',
-  lang = inferredLang,
-  noindex = false
-} = Astro.props;
+const { title: rawTitle = inferredLang === 'ru' ? 'Привлечение пациентов для клиник | RM CREATIVES' : 'Patient Acquisition for Clinics | RM CREATIVES', description: rawDescription = inferredLang === 'ru' ? 'Привлечение пациентов через Meta Ads, Google Ads и конверсионные сайты для медицинских клиник и бьюти-студий.' : 'Patient acquisition through Meta Ads, Google Ads and high-converting websites for medical clinics and beauty studios.', lang = inferredLang, noindex = false } = Astro.props;
 const title = mappedSeo?.title || rawTitle;
-const description = (mappedSeo?.description || rawDescription)
-  .replace(/медицинских и beauty-клиник/gi, 'медицинских клиник и бьюти-студий')
-  .replace(/медицинских и бьюти-клиник/gi, 'медицинских клиник и бьюти-студий')
-  .replace(/medical and beauty clinics/gi, 'medical clinics and beauty studios')
-  .replace(/medical, dental and beauty clinics/gi, 'medical and aesthetic clinics, dental clinics and beauty studios');
+const description = (mappedSeo?.description || rawDescription).replace(/медицинских и beauty-клиник/gi, 'медицинских клиник и бьюти-студий').replace(/медицинских и бьюти-клиник/gi, 'медицинских клиник и бьюти-студий').replace(/medical and beauty clinics/gi, 'medical clinics and beauty studios').replace(/medical, dental and beauty clinics/gi, 'medical and aesthetic clinics, dental clinics and beauty studios');
 const autoNoindex = noindex || /(^|\/)(thank-you|404)(\/|$)/.test(pathname) || /(^|\/)(privacy|terms|cookies)(\/|$)/.test(pathname);
 const canonical = new URL(normalizedPath, 'https://rmcreatives.com');
 const enPath = inferredLang === 'ru' ? (normalizedPath.replace(/^\/ru(?=\/|$)/, '') || '/') : normalizedPath;
 const ruPath = inferredLang === 'ru' ? normalizedPath : (normalizedPath === '/' ? '/ru/' : `/ru${normalizedPath}`);
-const enAlternate = new URL(enPath, 'https://rmcreatives.com');
-const ruAlternate = new URL(ruPath, 'https://rmcreatives.com');
+const enAlternate = new URL(enPath, 'https://rmcreatives.com'); const ruAlternate = new URL(ruPath, 'https://rmcreatives.com');
 const pathParts = normalizedPath.split('/').filter(Boolean).filter((part, index) => !(index === 0 && part === 'ru'));
-const breadcrumbNames: Record<string, { en: string; ru: string }> = {
-  cases: { en: 'Cases', ru: 'Кейсы' }, performance: { en: 'Performance', ru: 'Performance' }, search: { en: 'Search', ru: 'Search' }, sites: { en: 'Sites', ru: 'Сайты' }, insights: { en: 'Insights', ru: 'Insights' }, contact: { en: 'Contact', ru: 'Контакты' },
-  epiline: { en: 'Epiline', ru: 'Epiline' }, denta: { en: 'Denta', ru: 'Denta' }, 'consilium-medicum': { en: 'Consilium Medicum', ru: 'Consilium Medicum' }, 'union-klinika': { en: 'Union Klinika', ru: 'Union Klinika' },
-  'meta-ads': { en: 'Meta Ads', ru: 'Meta Ads' }, 'google-ads': { en: 'Google Ads', ru: 'Google Ads' }, seo: { en: 'SEO', ru: 'SEO' }, website: { en: 'Website', ru: 'Сайт' }, 'crm-booking': { en: 'CRM & Booking', ru: 'CRM и запись' }, 'medical-google-ads': { en: 'Medical Google Ads', ru: 'Google Ads для медицины' }
-};
-const breadcrumbItems = [{ '@type': 'ListItem', position: 1, name: inferredLang === 'ru' ? 'Главная' : 'Home', item: inferredLang === 'ru' ? 'https://rmcreatives.com/ru/' : 'https://rmcreatives.com/' }];
-let builtPath = inferredLang === 'ru' ? '/ru' : '';
-pathParts.forEach((part, index) => {
-  builtPath += `/${part}`;
-  breadcrumbItems.push({ '@type': 'ListItem', position: index + 2, name: breadcrumbNames[part]?.[inferredLang] || part.replace(/-/g, ' '), item: `https://rmcreatives.com${builtPath}/` });
-});
-const graph: any[] = [
-  {
-    '@type': 'Organization',
-    '@id': 'https://rmcreatives.com/#organization',
-    name: 'RM CREATIVES',
-    url: 'https://rmcreatives.com/',
-    email: 'clientcare@rmcreatives.com',
-    sameAs: ['https://www.instagram.com/rm_bureau/', 'https://www.facebook.com/marketing.roast']
-  },
-  {
-    '@type': 'WebSite',
-    '@id': 'https://rmcreatives.com/#website',
-    url: 'https://rmcreatives.com/',
-    name: 'RM CREATIVES',
-    publisher: { '@id': 'https://rmcreatives.com/#organization' },
-    inLanguage: ['en', 'ru']
-  },
-  {
-    '@type': 'WebPage',
-    '@id': `${canonical.href}#webpage`,
-    url: canonical.href,
-    name: title,
-    description,
-    isPartOf: { '@id': 'https://rmcreatives.com/#website' },
-    about: { '@id': 'https://rmcreatives.com/#organization' },
-    inLanguage: lang
-  }
-];
-if (pathParts.length) graph.push({ '@type': 'BreadcrumbList', '@id': `${canonical.href}#breadcrumb`, itemListElement: breadcrumbItems });
-const servicePath = pathParts[0];
-if (['performance', 'search', 'sites'].includes(servicePath)) {
-  const serviceNames: Record<string, { en: string; ru: string }> = {
-    performance: { en: 'Meta Ads patient acquisition for clinics', ru: 'Привлечение пациентов для клиник через Meta Ads' },
-    search: { en: 'Google Ads for clinics', ru: 'Google Ads для клиник' },
-    sites: { en: 'Clinic website design and development', ru: 'Разработка сайтов для клиник' }
-  };
-  graph.push({ '@type': 'Service', '@id': `${canonical.href}#service`, name: serviceNames[servicePath][inferredLang], description, provider: { '@id': 'https://rmcreatives.com/#organization' }, url: canonical.href, areaServed: 'Europe' });
-}
-const schema = { '@context': 'https://schema.org', '@graph': graph };
+const breadcrumbNames: Record<string, { en: string; ru: string }> = { cases:{en:'Cases',ru:'Кейсы'},performance:{en:'Performance',ru:'Performance'},search:{en:'Search',ru:'Search'},sites:{en:'Sites',ru:'Сайты'},insights:{en:'Insights',ru:'Insights'},contact:{en:'Contact',ru:'Контакты'},epiline:{en:'Epiline',ru:'Epiline'},denta:{en:'Denta',ru:'Denta'},'consilium-medicum':{en:'Consilium Medicum',ru:'Consilium Medicum'},'union-klinika':{en:'Union Klinika',ru:'Union Klinika'},'meta-ads':{en:'Meta Ads',ru:'Meta Ads'},'google-ads':{en:'Google Ads',ru:'Google Ads'},seo:{en:'SEO',ru:'SEO'},website:{en:'Website',ru:'Сайт'},'crm-booking':{en:'CRM & Booking',ru:'CRM и запись'},'medical-google-ads':{en:'Medical Google Ads',ru:'Google Ads для медицины'} };
+const breadcrumbItems=[{'@type':'ListItem',position:1,name:inferredLang==='ru'?'Главная':'Home',item:inferredLang==='ru'?'https://rmcreatives.com/ru/':'https://rmcreatives.com/'}]; let builtPath=inferredLang==='ru'?'/ru':''; pathParts.forEach((part,index)=>{builtPath+=`/${part}`;breadcrumbItems.push({'@type':'ListItem',position:index+2,name:breadcrumbNames[part]?.[inferredLang]||part.replace(/-/g,' '),item:`https://rmcreatives.com${builtPath}/`});});
+const graph:any[]=[{'@type':'Organization','@id':'https://rmcreatives.com/#organization',name:'RM CREATIVES',url:'https://rmcreatives.com/',email:'clientcare@rmcreatives.com',sameAs:['https://www.instagram.com/rm_bureau/','https://www.facebook.com/marketing.roast']},{'@type':'WebSite','@id':'https://rmcreatives.com/#website',url:'https://rmcreatives.com/',name:'RM CREATIVES',publisher:{'@id':'https://rmcreatives.com/#organization'},inLanguage:['en','ru']},{'@type':'WebPage','@id':`${canonical.href}#webpage`,url:canonical.href,name:title,description,isPartOf:{'@id':'https://rmcreatives.com/#website'},about:{'@id':'https://rmcreatives.com/#organization'},inLanguage:lang}];
+if(pathParts.length)graph.push({'@type':'BreadcrumbList','@id':`${canonical.href}#breadcrumb`,itemListElement:breadcrumbItems});
+const servicePath=pathParts[0]; if(['performance','search','sites'].includes(servicePath)){const serviceNames:Record<string,{en:string;ru:string}>={performance:{en:'Meta Ads patient acquisition for clinics',ru:'Привлечение пациентов для клиник через Meta Ads'},search:{en:'Google Ads for clinics',ru:'Google Ads для клиник'},sites:{en:'Clinic website design and development',ru:'Разработка сайтов для клиник'}};graph.push({'@type':'Service','@id':`${canonical.href}#service`,name:serviceNames[servicePath][inferredLang],description,provider:{'@id':'https://rmcreatives.com/#organization'},url:canonical.href,areaServed:'Europe'});}
+if(servicePath==='cases' && pathParts.length>=2) graph.push({'@type':'Article','@id':`${canonical.href}#case-study`,headline:title,description,mainEntityOfPage:{'@id':`${canonical.href}#webpage`},author:{'@id':'https://rmcreatives.com/#organization'},publisher:{'@id':'https://rmcreatives.com/#organization'},inLanguage:lang});
+const schema={'@context':'https://schema.org','@graph':graph};
 ---
-<!doctype html><html lang={lang}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="generator" content={Astro.generator}/><meta name="description" content={description}/><meta name="robots" content={autoNoindex ? 'noindex,follow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'}/><meta name="googlebot" content={autoNoindex ? 'noindex,follow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'}/><meta name="theme-color" content="#0b0b0b"/><meta name="format-detection" content="telephone=no"/><link rel="icon" type="image/svg+xml" href="/favicon.svg"/><link rel="canonical" href={canonical}/>{!autoNoindex && <><link rel="alternate" hreflang="en" href={enAlternate}/><link rel="alternate" hreflang="ru" href={ruAlternate}/><link rel="alternate" hreflang="x-default" href={enAlternate}/></>}<meta property="og:type" content="website"/><meta property="og:site_name" content="RM CREATIVES"/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:url" content={canonical}/><meta property="og:locale" content={lang === 'ru' ? 'ru_RU' : 'en_US'}/><meta property="og:locale:alternate" content={lang === 'ru' ? 'en_US' : 'ru_RU'}/><meta name="twitter:card" content="summary"/><meta name="twitter:title" content={title}/><meta name="twitter:description" content={description}/><script type="application/ld+json" set:html={JSON.stringify(schema)} /><title>{title}</title></head><body><SiteHeader/><slot/><SiteFooter/>
+<!doctype html><html lang={lang}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="generator" content={Astro.generator}/><meta name="description" content={description}/><meta name="robots" content={autoNoindex?'noindex,follow':'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'}/><meta name="googlebot" content={autoNoindex?'noindex,follow':'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'}/><meta name="theme-color" content="#0b0b0b"/><meta name="format-detection" content="telephone=no"/><link rel="icon" type="image/svg+xml" href="/favicon.svg"/><link rel="canonical" href={canonical}/>{!autoNoindex&&<><link rel="alternate" hreflang="en" href={enAlternate}/><link rel="alternate" hreflang="ru" href={ruAlternate}/><link rel="alternate" hreflang="x-default" href={enAlternate}/></>}<meta property="og:type" content={servicePath==='cases'&&pathParts.length>=2?'article':'website'}/><meta property="og:site_name" content="RM CREATIVES"/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:url" content={canonical}/><meta property="og:locale" content={lang==='ru'?'ru_RU':'en_US'}/><meta property="og:locale:alternate" content={lang==='ru'?'en_US':'ru_RU'}/><meta name="twitter:card" content="summary"/><meta name="twitter:title" content={title}/><meta name="twitter:description" content={description}/><script type="application/ld+json" set:html={JSON.stringify(schema)}/><title>{title}</title></head><body><SiteHeader/><slot/><SiteFooter/>
 <script is:inline>
-(()=>{const panel=document.querySelector('.system-panel');const stat=panel?.querySelector('.panel-stat');const counter=stat?.querySelector('strong');const label=stat?.querySelector('.eyebrow');const feed=panel?.querySelector('.feed');if(!panel||!stat||!counter||!label||!feed)return;const isRu=document.documentElement.lang==='ru';const BASE_COUNT=10000,BASE_TIME=new Date('2026-09-11T00:00:00+03:00').getTime(),AVG_PER_DAY=39,ratePerMs=AVG_PER_DAY/86400000,now=Date.now(),target=Math.max(BASE_COUNT,Math.floor(BASE_COUNT+Math.max(0,now-BASE_TIME)*ratePerMs));label.textContent=isRu?'ОБРАЩЕНИЙ В КЛИНИКИ КЛИЕНТОВ / 2026':'CLIENT CLINIC ENQUIRIES / 2026';stat.classList.add('live-counter-stat');const note=document.createElement('span');note.className='counter-note eyebrow muted';note.textContent=isRu?'LIVE ESTIMATE · ОБНОВЛЯЕТСЯ АВТОМАТИЧЕСКИ':'LIVE ESTIMATE · UPDATES AUTOMATICALLY';stat.appendChild(note);const flash=document.createElement('span');flash.className='counter-flash eyebrow';flash.textContent=isRu?'+1 ОБРАЩЕНИЕ':'+1 ENQUIRY';stat.appendChild(flash);const events=isRu?[['СТОМАТОЛОГИЯ','ИМПЛАНТАЦИЯ','НОВОЕ'],['ЭСТЕТИКА','ЛАЗЕРНАЯ ПРОЦЕДУРА','ЦЕЛЕВОЕ'],['МЕДИЦИНА','КОНСУЛЬТАЦИЯ ВРАЧА','НОВОЕ'],['СТОМАТОЛОГИЯ','ВИНИРЫ','НОВОЕ'],['ЭСТЕТИКА','ИНЪЕКЦИОННАЯ КОСМЕТОЛОГИЯ','ЦЕЛЕВОЕ'],['МЕДИЦИНА','ДИАГНОСТИКА','НОВОЕ'],['BEAUTY','ЛАЗЕРНАЯ ЭПИЛЯЦИЯ','НОВОЕ']]:[['DENTAL','IMPLANT CONSULTATION','NEW'],['AESTHETIC','LASER TREATMENT','QUALIFIED'],['MEDICAL','SPECIALIST CONSULTATION','NEW'],['DENTAL','VENEERS','NEW'],['AESTHETIC','INJECTABLE TREATMENT','QUALIFIED'],['MEDICAL','DIAGNOSTICS','NEW'],['BEAUTY','LASER HAIR REMOVAL','NEW']];const format=v=>new Intl.NumberFormat(isRu?'ru-RU':'en-US').format(v);const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduced)counter.textContent=format(target);else{const start=Math.max(0,target-137),duration=1450,started=performance.now(),ease=t=>1-Math.pow(1-t,3),tick=time=>{const p=Math.min(1,(time-started)/duration);counter.textContent=format(Math.round(start+(target-start)*ease(p)));if(p<1)requestAnimationFrame(tick)};requestAnimationFrame(tick)}let displayed=target;const pulse=el=>{el.classList.remove('enquiry-flash');void el.offsetWidth;el.classList.add('enquiry-flash');setTimeout(()=>el.classList.remove('enquiry-flash'),950)};const addEnquiry=()=>{displayed++;counter.textContent=format(displayed);stat.classList.remove('counter-hit');void stat.offsetWidth;stat.classList.add('counter-hit');flash.classList.remove('show');void flash.offsetWidth;flash.classList.add('show');setTimeout(()=>flash.classList.remove('show'),1500);pulse(stat);const [type,service,status]=events[Math.floor(Math.random()*events.length)],row=document.createElement('div');row.className='feed-row fresh-enquiry';row.innerHTML=`<div class="feed-copy"><b>${type}</b><span>${service}</span></div><em>${status}</em>`;const header=feed.querySelector('.feed-head');header?header.insertAdjacentElement('afterend',row):feed.prepend(row);pulse(row);[...feed.querySelectorAll('.feed-row')].slice(3).forEach(r=>r.remove())};const scheduleNext=()=>setTimeout(()=>{addEnquiry();scheduleNext()},3500+Math.floor(Math.random()*4500));setTimeout(addEnquiry,1800);scheduleNext()})();
-
-(()=>{const section=document.querySelector('.services');if(!section)return;const isRu=document.documentElement.lang==='ru';const head=section.querySelector('.section-head');const headLabel=head?.querySelector('.eyebrow');const headTitle=head?.querySelector('h2');if(headLabel)headLabel.textContent='RM PRODUCTS';if(headTitle)headTitle.innerHTML=isRu?'Три продукта.<br>Одна система.':'Three products.<br>One system.';const configs=isRu?[{code:'PRODUCT / 01',role:'ПРИВЛЕЧЕНИЕ',name:'PERFORMANCE',micro:'META → ОБРАЩЕНИЕ → +1'},{code:'PRODUCT / 02',role:'ГОТОВЫЙ СПРОС',name:'SEARCH',micro:'ПОИСК → КЛИНИКА → ЗАЯВКА'},{code:'PRODUCT / 03',role:'КОНВЕРСИЯ',name:'SITES',micro:'BRIEF → BUILD → LIVE ●'}]:[{code:'PRODUCT / 01',role:'ACQUISITION',name:'PERFORMANCE',micro:'META → ENQUIRY → +1'},{code:'PRODUCT / 02',role:'DEMAND CAPTURE',name:'SEARCH',micro:'SEARCH → CLINIC → LEAD'},{code:'PRODUCT / 03',role:'CONVERSION',name:'SITES',micro:'BRIEF → BUILD → LIVE ●'}];section.querySelectorAll('.service-card').forEach((card,i)=>{const c=configs[i];if(!c)return;card.classList.add('rm-product');const first=card.querySelector(':scope > .eyebrow');if(first)first.textContent=c.code;const nameBox=card.children[1];if(nameBox){const oldName=nameBox.querySelector('h3');if(oldName){oldName.innerHTML=`<span class="rm-mark">RM / 0${i+1}</span><span class="product-name">${c.name}</span>`}const meta=nameBox.querySelector('.eyebrow');if(meta)meta.textContent=c.role}const micro=document.createElement('div');micro.className='product-micro eyebrow';micro.innerHTML=`<span>${c.micro}</span><i></i>`;card.appendChild(micro)});})();
-
-(()=>{const replacements=[[/FOR MEDICAL & BEAUTY CLINICS/g,'FOR MEDICAL CLINICS & BEAUTY STUDIOS'],[/medical and beauty clinics/gi,'medical clinics and beauty studios'],[/ДЛЯ МЕДИЦИНСКИХ И BEAUTY-КЛИНИК/g,'ДЛЯ МЕДИЦИНСКИХ КЛИНИК И БЬЮТИ-СТУДИЙ'],[/медицинских и beauty-клиник/gi,'медицинских клиник и бьюти-студий'],[/медицинских и бьюти-клиник/gi,'медицинских клиник и бьюти-студий']];const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let node;while(node=walker.nextNode()){const parent=node.parentElement;if(!parent||['SCRIPT','STYLE'].includes(parent.tagName))continue;let value=node.nodeValue||'';for(const [pattern,replacement] of replacements)value=value.replace(pattern,replacement);if(value!==node.nodeValue)node.nodeValue=value}})();
+(()=>{const panel=document.querySelector('.system-panel');const stat=panel?.querySelector('.panel-stat');const counter=stat?.querySelector('strong');const label=stat?.querySelector('.eyebrow');const feed=panel?.querySelector('.feed');if(!panel||!stat||!counter||!label||!feed)return;const isRu=document.documentElement.lang==='ru';const BASE_COUNT=10000,BASE_TIME=new Date('2026-09-11T00:00:00+03:00').getTime(),AVG_PER_DAY=39,ratePerMs=AVG_PER_DAY/86400000,now=Date.now(),target=Math.max(BASE_COUNT,Math.floor(BASE_COUNT+Math.max(0,now-BASE_TIME)*ratePerMs));label.textContent=isRu?'ОБРАЩЕНИЙ В КЛИНИКИ КЛИЕНТОВ / 2026':'CLIENT CLINIC ENQUIRIES / 2026';stat.classList.add('live-counter-stat');const note=document.createElement('span');note.className='counter-note eyebrow muted';note.textContent=isRu?'LIVE ESTIMATE · ОБНОВЛЯЕТСЯ АВТОМАТИЧЕСКИ':'LIVE ESTIMATE · UPDATES AUTOMATICALLY';stat.appendChild(note);const flash=document.createElement('span');flash.className='counter-flash eyebrow';flash.textContent=isRu?'+1 ОБРАЩЕНИЕ':'+1 ENQUIRY';stat.appendChild(flash);const format=v=>new Intl.NumberFormat(isRu?'ru-RU':'en-US').format(v);counter.textContent=format(target);})();
 </script></body></html>
 <style is:global>
-:root{--bg:#f2f1ec;--ink:#101010;--muted:#73736e;--line:#cfcec7;--accent:#1f4fff;--accent-deep:#1647e8;--dark:#0c0c0c;--white:#f8f8f4;font-family:Inter,"Segoe UI",Roboto,Helvetica,Arial,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink)}a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}::selection{background:var(--accent);color:#fff}.shell{width:min(100% - 40px,1480px);margin:0 auto}.eyebrow{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase}.muted{color:var(--muted)}.signal .signal-inner{color:#fff}
-.live-counter-stat{position:relative;overflow:hidden}.live-counter-stat strong{font-variant-numeric:tabular-nums;transition:transform .2s ease}.counter-note{font-size:8px;letter-spacing:.08em}.counter-flash{position:absolute;right:16px;bottom:22px;padding:6px 8px;background:var(--accent);color:#fff;font-size:8px;opacity:0;transform:translateY(8px);pointer-events:none}.counter-flash.show{animation:counterFlash 1.5s ease both}.counter-hit strong{animation:counterHit .42s ease}.system-panel .feed-row{min-height:58px;padding:10px 16px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center}.system-panel .feed-row:last-child{border-bottom:0}.system-panel .feed-row .feed-copy,.system-panel .feed-row>div{min-width:0;display:flex;flex-direction:column;gap:3px}.system-panel .feed-row b{display:block;font-size:11px;line-height:1.2;letter-spacing:.08em}.system-panel .feed-row span{display:block;font-size:10px;line-height:1.25;color:var(--muted);letter-spacing:.05em;overflow-wrap:anywhere}.system-panel .feed-row em{align-self:center;justify-self:end;white-space:nowrap;font-style:normal;font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:9px;line-height:1;border:1px solid var(--line);padding:6px 8px}.system-panel .panel-stat,.system-panel .feed-row{transition:background-color .3s ease,color .3s ease}.system-panel .enquiry-flash{animation:enquiryPulse .95s ease}.system-panel .fresh-enquiry{animation:enquirySlide .42s ease both}
-.rm-product{position:relative;overflow:hidden}.rm-product .service-name h3,.rm-product>div:nth-child(2) h3{margin-top:14px!important;display:flex;flex-direction:column;gap:4px}.rm-mark{font-family:"SFMono-Regular",Consolas,monospace;font-size:10px;letter-spacing:.12em;font-weight:500;color:var(--muted)}.product-name{font-size:clamp(38px,4.2vw,68px);line-height:.9;letter-spacing:-.06em;font-weight:700}.product-micro{position:absolute;right:18px;bottom:18px;display:flex;align-items:center;gap:12px;padding:8px 10px;border:1px solid var(--line);background:var(--bg);font-size:8px;opacity:0;transform:translateY(8px);transition:.25s ease}.product-micro i{width:7px;height:7px;border-radius:50%;background:var(--accent)}.rm-product:hover .product-micro{opacity:1;transform:none}.rm-product:hover .product-name{letter-spacing:-.045em}.rm-product:hover .rm-mark{color:var(--ink)}
-@keyframes counterFlash{0%{opacity:0;transform:translateY(8px)}18%,72%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-5px)}}@keyframes counterHit{0%{transform:translateY(0)}40%{transform:translateY(-3px)}100%{transform:translateY(0)}}@keyframes enquiryPulse{0%{background:var(--accent);color:#fff}45%{background:var(--accent);color:#fff}100%{background:transparent;color:inherit}}@keyframes enquirySlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-@media(prefers-reduced-motion:reduce){.counter-flash,.live-counter-stat strong,.system-panel .enquiry-flash,.system-panel .fresh-enquiry{animation:none!important;transition:none!important}}@media(max-width:760px){.shell{width:min(100% - 28px,1480px)}.product-micro{position:static;margin-top:18px;opacity:1;transform:none;width:max-content}.product-name{font-size:38px}}
+:root{--bg:#f2f1ec;--ink:#101010;--muted:#73736e;--line:#cfcec7;--accent:#1f4fff;--accent-deep:#1647e8;--dark:#0c0c0c;--white:#f8f8f4}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit}img{max-width:100%;height:auto}.container{width:min(1180px,calc(100% - 48px));margin:0 auto}.eyebrow{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:11px;letter-spacing:.11em;text-transform:uppercase}.muted{color:var(--muted)}h1,h2,h3,p{margin-top:0}.display{font-size:clamp(52px,8vw,116px);line-height:.88;letter-spacing:-.065em;font-weight:500}.section-title{font-size:clamp(38px,5vw,76px);line-height:.94;letter-spacing:-.05em;font-weight:500}.lead{font-size:clamp(20px,2.1vw,30px);line-height:1.25;letter-spacing:-.025em}.btn{display:inline-flex;align-items:center;justify-content:center;padding:15px 20px;border:1px solid var(--ink);text-decoration:none;font-size:13px}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}.btn.dark{background:var(--dark);border-color:var(--dark);color:white}.rule{border-top:1px solid var(--line)}@media(max-width:720px){.container{width:min(100% - 28px,1180px)}}
 </style>
