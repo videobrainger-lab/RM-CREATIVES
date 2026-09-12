@@ -1,0 +1,10 @@
+---
+import UnionCaseLayout from '../../../layouts/UnionCaseLayout.astro';
+const months=[['MAY','22','€4.76'],['JUN','74','€3.09'],['JUL','122','€2.83'],['AUG','135','€2.51'],['SEP','139','€3.31'],['OCT','255','€2.46'],['NOV','198','€2.20'],['DEC','76','€3.49']];
+---
+<UnionCaseLayout title="Union Klinika — Meta Ads" description="1,021 tracked Meta enquiries for Union Klinika from May to December 2024." eyebrow="META ADS" headline="Make medical offers" accent="actionable." intro="We built bilingual Meta acquisition around concrete clinic services and offers, then measured calls and lead actions rather than treating reach as the result." metrics={[{value:'1,021',label:'tracked enquiries'},{value:'€2.75',label:'weighted media CPL'},{value:'8',label:'months · May–Dec 2024'},{value:'255',label:'highest monthly volume'}]}>
+<section class="case-section dark"><div class="shell"><div class="two"><span class="eyebrow">THE WORK</span><div><h2>From service<br/>to creative<br/>to enquiry.</h2><p class="statement">The project file contains bilingual campaign work across clinic services and IV therapy offers — including IronMan and NAD+ creative directions.</p><p>Instead of one generic clinic message, the acquisition system could speak to different patient needs with specific propositions in Russian and Latvian.</p></div></div></div></section>
+<section class="case-section shell"><span class="eyebrow">META PERFORMANCE / 2024</span><div class="rows">{months.map(m=><div class="row"><span>{m[0]}</span><span>{m[1]} enquiries</span><strong>{m[2]} CPL</strong></div>)}</div><p class="small">CPL here is advertising spend divided by tracked Meta enquiries in the project KPI file. It excludes agency/marketing fees.</p></section>
+<section class="accent-section"><div class="shell"><span class="eyebrow">PATIENT ACQUISITION LOOP</span><h2>Offer → creative →<br/>lead → learn.</h2><div class="flow"><span>SERVICE</span><b>→</b><span>RU / LV CREATIVE</span><b>→</b><span>META</span><b>→</b><span>ENQUIRY</span><b>→</b><span>OPTIMISE</span></div></div></section>
+<style>.small{font-size:12px;color:var(--muted);max-width:650px;margin-top:25px}</style>
+</UnionCaseLayout>
