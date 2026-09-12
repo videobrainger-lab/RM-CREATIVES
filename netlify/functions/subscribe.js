@@ -1,3 +1,4 @@
+// SendPulse subscription endpoint for RM CREATIVES Insights.
 const ADDRESS_BOOK_ID = '900922';
 const SENDPULSE_API = 'https://api.sendpulse.com';
 
