@@ -1,28 +1,50 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 const cases = [
-  { client:'EPILINE', sector:'Aesthetic medicine / Riga · Jurmala', metric:'2,970', label:'Meta enquiries · Jan–Aug 2026', tags:'FULL-STACK GROWTH', href:'/cases/epiline', featured:true },
-  { client:'CONSILIUM MEDICUM', sector:'Medical clinic / Latvia', metric:'3,356', label:'Google Ads conversions · 2024', tags:'GOOGLE ADS', href:'/cases/consilium-medicum', featured:false },
-  { client:'DENTA', sector:'Dental clinic / Latvia', metric:'16,227', label:'tracked enquiries · 2025', tags:'FULL-STACK / ACQUISITION / SEO', href:'/cases/denta', featured:false },
-  { client:'UNION KLINIKA', sector:'Medical clinic / Riga', metric:'1,021', label:'Meta enquiries · May–Dec 2024', tags:'WEBSITE / META / GOOGLE', href:'/cases/union-klinika', featured:false }
+  { client:'EPILINE', sector:'Aesthetic medicine / Riga · Jurmala', metric:'2,970', label:'Meta enquiries · Jan–Aug 2026', tags:'FLAGSHIP / FULL-STACK', href:'/cases/epiline', featured:true },
+  { client:'EPILINE', sector:'Meta Ads', metric:'2,970', label:'enquiries · Jan–Aug 2026', tags:'META ADS', href:'/cases/epiline/meta-ads' },
+  { client:'EPILINE', sector:'Google Ads', metric:'1,343', label:'conversions · Jan–Aug 2026', tags:'GOOGLE ADS', href:'/cases/epiline/google-ads' },
+  { client:'EPILINE', sector:'SEO / Organic', metric:'TOP 10', label:'275 organic enquiries', tags:'SEO', href:'/cases/epiline/seo' },
+  { client:'EPILINE', sector:'Website', metric:'44', label:'pages · two languages', tags:'WEBSITE', href:'/cases/epiline/website' },
+  { client:'EPILINE', sector:'CRM & Booking', metric:'CRM', label:'lead → visit → repeat', tags:'CRM / ANALYTICS', href:'/cases/epiline/crm-booking' },
+
+  { client:'CONSILIUM MEDICUM', sector:'Medical clinic / Latvia', metric:'3,356', label:'Google Ads conversions · 2024', tags:'FLAGSHIP / FULL-STACK', href:'/cases/consilium-medicum', featured:true },
+  { client:'CONSILIUM MEDICUM', sector:'Google Ads', metric:'3,356', label:'conversions at €3.25', tags:'GOOGLE ADS', href:'/cases/consilium-medicum/google-ads' },
+  { client:'CONSILIUM MEDICUM', sector:'Medical Google Ads', metric:'MED', label:'working inside restrictions', tags:'GOOGLE ADS', href:'/cases/consilium-medicum/medical-google-ads' },
+  { client:'CONSILIUM MEDICUM', sector:'Meta Ads', metric:'1,484', label:'enquiries · 2025', tags:'META ADS', href:'/cases/consilium-medicum/meta-ads' },
+  { client:'CONSILIUM MEDICUM', sector:'SEO / Organic', metric:'2,011', label:'organic enquiries · 2025', tags:'SEO', href:'/cases/consilium-medicum/seo' },
+
+  { client:'DENTA', sector:'Dental clinic / Latvia', metric:'16,227', label:'tracked enquiries · 2025', tags:'FLAGSHIP / FULL-STACK', href:'/cases/denta', featured:true },
+  { client:'DENTA', sector:'Google Ads', metric:'10,601', label:'conversions · 2025', tags:'GOOGLE ADS', href:'/cases/denta/google-ads' },
+  { client:'DENTA', sector:'Meta Ads', metric:'1,902', label:'enquiries · Jan–Aug 2026', tags:'META ADS', href:'/cases/denta/meta-ads' },
+  { client:'DENTA', sector:'SEO / Organic', metric:'TOP 5', label:'3,831 organic enquiries · 2025', tags:'SEO', href:'/cases/denta/seo' },
+  { client:'DENTA', sector:'Website', metric:'NEW', label:'acquisition-ready website', tags:'WEBSITE', href:'/cases/denta/website' },
+
+  { client:'UNION KLINIKA', sector:'Medical clinic / Riga', metric:'1,021', label:'Meta enquiries · May–Dec 2024', tags:'FLAGSHIP / FULL-STACK', href:'/cases/union-klinika', featured:true },
+  { client:'UNION KLINIKA', sector:'Meta Ads', metric:'€2.75', label:'weighted CPL · May–Dec 2024', tags:'META ADS', href:'/cases/union-klinika/meta-ads' },
+  { client:'UNION KLINIKA', sector:'Google Ads', metric:'SEARCH', label:'patient demand capture', tags:'GOOGLE ADS', href:'/cases/union-klinika/google-ads' },
+  { client:'UNION KLINIKA', sector:'Website', metric:'NEW', label:'bilingual clinic website', tags:'WEBSITE', href:'/cases/union-klinika/website' }
 ];
 ---
-<BaseLayout title="Cases | RM CREATIVES" description="Long-term clinic growth partnerships across Meta Ads, Google Ads, SEO, websites, CRM and analytics.">
+<BaseLayout title="Cases | RM CREATIVES" description="Clinic growth cases across Meta Ads, Google Ads, SEO, websites, CRM and analytics.">
 <main class="shell page">
-  <div class="top eyebrow"><span>CASE LIBRARY</span><span>MEDICAL / BEAUTY / DENTAL</span></div>
-  <section class="hero"><h1>Work that moved<br/><em>the numbers.</em></h1><div class="hero-copy"><p>We typically work with around 10 businesses a year. Many stay with us for years. One partnership can include paid social, Google Search, SEO, websites and infrastructure.</p><p>Our case library is organised around <b>problems solved</b> — not logos collected.</p></div></section>
-  <nav class="filters eyebrow"><span class="active">ALL</span><span>META ADS</span><span>GOOGLE ADS</span><span>SEO</span><span>WEBSITES</span><span>CRM & ANALYTICS</span></nav>
+  <div class="top eyebrow"><span>CASE LIBRARY</span><span>{cases.length} STORIES / 4 CLINICS</span></div>
+  <section class="hero"><h1>Every problem.<br/><em>Its own case.</em></h1><div class="hero-copy"><p>Four long-term clinic partnerships. Paid acquisition, organic search, websites and CRM — separated into individual stories so you can see exactly how each problem was solved.</p><p>The four flagship cases show the whole relationship. Everything below goes deeper into the work.</p></div></section>
+  <nav class="filters eyebrow"><button class="active" data-filter="ALL">ALL</button><button data-filter="FLAGSHIP">FLAGSHIP</button><button data-filter="META ADS">META ADS</button><button data-filter="GOOGLE ADS">GOOGLE ADS</button><button data-filter="SEO">SEO</button><button data-filter="WEBSITE">WEBSITES</button><button data-filter="CRM">CRM & ANALYTICS</button></nav>
   <section class="grid">
-    {cases.map((item) => <a class:list={['card', item.featured && 'featured']} href={item.href}>
-      <div class="meta eyebrow"><span>{item.tags}</span><span>↗</span></div>
-      <div class="space"></div>
+    {cases.map((item) => <a class:list={['card', item.featured && 'featured']} href={item.href} data-tags={item.tags}>
+      <div class="meta eyebrow"><span>{item.tags}</span><span>↗</span></div><div class="space"></div>
       <strong>{item.metric}</strong><span class="label">{item.label}</span>
       <div class="footer"><h2>{item.client}</h2><p>{item.sector}</p></div>
     </a>)}
   </section>
-  <section class="principle"><span class="eyebrow">HOW WE THINK ABOUT CASES</span><h2>One client can contain<br/>years of work.</h2><p>A website rebuild is one problem. Patient acquisition is another. SEO is another. CRM integration is another. We separate the stories so you can see the work relevant to the problem you have now.</p></section>
+  <section class="principle"><span class="eyebrow">THE LIBRARY</span><h2>One client.<br/>Many solved problems.</h2><p>Open a flagship case for the complete partnership, or choose an individual channel to see the acquisition system, numbers and execution in detail.</p></section>
 </main>
+<script>
+  const buttons=document.querySelectorAll('.filters button'); const cards=document.querySelectorAll('.card');
+  buttons.forEach(button=>button.addEventListener('click',()=>{const f=button.dataset.filter;buttons.forEach(b=>b.classList.remove('active'));button.classList.add('active');cards.forEach(card=>{card.style.display=f==='ALL'||card.dataset.tags?.includes(f)?'flex':'none';});}));
+</script>
 </BaseLayout>
 <style>
-.page{padding:38px 0 150px}.top{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:15px}.hero{padding:100px 0 85px;display:grid;grid-template-columns:1.8fr .7fr;gap:80px;align-items:end}.hero h1{font-size:clamp(68px,9.5vw,148px);line-height:.84;letter-spacing:-.075em;margin:0;font-weight:650}.hero h1 em{font-style:normal;color:var(--accent)}.hero-copy p{font-size:17px;line-height:1.5;color:var(--muted)}.hero-copy b{color:var(--ink)}.filters{display:flex;gap:9px;flex-wrap:wrap;border-top:1px solid var(--line);padding:22px 0 50px}.filters span{border:1px solid var(--line);padding:9px 12px}.filters .active{background:var(--ink);color:var(--white);border-color:var(--ink)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{min-height:570px;padding:25px;background:#e7e6df;display:flex;flex-direction:column;border:1px solid #dcdbd4;transition:transform .2s ease}.card:hover{transform:translateY(-4px)}.card.featured{background:var(--accent)}.card:nth-child(2){background:var(--dark);color:var(--white);border-color:var(--dark)}.meta{display:flex;justify-content:space-between}.space{flex:1}.card strong{font-size:clamp(64px,8vw,118px);line-height:.85;letter-spacing:-.075em;font-weight:550}.label{font-size:13px;opacity:.6;margin-top:13px;padding-bottom:22px;border-bottom:1px solid currentColor}.footer{padding-top:22px}.footer h2{font-size:30px;letter-spacing:-.04em;margin:0 0 6px}.footer p{font-size:13px;opacity:.6;margin:0}.principle{margin-top:150px;padding-top:30px;border-top:1px solid var(--line);display:grid;grid-template-columns:.55fr 1.25fr .7fr;gap:50px}.principle h2{font-size:clamp(44px,5vw,76px);line-height:.95;letter-spacing:-.055em;margin:0}.principle p{font-size:17px;line-height:1.55;color:var(--muted);margin:0}@media(max-width:800px){.hero,.principle{grid-template-columns:1fr}.hero{padding:75px 0 60px;gap:40px}.grid{grid-template-columns:1fr}.card{min-height:430px}.principle{margin-top:90px}.top span:last-child{display:none}}
+.page{padding:38px 0 150px}.top{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:15px}.hero{padding:100px 0 85px;display:grid;grid-template-columns:1.8fr .7fr;gap:80px;align-items:end}.hero h1{font-size:clamp(68px,9.5vw,148px);line-height:.84;letter-spacing:-.075em;margin:0;font-weight:650}.hero h1 em{font-style:normal;color:var(--accent)}.hero-copy p{font-size:17px;line-height:1.5;color:var(--muted)}.hero-copy p:last-child{color:var(--ink)}.filters{display:flex;gap:9px;flex-wrap:wrap;border-top:1px solid var(--line);padding:22px 0 50px}.filters button{font:inherit;letter-spacing:inherit;background:transparent;border:1px solid var(--line);padding:9px 12px;cursor:pointer}.filters .active{background:var(--ink);color:var(--white);border-color:var(--ink)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.card{min-height:430px;padding:22px;background:#e7e6df;display:flex;flex-direction:column;border:1px solid #dcdbd4;transition:transform .2s ease,background .2s ease}.card:hover{transform:translateY(-4px);background:#deddd6}.card.featured{background:var(--dark);color:var(--white);border-color:var(--dark);min-height:500px}.card.featured:hover{background:#171717}.meta{display:flex;justify-content:space-between}.space{flex:1}.card strong{font-size:clamp(48px,5.5vw,86px);line-height:.85;letter-spacing:-.075em;font-weight:550}.label{font-size:12px;opacity:.6;margin-top:13px;padding-bottom:20px;border-bottom:1px solid currentColor}.footer{padding-top:20px}.footer h2{font-size:25px;letter-spacing:-.04em;margin:0 0 6px}.footer p{font-size:12px;opacity:.6;margin:0}.principle{margin-top:150px;padding-top:30px;border-top:1px solid var(--line);display:grid;grid-template-columns:.55fr 1.25fr .7fr;gap:50px}.principle h2{font-size:clamp(44px,5vw,76px);line-height:.95;letter-spacing:-.055em;margin:0}.principle p{font-size:17px;line-height:1.55;color:var(--muted);margin:0}@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:800px){.hero,.principle{grid-template-columns:1fr}.hero{padding:75px 0 60px;gap:40px}.grid{grid-template-columns:1fr}.card,.card.featured{min-height:390px}.principle{margin-top:90px}.top span:last-child{display:none}}
 </style>
