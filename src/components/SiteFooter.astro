@@ -20,6 +20,7 @@ const isRu = Astro.url.pathname.startsWith('/ru');
       <a href={isRu ? '/ru/privacy' : '/privacy'}>{isRu ? 'Политика конфиденциальности' : 'Privacy policy'}</a>
       <a href={isRu ? '/ru/cookies' : '/cookies'}>{isRu ? 'Политика cookie' : 'Cookie policy'}</a>
       <a href={isRu ? '/ru/terms' : '/terms'}>{isRu ? 'Условия использования' : 'Terms of use'}</a>
+      <button type="button" data-marketing-settings class="marketing-settings">{isRu ? 'Рекламные cookies' : 'Advertising cookies'}</button>
       <a href="/sitemap-index.xml">Sitemap</a>
     </div>
 
@@ -181,3 +182,4 @@ const isRu = Astro.url.pathname.startsWith('/ru');
     .footer-bottom { gap: 20px; }
   }
 </style>
+<style>.marketing-settings{border:0;padding:0;background:none;color:#d7d7d2;font:inherit;cursor:pointer;text-align:left;text-decoration:underline;min-height:32px}</style>
