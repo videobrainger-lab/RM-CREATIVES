@@ -1,0 +1,13 @@
+---
+const ru = Astro.url.pathname.startsWith('/ru');
+---
+<section id="marketing-consent" class="marketing-consent" aria-label={ru ? 'Рекламные cookies' : 'Advertising cookies'} hidden>
+  <p>{ru ? 'Разрешить рекламные cookies Meta для оценки рекламы и показа релевантных объявлений?' : 'Allow Meta advertising cookies to measure ads and show relevant advertising?'} <a href={ru ? '/ru/cookies/' : '/cookies/'}>{ru ? 'Подробнее' : 'Learn more'}</a></p>
+  <div><button type="button" data-marketing-choice="denied">{ru ? 'Отказаться' : 'Decline'}</button><button type="button" data-marketing-choice="granted">{ru ? 'Разрешить' : 'Allow'}</button></div>
+</section>
+<script>
+  import '../scripts/marketing.js';
+</script>
+<style>
+.marketing-consent{position:fixed;z-index:1000;bottom:18px;left:18px;width:min(520px,calc(100% - 36px));padding:22px;background:var(--white);color:var(--ink);border:1px solid var(--ink);box-shadow:0 8px 32px #0002}.marketing-consent[hidden]{display:none}.marketing-consent p{font-size:15px;line-height:1.5;margin:0 0 16px}.marketing-consent a{text-decoration:underline}.marketing-consent>div{display:flex;gap:12px;flex-wrap:wrap}.marketing-consent button{background:var(--white);color:var(--ink);border:1px solid var(--ink);padding:12px 18px;font:inherit;cursor:pointer;min-height:44px}.marketing-consent button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+</style>
