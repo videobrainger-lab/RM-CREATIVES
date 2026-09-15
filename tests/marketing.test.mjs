@@ -36,7 +36,7 @@ test('no Meta script/events before consent or after decline',()=>{
 test('grant sends one page and product view to the specified pixel; revoke gates events',()=>{
   const a=setup();a.buttons.granted();a.buttons.granted();
   assert.equal(a.scripts.length,1);assert.deepEqual(a.events().map(e=>e[2]),['PageView','ViewContent']);
-  assert.ok(a.events().every(e=>e[1]==='820795989687551'));
+  assert.ok(a.events().every(e=>e[1]==='3564188807089922'));
   a.buttons.denied();assert.equal(a.window.fbq.queue.at(-1)[1],'revoke');
 });
 test('form start sends HotInterest once, with no field contents',()=>{
