@@ -46,7 +46,7 @@ function initialize() {
 function track(name, params = {}, custom = false, eventId) {
   if (!allowed) return;
   initialize();
-  const args = [custom ? 'trackSingleCustom' : 'trackSingle', PIXEL_ID, name, {
+  const args = [custom ? 'trackCustom' : 'track', name, {
     site: 'rmcreatives.com', language, ...params,
   }];
   if (eventId) args.push({ eventID: eventId });
