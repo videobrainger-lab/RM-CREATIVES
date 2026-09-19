@@ -2,7 +2,14 @@
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import MarketingConsent from '../components/MarketingConsent.astro';
-interface Props { title?: string; description?: string; lang?: 'en' | 'ru'; noindex?: boolean; }
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: 'en' | 'ru';
+  noindex?: boolean;
+  hasRuAlternate?: boolean;
+  serviceName?: string;
+}
 const pathname = Astro.url.pathname;
 const inferredLang = pathname.startsWith('/ru') ? 'ru' : 'en';
 const seoByPath: Record<string, { title: string; description: string }> = {
@@ -23,7 +30,7 @@ const seoByPath: Record<string, { title: string; description: string }> = {
 };
 const normalizedPath = pathname === '/' ? '/' : pathname.endsWith('/') ? pathname : `${pathname}/`;
 const mappedSeo = seoByPath[normalizedPath];
-const { title: rawTitle = inferredLang === 'ru' ? 'Привлечение пациентов для клиник | RM CREATIVES' : 'Patient Acquisition for Clinics | RM CREATIVES', description: rawDescription = inferredLang === 'ru' ? 'Привлечение пациентов через Meta Ads, Google Ads и конверсионные сайты для медицинских клиник и бьюти-студий.' : 'Patient acquisition through Meta Ads, Google Ads and high-converting websites for medical clinics and beauty studios.', lang = inferredLang, noindex = false } = Astro.props;
+const { title: rawTitle = inferredLang === 'ru' ? 'Привлечение пациентов для клиник | RM CREATIVES' : 'Patient Acquisition for Clinics | RM CREATIVES', description: rawDescription = inferredLang === 'ru' ? 'Привлечение пациентов через Meta Ads, Google Ads и конверсионные сайты для медицинских клиник и бьюти-студий.' : 'Patient acquisition through Meta Ads, Google Ads and high-converting websites for medical clinics and beauty studios.', lang = inferredLang, noindex = false, hasRuAlternate = true, serviceName } = Astro.props;
 const title = mappedSeo?.title || rawTitle;
 const description = mappedSeo?.description || rawDescription;
 const autoNoindex = noindex || /(^|\/)(thank-you|404)(\/|$)/.test(pathname) || /(^|\/)(privacy|terms|cookies)(\/|$)/.test(pathname);
@@ -48,15 +55,18 @@ if(['performance','search','sites'].includes(servicePath)){
   const serviceNames:Record<string,{en:string;ru:string}>={performance:{en:'Meta Ads patient acquisition for clinics',ru:'Привлечение пациентов для клиник через Meta Ads'},search:{en:'Google Ads for clinics',ru:'Google Ads для клиник'},sites:{en:'Clinic website design and development',ru:'Разработка сайтов для клиник'}};
   graph.push({'@type':'Service','@id':`${canonical.href}#service`,name:serviceNames[servicePath][inferredLang],description,provider:{'@id':'https://rmcreatives.com/#organization'},url:canonical.href,areaServed:'Europe'});
 }
+if(serviceName){
+  graph.push({'@type':'Service','@id':`${canonical.href}#service`,name:serviceName,description,provider:{'@id':'https://rmcreatives.com/#organization'},url:canonical.href,areaServed:['United States','United Kingdom','Europe']});
+}
 const schema={'@context':'https://schema.org','@graph':graph};
 ---
-<!doctype html><html lang={lang}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="generator" content={Astro.generator}/><meta name="description" content={description}/><meta name="robots" content={autoNoindex?'noindex,follow':'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'}/><meta name="googlebot" content={autoNoindex?'noindex,follow':'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'}/><meta name="theme-color" content="#0b0b0b"/><meta name="format-detection" content="telephone=no"/><link rel="icon" type="image/svg+xml" href="/favicon.svg"/><link rel="canonical" href={canonical}/>{!autoNoindex&&<><link rel="alternate" hreflang="en" href={enAlternate}/><link rel="alternate" hreflang="ru" href={ruAlternate}/><link rel="alternate" hreflang="x-default" href={enAlternate}/></>}<meta property="og:type" content="website"/><meta property="og:site_name" content="RM CREATIVES"/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:url" content={canonical}/><meta property="og:locale" content={lang==='ru'?'ru_RU':'en_US'}/><meta property="og:locale:alternate" content={lang==='ru'?'en_US':'ru_RU'}/><meta name="twitter:card" content="summary"/><meta name="twitter:title" content={title}/><meta name="twitter:description" content={description}/><script async src="https://www.googletagmanager.com/gtag/js?id=G-2GWL58D9PQ"></script><script is:inline>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-2GWL58D9PQ');</script><script type="application/ld+json" set:html={JSON.stringify(schema)}/><title>{title}</title></head><body><SiteHeader/><slot/><SiteFooter/><MarketingConsent/>
+<!doctype html><html lang={lang}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="generator" content={Astro.generator}/><meta name="description" content={description}/><meta name="robots" content={autoNoindex?'noindex,follow':'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'}/><meta name="googlebot" content={autoNoindex?'noindex,follow':'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'}/><meta name="theme-color" content="#0b0b0b"/><meta name="format-detection" content="telephone=no"/><link rel="icon" type="image/svg+xml" href="/favicon.svg"/><link rel="canonical" href={canonical}/>{!autoNoindex&&<><link rel="alternate" hreflang="en" href={enAlternate}/>{hasRuAlternate&&<link rel="alternate" hreflang="ru" href={ruAlternate}/>}<link rel="alternate" hreflang="x-default" href={enAlternate}/></>}<meta property="og:type" content="website"/><meta property="og:site_name" content="RM CREATIVES"/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:url" content={canonical}/><meta property="og:locale" content={lang==='ru'?'ru_RU':'en_US'}/>{hasRuAlternate&&<meta property="og:locale:alternate" content={lang==='ru'?'en_US':'ru_RU'}/>}<meta name="twitter:card" content="summary"/><meta name="twitter:title" content={title}/><meta name="twitter:description" content={description}/><script async src="https://www.googletagmanager.com/gtag/js?id=G-2GWL58D9PQ"></script><script is:inline>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-2GWL58D9PQ');</script><script type="application/ld+json" set:html={JSON.stringify(schema)}/><title>{title}</title></head><body><SiteHeader hasRuAlternate={hasRuAlternate}/><slot/><SiteFooter/><MarketingConsent/>
 <script is:inline>
 (()=>{
   const track=(name,params={})=>{if(typeof window.gtag==='function')window.gtag('event',name,params);};
   const path=window.location.pathname;
   const lang=document.documentElement.lang||'en';
-  const serviceMatch=path.match(/^\/(?:ru\/)?(performance|search|sites)\/?$/);
+  const serviceMatch=path.match(/^\/(?:ru\/)?(?:industries\/)?(performance|search|sites|dental-marketing)\/?$/);
   if(serviceMatch)track('service_interest',{service:serviceMatch[1],language:lang,page_path:path});
   if(/^\/(?:ru\/)?contact\/?$/.test(path))track('view_contact',{language:lang,page_path:path});
   document.addEventListener('click',e=>{
