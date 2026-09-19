@@ -33,8 +33,9 @@ const isRu = Astro.url.pathname.startsWith('/ru');
 
     <div class="footer-company">
       <span class="footer-label">{isRu ? 'Компания' : 'Company'}</span>
-      <strong>RM CREATIVES, SIA</strong>
-      <address>Šarlotes iela 18A - 3<br/>Rīga, LV-1001</address>
+      <strong>{isRu ? 'ООО "RM CREATIVES"' : 'RM CREATIVES, LLC'}</strong>
+      <strong>{isRu ? 'НДС: LV50103835851' : 'VAT: LV50103835851'}</strong>
+      <address>Šarlotes iela 18A - 3, Latvia<br/>Riga, LV-1001</address>
       <a href="mailto:clientcare@rmcreatives.com">clientcare@rmcreatives.com</a>
     </div>
   </div>
