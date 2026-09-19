@@ -1,0 +1,124 @@
+---
+import IndustryLandingLayout from '../../../layouts/IndustryLandingLayout.astro';
+
+const metrics = [
+  { value: '16,227', label: 'tracked enquiries / DENTA / 2025' },
+  { value: '10,601', label: 'Google Ads conversions / 2025' },
+  { value: '3,831', label: 'organic enquiries / 2025' },
+  { value: 'TOP 5', label: 'search visibility achieved' }
+];
+
+const problemIntro = [
+  'Dental growth rarely stalls because a clinic is missing one more channel. It stalls because SEO, paid media, landing pages and lead handling operate as separate activities.'
+];
+
+const problems = [
+  'Channel reports focus on clicks and impressions instead of patient enquiries.',
+  'Treatment and location pages fail to match how patients actually search.',
+  'Advertising sends valuable traffic to pages that do not convert.',
+  'Calls and forms are tracked inconsistently, making profitable campaigns hard to identify.',
+  'Slow follow-up allows high-intent patients to choose another clinic.'
+];
+
+const systemSteps = [
+  { title: 'Demand research', copy: 'Map treatment, location and commercial search demand to find the strongest opportunities.' },
+  { title: 'Search visibility', copy: 'Build the architecture, service pages and local signals needed to capture organic demand.' },
+  { title: 'Paid capture', copy: 'Reach patients actively comparing providers, treatments and locations through Google Ads.' },
+  { title: 'Landing-page conversion', copy: 'Align message, proof and calls to action with the decision a patient is making.' },
+  { title: 'Enquiry optimisation', copy: 'Connect calls, forms and campaign data so decisions are based on qualified enquiries.' }
+];
+
+const serviceSections = [
+  {
+    eyebrow: 'DENTAL SEO',
+    title: 'Dental SEO that captures treatment demand.',
+    copy: [
+      'Dental SEO should make your clinic visible when patients are searching for a treatment, a local provider or an answer that moves them closer to booking.',
+      'We connect technical SEO, content and local visibility with the commercial priorities of the clinic.'
+    ],
+    bullets: ['Treatment-led keyword and demand mapping', 'Local SEO for individual clinics and multi-location groups', 'Service, treatment and location page architecture', 'Conversion tracking across priority organic journeys'],
+    href: '/cases/denta/seo',
+    linkLabel: 'See DENTA SEO results'
+  },
+  {
+    eyebrow: 'PAID SEARCH',
+    title: 'Google Ads for dentists.',
+    copy: [
+      'Google Ads can create demand quickly, but only when campaigns, landing pages and measurement work together.',
+      'We structure paid search around treatment intent, location, commercial value and the clinic’s capacity to handle new enquiries.'
+    ],
+    bullets: ['Treatment-specific campaign structures', 'Location targeting for single-site and multi-location clinics', 'Dedicated landing pages and conversion testing', 'Call, form and lead-quality tracking'],
+    href: '/cases/denta/google-ads',
+    linkLabel: 'See DENTA Google Ads results',
+    tone: 'dark'
+  },
+  {
+    eyebrow: 'HIGH-VALUE TREATMENTS',
+    title: 'Marketing dental implants and complex treatment.',
+    copy: [
+      'Patients considering implants, full-arch treatment, orthodontics or cosmetic dentistry need more than a generic service page. They need clear information, credible proof and a straightforward next step.',
+      'We combine high-intent search coverage with focused landing pages and transparent measurement. Every clinical claim and offer should be reviewed against the clinic’s local advertising, clinical and privacy requirements.'
+    ]
+  },
+  {
+    eyebrow: 'WEBSITES & CONVERSION',
+    title: 'Dental websites built to convert.',
+    copy: [
+      'A dental website should help a prospective patient understand three things quickly: whether you provide the treatment they need, why they should trust your clinic and what to do next.',
+      'We design patient journeys around those decisions, with clear service architecture, useful proof, mobile-first calls to action and measurement.'
+    ],
+    href: '/cases/denta/website',
+    linkLabel: 'See the DENTA website case'
+  }
+];
+
+const reasons = [
+  'One system across SEO, Google Ads, landing pages and measurement—so channels support one another instead of competing for credit.',
+  'Planning built around treatment demand, clinic capacity and market opportunity.',
+  'Clear reporting focused on enquiries, conversion and commercial decisions.',
+  'Experience translating complex healthcare services into useful, credible patient journeys.',
+  'An international approach adapted to the terminology and requirements of the US, UK and European markets.'
+];
+
+const caseIntro = [
+  'DENTA needed a clearer connection between search visibility, paid acquisition and incoming patient enquiries.',
+  'RM CREATIVES aligned SEO, Google Ads, landing-page performance and tracking around priority demand.'
+];
+
+const process = [
+  { title: 'Demand diagnostic', copy: 'We review services, markets, visibility, paid activity, website journeys and measurement to identify the real constraints.' },
+  { title: 'Forecast and priorities', copy: 'We map search demand, likely competitive pressure and the treatments or locations with the strongest strategic fit.' },
+  { title: 'Ninety-day launch plan', copy: 'You receive a sequenced plan covering the highest-impact pages, campaigns, tracking and conversion improvements.' },
+  { title: 'Execution', copy: 'Our team delivers the agreed work across SEO, paid search, landing pages and analytics.' },
+  { title: 'Optimisation and reporting', copy: 'We review search terms, visibility, conversion behaviour and lead quality, then refine the programme around evidence.' }
+];
+
+const faqs = [
+  { question: 'Which markets do you work in?', answer: 'Our English-language work focuses on the US, UK and Europe. Strategy, terminology and compliance considerations are adapted to the target market rather than copied across regions.' },
+  { question: 'What access and data do you need?', answer: 'Typically, we need access to analytics, advertising accounts, Search Console, the website or CMS, and available call or CRM data. If tracking is incomplete, measurement becomes an early workstream.' },
+  { question: 'Should a dental clinic invest in SEO or Google Ads first?', answer: 'It depends on current visibility, speed requirements, budget and treatment priorities. Google Ads can test and capture demand sooner; SEO builds broader, compounding visibility. The right sequence comes from the diagnostic.' },
+  { question: 'How long does dental marketing take to produce results?', answer: 'Paid search can generate usable data quickly once campaigns and tracking are live. SEO usually requires longer because technical changes, content and authority take time to influence visibility. We agree leading indicators and review points without guaranteeing a fixed outcome.' },
+  { question: 'Can you focus on specific treatments?', answer: 'Yes. The strategy can prioritise implants, full-arch treatment, orthodontics, cosmetic dentistry or other services where the clinic has the right clinical offer, capacity and market opportunity.' },
+  { question: 'How do you report performance?', answer: 'Reporting connects channel activity with calls, forms and other agreed enquiry actions. Where the data allows, we also separate treatment, location, campaign and lead-quality signals.' },
+  { question: 'Can you support multi-location dental groups?', answer: 'Yes. We can structure SEO, paid media, landing pages and reporting around multiple locations while preserving clear ownership of local demand and avoiding unnecessary duplication.' },
+  { question: 'How do you handle healthcare advertising compliance?', answer: 'We adapt campaigns and content to the target market and avoid unsupported clinical or performance claims. Final clinical accuracy, consent, privacy and jurisdiction-specific approval remain the clinic’s responsibility.' }
+];
+---
+
+<IndustryLandingLayout
+  title="Dental Marketing Agency for Clinics | RM CREATIVES"
+  description="Dental marketing built around patient demand, SEO, Google Ads and measurable enquiries. See the DENTA results and request a demand forecast."
+  serviceName="Dental marketing for clinics"
+  eyebrow="DENTAL MARKETING AGENCY"
+  headline="Dental marketing built to grow patient demand."
+  intro="Turn search demand into measurable patient enquiries with an integrated system for dental SEO, Google Ads, conversion and tracking."
+  {metrics}
+  {problemIntro}
+  {problems}
+  {systemSteps}
+  {serviceSections}
+  {reasons}
+  {caseIntro}
+  {process}
+  {faqs}
+/>

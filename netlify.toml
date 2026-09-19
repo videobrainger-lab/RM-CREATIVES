@@ -83,7 +83,7 @@
   status = 301
 [[redirects]]
   from = "/en/digital-marketing-for-dentistry/"
-  to = "/cases/denta/"
+  to = "/industries/dental-marketing/"
   status = 301
 [[redirects]]
   from = "/en/pay-per-click-advertising/"
