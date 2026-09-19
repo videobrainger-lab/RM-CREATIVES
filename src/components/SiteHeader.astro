@@ -1,8 +1,10 @@
 ---
+interface Props { hasRuAlternate?: boolean; }
+const { hasRuAlternate = true } = Astro.props;
 const path = Astro.url.pathname;
 const isRu = path === '/ru' || path.startsWith('/ru/');
 const enHref = isRu ? (path.replace(/^\/ru(?=\/|$)/, '') || '/') : path;
-const ruHref = isRu ? path : (path === '/' ? '/ru/' : `/ru${path}`);
+const ruHref = isRu ? path : hasRuAlternate ? (path === '/' ? '/ru/' : `/ru${path}`) : '/ru/';
 ---
 <header class="site-header shell">
   <a class="site-brand" href={isRu ? '/ru/' : '/'} aria-label="RM CREATIVES home">RM CREATIVES</a>
@@ -18,7 +20,7 @@ const ruHref = isRu ? path : (path === '/' ? '/ru/' : `/ru${path}`);
     <div class="lang-switch" aria-label="Language switcher">
       <a class:list={[!isRu && 'active']} href={enHref}>EN</a>
       <span>/</span>
-      <a class:list={[isRu && 'active']} href={ruHref}>RU</a>
+      <a class:list={[isRu && 'active']} href={ruHref} title={!isRu && !hasRuAlternate ? 'Russian homepage' : undefined}>RU</a>
     </div>
     <a class="site-cta" href={isRu ? '/ru/contact' : '/contact'}>{isRu ? 'Обсудить проект' : 'Discuss a project'} ↗</a>
   </div>
