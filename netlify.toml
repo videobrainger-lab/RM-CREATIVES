@@ -74,10 +74,6 @@
 
 # Highest-value legacy service and article URLs mapped to the closest current destination.
 [[redirects]]
-  from = "/en/facebook-advertising-restrictions-for-healthcare-sectors/"
-  to = "/cases/consilium-medicum/medical-google-ads/"
-  status = 301
-[[redirects]]
   from = "/chto-nelzya-reklamirovat-klinikam-v-facebook/"
   to = "/ru/cases/consilium-medicum/medical-google-ads/"
   status = 301
@@ -140,6 +136,40 @@
 [[redirects]]
   from = "/en/case/epiline-beauty-studio/"
   to = "/cases/epiline/"
+  status = 301
+
+# Earlier planned industry paths now point to the canonical /industries/ architecture.
+[[redirects]]
+  from = "/dental-marketing/*"
+  to = "/industries/dental-marketing/:splat"
+  status = 301
+[[redirects]]
+  from = "/ru/marketing-stomatologii/*"
+  to = "/ru/industries/dental-marketing/:splat"
+  status = 301
+[[redirects]]
+  from = "/industries/medical-clinic-marketing/"
+  to = "/industries/medical-marketing/"
+  status = 301
+[[redirects]]
+  from = "/medical-marketing/*"
+  to = "/industries/medical-marketing/:splat"
+  status = 301
+[[redirects]]
+  from = "/ru/marketing-medicinskih-klinik/*"
+  to = "/ru/industries/medical-marketing/:splat"
+  status = 301
+[[redirects]]
+  from = "/aesthetic-marketing/med-spa/"
+  to = "/industries/med-spa-marketing/"
+  status = 301
+[[redirects]]
+  from = "/aesthetic-marketing/*"
+  to = "/industries/aesthetic-clinic-marketing/:splat"
+  status = 301
+[[redirects]]
+  from = "/ru/marketing-esteticheskih-klinik/*"
+  to = "/ru/industries/aesthetic-clinic-marketing/:splat"
   status = 301
 
 # Legacy legal and utility URLs.
