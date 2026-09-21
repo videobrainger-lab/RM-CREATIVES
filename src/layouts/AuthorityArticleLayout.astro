@@ -4,6 +4,7 @@ import BaseLayout from './BaseLayout.astro';
 interface Section { title: string; body: string; bullets?: string[]; }
 interface Link { href: string; label: string; }
 interface Props {
+  lang?: 'en' | 'ru';
   title: string;
   description: string;
   eyebrow: string;
@@ -16,26 +17,27 @@ interface Props {
   related: Link[];
 }
 
-const { title, description, eyebrow, headline, intro, updated, takeaways, sections, sources, related } = Astro.props;
+const { lang = 'en', title, description, eyebrow, headline, intro, updated, takeaways, sections, sources, related } = Astro.props;
+const ru = lang === 'ru';
 ---
-<BaseLayout title={title} description={description} lang="en" hasRuAlternate={false}>
+<BaseLayout title={title} description={description} lang={lang} hasRuAlternate={false}>
   <main class="authority-page">
     <section class="hero shell">
-      <div class="meta eyebrow"><span>{eyebrow}</span><span>UPDATED {updated}</span></div>
+      <div class="meta eyebrow"><span>{eyebrow}</span><span>{ru ? 'ОБНОВЛЕНО' : 'UPDATED'} {updated}</span></div>
       <div class="hero-grid"><h1>{headline}</h1><p>{intro}</p></div>
     </section>
 
-    <section class="summary"><div class="shell summary-grid"><span class="eyebrow">EXECUTIVE CHECK</span><ol>{takeaways.map((item, i) => <li><b>0{i + 1}</b><span>{item}</span></li>)}</ol></div></section>
+    <section class="summary"><div class="shell summary-grid"><span class="eyebrow">{ru ? 'КРАТКАЯ ПРОВЕРКА' : 'EXECUTIVE CHECK'}</span><ol>{takeaways.map((item, i) => <li><b>0{i + 1}</b><span>{item}</span></li>)}</ol></div></section>
 
     <article class="shell article">
       <div class="article-main">
         {sections.map((section, i) => <section id={`section-${i + 1}`}><span class="eyebrow">0{i + 1}</span><h2>{section.title}</h2><p>{section.body}</p>{section.bullets && <ul>{section.bullets.map(item => <li>{item}</li>)}</ul>}</section>)}
       </div>
-      <aside><span class="eyebrow">OFFICIAL SOURCES</span>{sources.map(source => <a href={source.href} target="_blank" rel="noopener noreferrer">{source.label} ↗</a>)}<p>Platform policies and local advertising rules change. Confirm the current requirements for every market before launch. This guide is not legal advice.</p></aside>
+      <aside><span class="eyebrow">{ru ? 'ОФИЦИАЛЬНЫЕ ИСТОЧНИКИ' : 'OFFICIAL SOURCES'}</span>{sources.map(source => <a href={source.href} target="_blank" rel="noopener noreferrer">{source.label} ↗</a>)}<p>{ru ? 'Правила платформ и местные требования меняются. Перед запуском проверяйте актуальные условия для каждого рынка. Материал не является юридической консультацией.' : 'Platform policies and local advertising rules change. Confirm the current requirements for every market before launch. This guide is not legal advice.'}</p></aside>
     </article>
 
-    <section class="related shell"><span class="eyebrow">CONNECTED GUIDES & SERVICES</span><div>{related.map(link => <a href={link.href}><span>{link.label}</span><b>↗</b></a>)}</div></section>
-    <section class="cta"><div class="shell"><span class="eyebrow">POLICY-AWARE ACQUISITION</span><h2>Build campaigns that can scale without treating compliance as an afterthought.</h2><a href="/contact?interest=industry-marketing">Discuss your clinic marketing ↗</a></div></section>
+    <section class="related shell"><span class="eyebrow">{ru ? 'СВЯЗАННЫЕ МАТЕРИАЛЫ И УСЛУГИ' : 'CONNECTED GUIDES & SERVICES'}</span><div>{related.map(link => <a href={link.href}><span>{link.label}</span><b>↗</b></a>)}</div></section>
+    <section class="cta"><div class="shell"><span class="eyebrow">{ru ? 'ПРОДВИЖЕНИЕ С УЧЁТОМ ПРАВИЛ' : 'POLICY-AWARE ACQUISITION'}</span><h2>{ru ? 'Стройте масштабируемые кампании, где требования учтены до запуска.' : 'Build campaigns that can scale without treating compliance as an afterthought.'}</h2><a href={ru ? '/ru/contact?interest=industry-marketing' : '/contact?interest=industry-marketing'}>{ru ? 'Обсудить продвижение клиники' : 'Discuss your clinic marketing'} ↗</a></div></section>
   </main>
 </BaseLayout>
 
