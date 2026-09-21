@@ -1,0 +1,20 @@
+# Critical legacy cluster migrations. Kept in the publish directory so manual
+# static deploys and Git-based builds apply the same canonical routing.
+/prodvizenie-stomatologii/ /ru/industries/dental-marketing/ 301
+/marketing-dlya-stomatologij/ /ru/industries/dental-marketing/ 301
+/en/digital-marketing-for-healthcare/ /industries/medical-marketing/ 301
+/en/beauty-salon-marketing/ /industries/aesthetic-clinic-marketing/ 301
+/en/marketing-for-aesthetic-and-beauty-clinics/ /industries/aesthetic-clinic-marketing/ 301
+/mediczinskij-marketing/ /ru/industries/medical-marketing/ 301
+/marketing-dlya-esteticheskih-salonov/ /ru/industries/aesthetic-clinic-marketing/ 301
+/en/case/denta-denistry/ /cases/denta/ 301
+
+# Earlier planned paths redirect to the approved /industries/ architecture.
+/dental-marketing/* /industries/dental-marketing/:splat 301
+/ru/marketing-stomatologii/* /ru/industries/dental-marketing/:splat 301
+/industries/medical-clinic-marketing/ /industries/medical-marketing/ 301
+/medical-marketing/* /industries/medical-marketing/:splat 301
+/ru/marketing-medicinskih-klinik/* /ru/industries/medical-marketing/:splat 301
+/aesthetic-marketing/med-spa/ /industries/med-spa-marketing/ 301
+/aesthetic-marketing/* /industries/aesthetic-clinic-marketing/:splat 301
+/ru/marketing-esteticheskih-klinik/* /ru/industries/aesthetic-clinic-marketing/:splat 301
