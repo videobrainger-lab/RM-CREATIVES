@@ -1,0 +1,7 @@
+---
+import SeoIndustryPage from '../../../layouts/SeoIndustryPage.astro';
+import { ruIndustryPages } from '../../../data/industryPages';
+export function getStaticPaths(){return ruIndustryPages.map(page=>({params:{slug:page.slug},props:{page}}));}
+const {page}=Astro.props;
+---
+<SeoIndustryPage {page}/>
