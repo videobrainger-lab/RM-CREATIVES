@@ -1,0 +1,24 @@
+---
+import AuthorityArticleLayout from '../../../layouts/AuthorityArticleLayout.astro';
+
+const sections = [
+  {title:'Start with market, service and claim',body:'Healthcare advertising is not governed by one universal checklist. Classify the country, service, provider type, medicine or device involvement, intended audience and every objective claim before selecting channels or producing creative.',bullets:['Record the target jurisdiction and responsible clinical entity','Separate regulated products from general clinic services','Create an evidence file for objective and comparative claims']},
+  {title:'Google Ads: eligibility can be location-specific',body:'Google restricts some healthcare and medicines content entirely and permits other categories only in approved locations or for certified advertisers. Account verification does not replace healthcare certification, and eligibility can change by product and country.',bullets:['Check Healthcare and medicines location rules before keyword planning','Confirm certification requirements for pharmacies, telemedicine and restricted drug terms','Review ad copy, keywords and landing pages together']},
+  {title:'Meta Ads: protect the person and the message',body:'Meta review is especially sensitive to personal attributes, negative self-perception, unrealistic outcomes and restricted products. A useful clinic workflow tests every line of copy for implied knowledge about the viewer and every proof element for substantiation.',bullets:['Use service-led rather than diagnosis-led messaging','Avoid guaranteed or unexpectedly fast outcomes','Audit destination content and lead forms—not only the ad']},
+  {title:'UK cosmetic interventions require extra care',body:'ASA and CAP guidance requires responsible presentation of surgical and non-surgical cosmetic procedures. Ads should not trivialise the decision, exaggerate likely effects or target cosmetic intervention advertising at under-18s. Prescription-only medicines cannot be advertised to the public.',bullets:['Avoid time pressure that undermines considered consent','Do not use altered proof to exaggerate the treatment effect','Keep practitioner qualifications and material limitations accurate']},
+  {title:'Privacy and measurement are part of compliance',body:'A high-performing measurement setup still needs data minimisation. Sensitive health details should not leak through URLs, pixel parameters, custom audience uploads or descriptive event names. Legal, analytics and clinical owners should approve the data map before launch.',bullets:['Map every form field and marketing event to a defined purpose','Keep sensitive details out of advertising-platform payloads','Set retention, access and consent rules before collecting leads']},
+  {title:'Use a documented pre-launch gate',body:'The practical answer is not to make campaigns vague. It is to create a repeatable gate: current policy check, local-law check, evidence review, landing-page review, tracking review and named approval owner. Re-run the gate whenever the market, claim or platform changes.'}
+];
+---
+<AuthorityArticleLayout
+  title="Healthcare Advertising Rules: US, UK & Europe | RM CREATIVES"
+  description="A practical healthcare advertising rules hub covering Google Ads, Meta Ads, claims, cosmetic interventions, privacy and market-specific campaign review."
+  eyebrow="HEALTHCARE ADVERTISING RULES"
+  headline="A market-by-market control system for healthcare advertising."
+  intro="Platform approval, local law, clinical evidence and privacy all shape whether a clinic campaign can run safely and scale. This hub organises the checks before media goes live."
+  updated="SEPTEMBER 2026"
+  takeaways={['There is no single global healthcare advertising rule set.','Platform eligibility, claim evidence and local law must all pass.','Compliance includes the landing page, form, analytics and CRM data flow.']}
+  sections={sections}
+  sources={[{href:'https://support.google.com/adspolicy/answer/176031?hl=en',label:'Google Healthcare and medicines policy'},{href:'https://support.google.com/adspolicy/answer/143465?hl=en',label:'Google restricted personalised targeting'},{href:'https://transparency.meta.com/policies/ad-standards/',label:'Meta Advertising Standards'},{href:'https://www.asa.org.uk/resource/cosmetic-interventions.html',label:'ASA/CAP cosmetic interventions guidance'}]}
+  related={[{href:'/en/facebook-advertising-restrictions-for-healthcare-sectors/',label:'Meta Healthcare Restrictions'},{href:'/industries/medical-marketing/google-ads/',label:'Google Ads for Medical Clinics'},{href:'/industries/aesthetic-clinic-marketing/',label:'Aesthetic Clinic Marketing'}]}
+/>
