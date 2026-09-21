@@ -1,0 +1,24 @@
+---
+import AuthorityArticleLayout from '../../../layouts/AuthorityArticleLayout.astro';
+
+const sections = [
+  {title:'Do not diagnose the person in the ad',body:'Healthcare creative often fails when it implies that Meta knows a viewer has a condition, insecurity or medical history. Write about the service and the decision—not an assumed personal attribute.',bullets:['Prefer “Explore treatment options” to “Are you suffering from…?”','Avoid copy that identifies a condition, age-related insecurity or body concern','Review the image, headline, form and landing page as one message']},
+  {title:'Separate treatment marketing from drug promotion',body:'Clinics may advertise services that are legal in the target market, but prescription medicines and drug-related claims can trigger additional restrictions. The ad, landing page and booking flow should describe the consultation accurately and avoid presenting a prescription-only product as a consumer offer.',bullets:['Check whether the named product is prescription-only in the target country','Use clinician-led consultation language where appropriate','Never imply guaranteed eligibility, safety or clinical outcomes']},
+  {title:'Use proof without manufacturing certainty',body:'Before-and-after imagery, testimonials and numeric outcomes need careful treatment. The creative should not exaggerate expected results, create negative self-perception or imply that an exceptional result is typical.',bullets:['Keep image conditions comparable and avoid retouching treatment areas','Qualify individual results and preserve verifiable consent records','Do not turn a testimonial into an unsupported clinical claim']},
+  {title:'Make the landing page pass the same test',body:'A compliant ad can still fail when its destination introduces prohibited claims, unclear provider credentials or a different offer. Keep the service, location, practitioner, price framing and next step consistent from ad to page.',bullets:['Show the provider and material treatment information clearly','Use a consultation or eligibility step when the service requires one','Keep privacy, cookie and contact information easy to find']},
+  {title:'Treat health data and measurement as sensitive',body:'Lead tracking should measure enquiries without sending diagnoses, treatment details or other sensitive health information in URLs, event names or audience payloads. Audit forms, pixels, server-side events and CRM integrations together.',bullets:['Use neutral event names and minimise payload data','Do not build audiences from sensitive health information','Document consent, access and retention decisions with the clinic']},
+  {title:'Overlay the rules of the target market',body:'Meta approval is not the same as legal approval. The US, UK and European markets apply different requirements to medical claims, prescription-only medicines, cosmetic interventions, testimonials and targeting. Campaign review must be market-specific.'}
+];
+---
+<AuthorityArticleLayout
+  title="Healthcare Advertising Restrictions on Meta | RM CREATIVES"
+  description="A practical clinic checklist for Meta and Facebook advertising: personal attributes, healthcare claims, creative, landing pages, sensitive data and market-specific review."
+  eyebrow="META ADS / HEALTHCARE POLICY"
+  headline="Healthcare advertising on Meta: what clinics must review before launch."
+  intro="A policy-aware framework for medical and aesthetic teams running Facebook and Instagram campaigns—focused on the message, evidence, destination and data flow."
+  updated="SEPTEMBER 2026"
+  takeaways={['Describe the service without asserting a viewer’s health or personal attributes.','Review the ad, landing page, form and tracking setup as one policy surface.','Verify platform policy and local advertising law for every target market.']}
+  sections={sections}
+  sources={[{href:'https://transparency.meta.com/policies/ad-standards/',label:'Meta Advertising Standards'},{href:'https://www.asa.org.uk/resource/cosmetic-interventions.html',label:'ASA/CAP cosmetic interventions guidance'},{href:'https://www.gov.uk/marketing-advertising-law',label:'UK advertising law overview'}]}
+  related={[{href:'/insights/healthcare-advertising-rules/',label:'Healthcare Advertising Rules Hub'},{href:'/industries/aesthetic-clinic-marketing/meta-ads/',label:'Meta Ads for Aesthetic Clinics'},{href:'/industries/medical-marketing/',label:'Medical Marketing Agency'}]}
+/>
