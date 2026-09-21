@@ -18,7 +18,7 @@ import ConsentCheckbox from '../components/ConsentCheckbox.astro';
         <label><span>Email *</span><input type="email" name="email" autocomplete="email" required /></label>
         <label><span>Phone</span><input type="tel" name="phone" autocomplete="tel" /></label>
       </div>
-      <label><span>What are you interested in? *</span><select name="service" required><option value="">Select</option><option value="Dental marketing">Dental marketing</option><option>RM Performance — Meta Ads</option><option>RM Search — Google Ads</option><option>RM Sites — Website</option><option>Several products</option></select></label>
+      <label><span>What are you interested in? *</span><select name="service" required><option value="">Select</option><option value="Industry marketing">Dental / Medical / Aesthetic marketing</option><option value="Dental marketing">Dental marketing</option><option>RM Performance — Meta Ads</option><option>RM Search — Google Ads</option><option>RM Sites — Website</option><option>Several products</option></select></label>
       <label><span>Tell us briefly about the task</span><textarea name="message" rows="5"></textarea></label>
       <ConsentCheckbox lang="en" />
       <button type="submit">Send enquiry ↗</button>
@@ -30,6 +30,10 @@ import ConsentCheckbox from '../components/ConsentCheckbox.astro';
   if (interest === 'dental-marketing') {
     const service = document.querySelector('select[name="service"]');
     if (service) service.value = 'Dental marketing';
+  }
+  if (interest === 'industry-marketing') {
+    const service = document.querySelector('select[name="service"]');
+    if (service) service.value = 'Industry marketing';
   }
 </script>
 <style>
