@@ -9,6 +9,7 @@ interface Props {
   noindex?: boolean;
   hasRuAlternate?: boolean;
   serviceName?: string;
+  faqItems?: { question: string; answer: string }[];
 }
 const pathname = Astro.url.pathname;
 const inferredLang = pathname.startsWith('/ru') ? 'ru' : 'en';
@@ -30,7 +31,7 @@ const seoByPath: Record<string, { title: string; description: string }> = {
 };
 const normalizedPath = pathname === '/' ? '/' : pathname.endsWith('/') ? pathname : `${pathname}/`;
 const mappedSeo = seoByPath[normalizedPath];
-const { title: rawTitle = inferredLang === 'ru' ? 'Привлечение пациентов для клиник | RM CREATIVES' : 'Patient Acquisition for Clinics | RM CREATIVES', description: rawDescription = inferredLang === 'ru' ? 'Привлечение пациентов через Meta Ads, Google Ads и конверсионные сайты для медицинских клиник и бьюти-студий.' : 'Patient acquisition through Meta Ads, Google Ads and high-converting websites for medical clinics and beauty studios.', lang = inferredLang, noindex = false, hasRuAlternate = true, serviceName } = Astro.props;
+const { title: rawTitle = inferredLang === 'ru' ? 'Привлечение пациентов для клиник | RM CREATIVES' : 'Patient Acquisition for Clinics | RM CREATIVES', description: rawDescription = inferredLang === 'ru' ? 'Привлечение пациентов через Meta Ads, Google Ads и конверсионные сайты для медицинских клиник и бьюти-студий.' : 'Patient acquisition through Meta Ads, Google Ads and high-converting websites for medical clinics and beauty studios.', lang = inferredLang, noindex = false, hasRuAlternate = true, serviceName, faqItems = [] } = Astro.props;
 const title = mappedSeo?.title || rawTitle;
 const description = mappedSeo?.description || rawDescription;
 const autoNoindex = noindex || /(^|\/)(thank-you|404)(\/|$)/.test(pathname) || /(^|\/)(privacy|terms|cookies)(\/|$)/.test(pathname);
@@ -57,6 +58,9 @@ if(['performance','search','sites'].includes(servicePath)){
 }
 if(serviceName){
   graph.push({'@type':'Service','@id':`${canonical.href}#service`,name:serviceName,description,provider:{'@id':'https://rmcreatives.com/#organization'},url:canonical.href,areaServed:['United States','United Kingdom','Europe']});
+}
+if(faqItems.length){
+  graph.push({'@type':'FAQPage','@id':`${canonical.href}#faq`,mainEntity:faqItems.map(item=>({'@type':'Question',name:item.question,acceptedAnswer:{'@type':'Answer',text:item.answer}}))});
 }
 const schema={'@context':'https://schema.org','@graph':graph};
 ---
