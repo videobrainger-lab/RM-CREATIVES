@@ -13,7 +13,9 @@ const isRu = Astro.url.pathname.startsWith('/ru');
       <a href={isRu ? '/ru/#services' : '/#services'}>{isRu ? 'Услуги' : 'Services'}</a>
       <a href={isRu ? '/ru/cases' : '/cases'}>{isRu ? 'Кейсы' : 'Cases'}</a>
       <a href={isRu ? '/ru/insights' : '/insights'}>{isRu ? 'Материалы' : 'Insights'}</a>
-      {!isRu && <a href="/industries/dental-marketing">Dental marketing</a>}
+      <a href={isRu ? '/ru/industries/dental-marketing/' : '/industries/dental-marketing/'}>{isRu ? 'Маркетинг стоматологий' : 'Dental marketing'}</a>
+      <a href={isRu ? '/ru/industries/medical-marketing/' : '/industries/medical-marketing/'}>{isRu ? 'Маркетинг клиник' : 'Medical marketing'}</a>
+      <a href={isRu ? '/ru/industries/aesthetic-clinic-marketing/' : '/industries/aesthetic-clinic-marketing/'}>{isRu ? 'Маркетинг эстетики' : 'Aesthetic marketing'}</a>
     </div>
 
     <div class="footer-col">
