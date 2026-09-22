@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { libraryArticles, libraryCategories } from '../../../data/libraryArticles';
+
+export function getStaticPaths() {
+  return libraryCategories.map((category) => ({ params: { slug: category.slug }, props: { category } }));
+}
+
+const { category } = Astro.props;
+const articles = libraryArticles.filter((article) => article.category === category.slug);
+const title = `${category.label} Guides | Clinic Growth Library`;
+---
+<BaseLayout title={`${title} | RM CREATIVES`} description={`${category.copy} Practical guides, benchmarks and commercial strategy from RM CREATIVES clinic projects.`} hasRuAlternate={false}>
+  <main class="category-page shell">
+    <div class="top eyebrow"><a href="/insights/">CLINIC GROWTH LIBRARY</a><span>/ {category.label}</span></div>
+    <section class="hero"><div><span class="eyebrow">CATEGORY / {String(articles.length).padStart(2,'0')} RESOURCES</span><h1>{category.label}</h1></div><p>{category.copy} Built for clinic owners, directors and marketing leads making acquisition decisions.</p></section>
+    <section class="articles">
+      {articles.map((article,index) => <a class="card" href={`/insights/${article.slug}/`}>
+        <span class="number eyebrow">{String(index+1).padStart(2,'0')}</span>
+        <div><span class="eyebrow">{article.categoryLabel} / {article.readingTime}</span><h2>{article.title}</h2><p>{article.description}</p></div>
+        <b>↗</b>
+      </a>)}
+    </section>
+    <section class="back"><a href="/insights/">← All Clinic Growth Library resources</a></section>
+  </main>
+</BaseLayout>
+<style>
+.category-page{padding:38px 0 130px}.top{display:flex;gap:10px;border-bottom:1px solid var(--line);padding-bottom:16px}.top span{color:var(--accent)}.hero{padding:95px 0 100px;display:grid;grid-template-columns:1.4fr .6fr;gap:7vw;align-items:end}.hero h1{font-size:clamp(66px,9vw,132px);line-height:.86;letter-spacing:-.07em;font-weight:580;margin:22px 0 0}.hero p{font-size:20px;line-height:1.5;color:var(--muted)}.articles{border-top:1px solid var(--ink)}.card{display:grid;grid-template-columns:70px 1fr 40px;gap:28px;padding:35px 0;border-bottom:1px solid var(--line);align-items:start}.card h2{font-size:clamp(32px,4.5vw,60px);line-height:.98;letter-spacing:-.05em;margin:16px 0}.card p{max-width:700px;color:var(--muted);font-size:15px;line-height:1.55}.card>b{font-size:24px;color:var(--accent)}.number{color:var(--muted)}.back{padding-top:55px}.back a{text-decoration:underline;text-underline-offset:4px}@media(max-width:780px){.hero{grid-template-columns:1fr;padding:70px 0}.card{grid-template-columns:38px 1fr}.card>b{display:none}}
+</style>

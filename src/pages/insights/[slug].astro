@@ -1,0 +1,11 @@
+---
+import LibraryArticleLayout from '../../layouts/LibraryArticleLayout.astro';
+import { libraryArticles } from '../../data/libraryArticles';
+
+export function getStaticPaths() {
+  return libraryArticles.map((article) => ({ params: { slug: article.slug }, props: { article } }));
+}
+
+const { article } = Astro.props;
+---
+<LibraryArticleLayout article={article}/>

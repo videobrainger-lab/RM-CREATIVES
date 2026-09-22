@@ -1,0 +1,70 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { LibraryArticle } from '../data/libraryArticles';
+
+interface Props { article: LibraryArticle; }
+const { article } = Astro.props;
+const published = '2026-09-22';
+const categoryHref = `/insights/category/${article.category}/`;
+const datasetMeta = article.dataset ? {
+  name: 'RM CREATIVES Clinic Marketing Benchmarks 2024–2026',
+  description: article.description,
+  temporalCoverage: '2024/2026',
+  distributionUrl: 'https://rmcreatives.com/data/clinic-marketing-benchmarks-2026.csv'
+} : undefined;
+---
+<BaseLayout
+  title={article.seoTitle}
+  description={article.description}
+  hasRuAlternate={false}
+  faqItems={article.faq}
+  articleMeta={{headline:article.title,datePublished:published,dateModified:published,section:article.categoryLabel,keywords:[article.primaryKeyword,'clinic marketing','patient acquisition']}}
+  datasetMeta={datasetMeta}
+>
+  <main class="library-article">
+    <header class="hero shell">
+      <div class="meta eyebrow"><a href="/insights/">CLINIC GROWTH LIBRARY</a><span>/</span><a href={categoryHref}>{article.categoryLabel}</a></div>
+      <div class="hero-grid">
+        <div><h1>{article.title}</h1><p class="dek">{article.dek}</p></div>
+        <div class="article-meta"><span class="eyebrow">UPDATED 22 SEP 2026</span><span class="eyebrow">{article.readingTime} READ</span><span class="eyebrow">BY RM CREATIVES</span></div>
+      </div>
+      <div class="stats">{article.stats.map(stat => <div><strong>{stat.value}</strong><span>{stat.label}</span></div>)}</div>
+    </header>
+
+    <section class="direct-answer">
+      <div class="shell answer-grid"><span class="eyebrow">SHORT ANSWER</span><p>{article.answer}</p></div>
+    </section>
+
+    <article class="body shell">
+      <aside>
+        <span class="eyebrow">IN THIS GUIDE</span>
+        {article.sections.map(section => <a href={`#${section.id}`}>{section.heading}</a>)}
+        {article.dataset && <a class="download" href="/data/clinic-marketing-benchmarks-2026.csv" download>DOWNLOAD CSV ↓</a>}
+      </aside>
+      <div class="content">
+        {article.sections.map(section => <section id={section.id}>
+          <span class="eyebrow">{section.eyebrow}</span>
+          <h2>{section.heading}</h2>
+          {section.paragraphs?.map(paragraph => <p>{paragraph}</p>)}
+          {section.bullets && <ul>{section.bullets.map(item => <li>{item}</li>)}</ul>}
+          {section.table && <div class="table-wrap"><table><thead><tr>{section.table.headers.map(header => <th>{header}</th>)}</tr></thead><tbody>{section.table.rows.map(row => <tr>{row.map(cell => <td>{cell}</td>)}</tr>)}</tbody></table>{section.table.note && <p class="table-note">{section.table.note}</p>}</div>}
+        </section>)}
+
+        <section class="faq" id="faq">
+          <span class="eyebrow">FAQ</span><h2>Questions clinic teams ask.</h2>
+          {article.faq.map(item => <details><summary>{item.question}<span>+</span></summary><p>{item.answer}</p></details>)}
+        </section>
+
+        {article.sources?.length && <section class="sources"><span class="eyebrow">PRIMARY SOURCES</span><h2>Policies checked for this guide.</h2><ol>{article.sources.map(source => <li><a href={source.href} target="_blank" rel="noopener noreferrer">{source.label} ↗</a></li>)}</ol></section>}
+      </div>
+    </article>
+
+    <section class="next"><div class="shell"><span class="eyebrow">CONNECTED READING & SERVICES</span><div class="next-grid">{article.links.map(link => <a href={link.href}><span>{link.label}</span><b>↗</b></a>)}</div></div></section>
+    <section class="cta"><div class="shell"><span class="eyebrow">FROM DATA TO A CLINIC GROWTH PLAN</span><h2>Turn demand into qualified enquiries.</h2><p>We will review the services, market, acquisition channels and measurement—then identify the most credible next step.</p><a href="/contact?interest=industry-marketing">Discuss your clinic growth plan ↗</a></div></section>
+  </main>
+</BaseLayout>
+
+<style>
+.library-article{overflow:hidden}.hero{padding:38px 0 95px}.meta{display:flex;gap:12px;border-bottom:1px solid var(--line);padding-bottom:16px}.meta a:last-child{color:var(--accent)}.hero-grid{display:grid;grid-template-columns:1.45fr .55fr;gap:7vw;padding-top:72px;align-items:end}.hero h1{font-size:clamp(54px,7.7vw,112px);line-height:.88;letter-spacing:-.065em;font-weight:570;margin:0}.dek{font-size:clamp(20px,2.1vw,29px);line-height:1.35;color:var(--muted);max-width:820px;margin:36px 0 0}.article-meta{border-top:1px solid var(--line);display:flex;flex-direction:column}.article-meta span{padding:15px 0;border-bottom:1px solid var(--line)}.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink);margin-top:80px}.stats>div{padding:28px 24px 0 0}.stats strong{font-size:clamp(40px,5vw,70px);letter-spacing:-.055em;display:block}.stats span{display:block;color:var(--muted);font-size:12px;margin-top:8px;text-transform:uppercase}.direct-answer{background:var(--dark);color:white;padding:85px 0}.answer-grid{display:grid;grid-template-columns:.45fr 1.55fr;gap:7vw}.answer-grid p{font-size:clamp(28px,3.4vw,51px);line-height:1.16;letter-spacing:-.04em;margin:0}.body{display:grid;grid-template-columns:245px 1fr;gap:9vw;padding-top:115px;padding-bottom:125px}.body aside{position:sticky;top:25px;align-self:start;display:flex;flex-direction:column;border-top:1px solid var(--ink)}.body aside>span{padding:18px 0}.body aside a{font-size:12px;line-height:1.35;color:var(--muted);padding:12px 0;border-top:1px solid var(--line)}.body aside a:hover{color:var(--ink)}.body aside .download{color:white;background:var(--accent);padding:16px;margin-top:18px;text-align:center}.content>section{padding-bottom:105px;scroll-margin-top:30px}.content h2{font-size:clamp(39px,5vw,70px);line-height:.95;letter-spacing:-.05em;font-weight:560;margin:19px 0 30px}.content p,.content li{font-size:18px;line-height:1.68;color:var(--muted)}.content p{max-width:800px}.content ul{padding:0;list-style:none;border-top:1px solid var(--line);margin-top:34px}.content li{padding:17px 0 17px 34px;border-bottom:1px solid var(--line);position:relative}.content li:before{content:'→';position:absolute;left:0;color:var(--accent)}.table-wrap{margin-top:42px;overflow-x:auto}.table-wrap table{width:100%;border-collapse:collapse;min-width:620px}.table-wrap th,.table-wrap td{text-align:left;border-bottom:1px solid var(--line);padding:18px 16px 18px 0;vertical-align:top}.table-wrap th{font:10px monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.table-wrap td{font-size:15px;line-height:1.45}.table-note{font-size:12px!important;line-height:1.5!important;margin-top:16px!important}.faq details{border-top:1px solid var(--line)}.faq details:last-child{border-bottom:1px solid var(--line)}.faq summary{list-style:none;cursor:pointer;font-size:20px;padding:22px 0;display:flex;justify-content:space-between;gap:20px}.faq summary::-webkit-details-marker{display:none}.faq details p{font-size:15px;padding:0 0 24px;max-width:720px}.sources ol{padding-left:20px}.sources li{padding-left:0}.sources li:before{display:none}.sources a{text-decoration:underline;text-underline-offset:4px}.next{background:#e7e6df;padding:100px 0}.next-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:30px}.next-grid a{background:var(--bg);border:1px solid var(--line);min-height:160px;padding:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:20px}.next-grid b{color:var(--accent)}.cta{background:var(--accent);color:white;padding:110px 0}.cta h2{font-size:clamp(48px,7vw,96px);line-height:.9;letter-spacing:-.06em;font-weight:560;max-width:960px;margin:28px 0}.cta p{max-width:640px;font-size:18px;line-height:1.5}.cta a{display:inline-flex;background:#111;color:white;padding:18px 24px;margin-top:18px;font-size:13px;font-weight:700}
+@media(max-width:820px){.hero-grid,.answer-grid,.body{grid-template-columns:1fr}.hero-grid{padding-top:55px}.article-meta{margin-top:20px}.stats{grid-template-columns:1fr}.stats>div{border-bottom:1px solid var(--line);padding:24px 0}.body{padding-top:80px}.body aside{position:static}.content>section{padding-bottom:80px}.next-grid{grid-template-columns:1fr}.direct-answer{padding:65px 0}.hero{padding-bottom:70px}}
+</style>

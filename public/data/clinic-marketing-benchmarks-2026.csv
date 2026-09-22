@@ -1,0 +1,10 @@
+vertical,project,channel,period,tracked_actions,action_definition,currency,weighted_media_cost,cost_metric,conversion_rate,notes
+Dental,DENTA,Google Ads,2025,10601,Tracked calls and lead actions,EUR,2.07,CPA,,Media cost excludes agency fees
+Dental,DENTA,Google Ads,Jan-Aug 2026,8087,Tracked calls and lead actions,EUR,2.76,CPA,,Media cost excludes agency fees
+Dental,DENTA,Meta Ads,2025,1639,Tracked enquiries,EUR,7.35,CPL,,Media cost excludes agency fees
+Dental,DENTA,Meta Ads,Jan-Aug 2026,1902,Tracked enquiries,EUR,6.10,CPL,,Media cost excludes agency fees
+Aesthetic,Epiline,Meta Ads,Jan-Aug 2026,2970,Tracked enquiries,EUR,5.85,CPL,,Media cost excludes agency fees
+Aesthetic,Epiline,Google Ads,Jan-Aug 2026,1343,Tracked conversions,USD,5.35,CPA,,Source reports Google costs in USD
+Medical,Consilium Medicum,Google Ads,2024,3356,Tracked calls and lead actions,EUR,3.25,CPA,4.17-7.42%,Conversion-rate range covers selected campaign groups
+Medical,Consilium Medicum,Meta Ads,2025,1484,Tracked enquiries,EUR,4.22,CPL,,Media cost excludes agency fees
+Medical,Union Klinika,Meta Ads,May-Dec 2024,1021,Tracked enquiries,EUR,2.75,CPL,,Media cost excludes agency fees
