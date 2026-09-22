@@ -117,15 +117,27 @@ if (/^\/(?:ru\/)?thank-you\/?$/.test(path)) {
 const form = document.querySelector('form[name="project-enquiry"], form[name="project-enquiry-ru"]');
 if (form) {
   const select = form.elements.namedItem('service');
+  const phone = form.elements.namedItem('phone');
+  const preferredContact = form.elements.namedItem('preferred_contact');
+  const phoneLabel = form.querySelector('[data-phone-label]');
+  const updatePhoneRequirement = () => {
+    const required = ['phone', 'whatsapp'].includes(preferredContact?.value);
+    if (phone) phone.required = required;
+    if (phoneLabel) phoneLabel.textContent = `${language === 'ru' ? 'Телефон' : 'Phone'}${required ? ' *' : ''}`;
+  };
+  updatePhoneRequirement();
   const requested = new URLSearchParams(location.search).get('service');
   if (['performance', 'search', 'sites'].includes(requested)) {
     const option = Array.from(select.options).find(item => item.value && serviceCode(item.value) === requested);
     if (option) select.value = option.value;
   }
   form.addEventListener('input', event => {
-    if (!allowed || hotTracked || !['name', 'company', 'email', 'phone', 'service', 'message'].includes(event.target.name) || !event.target.value.trim()) return;
+    if (!allowed || hotTracked || !['name', 'company', 'email', 'phone', 'preferred_contact', 'service', 'message'].includes(event.target.name) || !event.target.value.trim()) return;
     hotTracked = true;
     track('HotInterest', { content_name: select.value ? serviceCode(select.value) : 'unspecified', action: 'form_start' }, true);
+  });
+  form.addEventListener('change', event => {
+    if (event.target.name === 'preferred_contact') updatePhoneRequirement();
   });
   const status = document.createElement('p');
   status.setAttribute('role', 'status');

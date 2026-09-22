@@ -10,8 +10,12 @@ function setup({ path='/ru/performance/', choice, session=storage(), success=tru
   if (choice) local.setItem('rm:marketing-consent:v1', JSON.stringify({choice,at:Date.now()}));
   const banner = { hidden:true, querySelector:()=>({focus(){}}) };
   const select = {value:'RM Search — Google Ads',options:[]};
+  const phone = {value:'',required:false};
+  const preferredContact = {value:''};
+  const phoneLabel = {textContent:''};
   const submit = {disabled:false};
-  const form = { elements:{namedItem:n=>n==='service'?select:{value:''}}, querySelector:()=>submit,
+  const form = { elements:{namedItem:n=>n==='service'?select:n==='phone'?phone:n==='preferred_contact'?preferredContact:{value:''}},
+    querySelector:selector=>selector==='[data-phone-label]'?phoneLabel:submit,
     appendChild:()=>{}, addEventListener:(n,fn)=>handlers[n]=fn, reportValidity:()=>true,
     action:'https://rmcreatives.com/ru/thank-you' };
   const document = {documentElement:{lang:'ru'},head:{appendChild:x=>scripts.push(x)},
@@ -26,8 +30,8 @@ function setup({ path='/ru/performance/', choice, session=storage(), success=tru
     FormData:class { *[Symbol.iterator](){yield ['form-name','project-enquiry-ru'];yield ['email','private@example.com'];} },
     fetch:async(url,options)=>{posts.push(options);return {ok:success};},setTimeout:fn=>fn()});
   vm.runInContext(code,context);
-  function events(){return Array.from(window.fbq?.queue || [], a=>Array.from(a)).filter(a=>a[0].startsWith('trackSingle'));}
-  return {events,window,buttons,handlers,submit,scripts,ga,posts,visits,banner,session};
+  function events(){return Array.from(window.fbq?.queue || [], a=>Array.from(a)).filter(a=>['track','trackCustom'].includes(a[0]));}
+  return {events,window,buttons,handlers,submit,scripts,ga,posts,visits,banner,session,phone,preferredContact,phoneLabel};
 }
 test('no Meta script/events before consent or after decline',()=>{
   const a=setup();assert.equal(a.banner.hidden,false);assert.equal(a.scripts.length,0);
@@ -35,16 +39,26 @@ test('no Meta script/events before consent or after decline',()=>{
 });
 test('grant sends one page and product view to the specified pixel; revoke gates events',()=>{
   const a=setup();a.buttons.granted();a.buttons.granted();
-  assert.equal(a.scripts.length,1);assert.deepEqual(a.events().map(e=>e[2]),['PageView','ViewContent']);
-  assert.ok(a.events().every(e=>e[1]==='3564188807089922'));
+  assert.equal(a.scripts.length,1);assert.deepEqual(a.events().map(e=>e[1]),['PageView','ViewContent']);
+  assert.ok(Array.from(a.window.fbq.queue, e=>Array.from(e)).some(e=>e[0]==='init'&&e[1]==='3564188807089922'));
   a.buttons.denied();assert.equal(a.window.fbq.queue.at(-1)[1],'revoke');
 });
 test('form start sends HotInterest once, with no field contents',()=>{
   const a=setup({path:'/ru/contact/',choice:'granted'});
   a.handlers.input({target:{name:'email',value:'private@example.com'}});
   a.handlers.input({target:{name:'message',value:'private message'}});
-  assert.deepEqual(a.events().map(e=>e[2]),['PageView','HotInterest']);
+  assert.deepEqual(a.events().map(e=>e[1]),['PageView','HotInterest']);
   assert.ok(!JSON.stringify(a.events()).includes('private'));
+});
+test('phone is required only when phone or WhatsApp is selected',()=>{
+  const a=setup({path:'/ru/contact/'});
+  assert.equal(a.phone.required,false);assert.equal(a.phoneLabel.textContent,'Телефон');
+  a.preferredContact.value='phone';a.handlers.change({target:{name:'preferred_contact'}});
+  assert.equal(a.phone.required,true);assert.equal(a.phoneLabel.textContent,'Телефон *');
+  a.preferredContact.value='whatsapp';a.handlers.change({target:{name:'preferred_contact'}});
+  assert.equal(a.phone.required,true);
+  a.preferredContact.value='email';a.handlers.change({target:{name:'preferred_contact'}});
+  assert.equal(a.phone.required,false);assert.equal(a.phoneLabel.textContent,'Телефон');
 });
 test('failed POST produces no Lead, no receipt, and enables retry',async()=>{
   const a=setup({path:'/ru/contact/',choice:'granted',success:false});
@@ -58,10 +72,10 @@ test('successful POST produces one Lead across double submit, redirect and reloa
   await Promise.all([a.handlers.submit({preventDefault(){}}),a.handlers.submit({preventDefault(){}})]);
   assert.equal(a.posts.length,1);assert.equal(a.visits.length,1);
   const thanks=setup({path:'/ru/thank-you/',choice:'granted',session:a.session});
-  assert.equal(thanks.events().filter(e=>e[2]==='Lead').length,1);
+  assert.equal(thanks.events().filter(e=>e[1]==='Lead').length,1);
   assert.equal(thanks.ga.length,1);
   const reload=setup({path:'/ru/thank-you/',choice:'granted',session:a.session});
-  assert.equal(reload.events().filter(e=>e[2]==='Lead').length,0);assert.equal(reload.ga.length,0);
+  assert.equal(reload.events().filter(e=>e[1]==='Lead').length,0);assert.equal(reload.ga.length,0);
 });
 test('no consent still submits form, but does not emit Meta Lead',async()=>{
   const a=setup({path:'/ru/contact/'});await a.handlers.submit({preventDefault(){}});
@@ -70,5 +84,5 @@ test('no consent still submits form, but does not emit Meta Lead',async()=>{
 });
 test('blocked session storage does not break successful submission',async()=>{
   const a=setup({path:'/ru/contact/',choice:'granted',blocked:true});await a.handlers.submit({preventDefault(){}});
-  assert.equal(a.visits.length,1);assert.equal(a.events().filter(e=>e[2]==='Lead').length,1);
+  assert.equal(a.visits.length,1);assert.equal(a.events().filter(e=>e[1]==='Lead').length,1);
 });
