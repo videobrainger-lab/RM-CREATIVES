@@ -27,20 +27,20 @@ interface Props {
 const pathname = Astro.url.pathname;
 const inferredLang = pathname.startsWith('/ru') ? 'ru' : 'en';
 const seoByPath: Record<string, { title: string; description: string }> = {
-  '/': { title: 'Patient Acquisition for Clinics | RM CREATIVES', description: 'Patient acquisition for medical, dental and aesthetic clinics through Meta Ads, Google Ads and high-converting clinic websites.' },
-  '/ru/': { title: 'Привлечение пациентов для клиник | RM CREATIVES', description: 'Привлечение пациентов для медицинских, стоматологических и эстетических клиник через Meta Ads, Google Ads и конверсионные сайты.' },
-  '/performance/': { title: 'Meta Ads for Clinics — Pay per Enquiry | RM CREATIVES', description: 'Meta Ads for clinics with a transparent pay-per-enquiry model. Strategy, creatives, campaign management and optimisation focused on qualified enquiries.' },
-  '/ru/performance/': { title: 'Meta Ads для клиник — оплата за обращения | RM CREATIVES', description: 'Meta Ads для клиник с прозрачной оплатой за обращения. Стратегия, креативы, запуск и оптимизация рекламы с фокусом на целевые заявки.' },
-  '/search/': { title: 'Google Ads for Clinics | RM Search by RM CREATIVES', description: 'Google Search Ads for clinics that capture existing patient demand. Forecasting, campaign structure, optimisation and measurable conversion performance.' },
-  '/ru/search/': { title: 'Google Ads для клиник | RM Search by RM CREATIVES', description: 'Поисковая реклама Google Ads для клиник: прогноз до запуска, структура кампаний, оптимизация и привлечение пациентов с существующим спросом.' },
-  '/sites/': { title: 'Clinic Website Design & Development | RM CREATIVES', description: 'High-converting websites for medical, dental and aesthetic clinics. Fast launch, clear patient journeys, mobile-first UX and SEO-ready architecture.' },
-  '/ru/sites/': { title: 'Разработка сайтов для клиник | RM CREATIVES', description: 'Конверсионные сайты для медицинских, стоматологических и эстетических клиник: быстрый запуск, понятный путь пациента, mobile-first UX и SEO-архитектура.' },
+  '/': { title: "Patient Acquisition for Clinics | RM CREATIVES", description: "Patient acquisition for medical, dental and aesthetic clinics. Specialists use AI to analyse demand, campaigns and websites for better marketing decisions." },
+  '/ru/': { title: "Привлечение пациентов для клиник | RM CREATIVES", description: "Привлечение пациентов для медицинских, стоматологических и эстетических клиник. Специалисты используют ИИ для анализа рекламы, спроса, сайта и обращений." },
+  '/performance/': { title: "Meta Ads for Clinics — Pay per Enquiry | RM CREATIVES", description: "Meta Ads for medical and aesthetic clinics with payment per enquiry. Human creative strategy and AI-assisted analysis of campaigns, offers and lead quality." },
+  '/ru/performance/': { title: "Meta Ads для клиник — оплата за обращения | RM CREATIVES", description: "Meta Ads для медицинских и эстетических клиник с оплатой за обращения. Стратегия специалиста и AI-анализ кампаний, креативов, офферов и качества лидов." },
+  '/search/': { title: "Google Ads for Medical Clinics | RM CREATIVES", description: "Google Ads for medical, dental and aesthetic clinics. A specialist controls budgets; AI helps analyse search terms, conversions and landing pages together." },
+  '/ru/search/': { title: "Google Ads для клиник | RM CREATIVES", description: "Google Ads для медицинских, стоматологических и эстетических клиник. Специалист контролирует бюджет, ИИ анализирует запросы, конверсии и посадочные страницы." },
+  '/sites/': { title: "Clinic Website Design & Development | RM CREATIVES", description: "Websites for medical, dental and aesthetic clinics. Human UX and development with AI-assisted research, content analysis and QA for clearer patient journeys." },
+  '/ru/sites/': { title: "Разработка сайтов для клиник | RM CREATIVES", description: "Сайты медицинских, стоматологических и эстетических клиник. UX и разработка под управлением людей, AI-анализ спроса и контента, техническая проверка сайта." },
   '/cases/': { title: 'Clinic Marketing Cases & Results | RM CREATIVES', description: 'Real clinic marketing case studies across Meta Ads, Google Ads, SEO, websites and CRM. Problems solved, systems built and measurable results.' },
   '/ru/cases/': { title: 'Кейсы маркетинга клиник и результаты | RM CREATIVES', description: 'Реальные кейсы клиник: Meta Ads, Google Ads, SEO, сайты и CRM. Решённые задачи, построенные системы и измеримые результаты.' },
   '/insights/': { title: 'Clinic Growth Library | RM CREATIVES', description: 'Commercial clinic marketing guides, patient acquisition benchmarks and practical strategy for dental, medical and aesthetic clinics.' },
   '/ru/insights/': { title: 'Маркетинг клиник: статьи и разборы | RM CREATIVES', description: 'Практические материалы о маркетинге клиник, привлечении пациентов, Meta Ads, Google Ads, SEO, сайтах и системах конверсии.' },
-  '/contact/': { title: 'Discuss a Clinic Marketing Project | RM CREATIVES', description: 'Tell us about your clinic, current acquisition channels and growth goals. We will review the task and suggest the most relevant next step.' },
-  '/ru/contact/': { title: 'Обсудить маркетинг клиники | RM CREATIVES', description: 'Расскажите о клинике, текущих каналах привлечения и целях роста. Мы изучим задачу и предложим наиболее подходящий следующий шаг.' }
+  '/contact/': { title: "Discuss a Clinic Marketing Project | RM CREATIVES", description: "Discuss patient acquisition for your medical or aesthetic clinic. Specialists review demand, campaigns, website and measurement with AI-assisted analysis." },
+  '/ru/contact/': { title: "Обсудить маркетинг клиники | RM CREATIVES", description: "Обсудим привлечение пациентов в вашу медицинскую или эстетическую клинику. Специалисты используют ИИ для анализа спроса, рекламы, сайта и измерения обращений." },
 };
 const normalizedPath = pathname === '/' ? '/' : pathname.endsWith('/') ? pathname : `${pathname}/`;
 const mappedSeo = seoByPath[normalizedPath];

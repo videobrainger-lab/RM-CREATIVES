@@ -5,7 +5,7 @@ const isRu = Astro.url.pathname.startsWith('/ru');
   <div class="shell footer-grid">
     <div class="footer-brand-block">
       <a class="footer-brand" href={isRu ? '/ru/' : '/'}>RM CREATIVES</a>
-      <p>{isRu ? 'Привлечение пациентов в клиники' : 'Results Matter. Marketing for Medical & Aesthetic Clinics.'}</p>
+      <p>Results Matter. Marketing for Medical &amp; Aesthetic Clinics.</p>
     </div>
 
     <div class="footer-col">
@@ -50,12 +50,6 @@ const isRu = Astro.url.pathname.startsWith('/ru');
 
 <script is:inline>
   const applySitePolish = () => {
-    if (location.pathname === '/') {
-      const heroLabel = document.querySelector('.hero-top span:first-child');
-      const heroCopy = document.querySelector('.hero-bottom p');
-      if (heroLabel) heroLabel.textContent = 'Results Matter. Marketing for Medical & Aesthetic Clinics.';
-      if (heroCopy) heroCopy.textContent = 'Meta Ads, Google Ads and high-converting websites built exclusively for medical and aesthetic clinics.';
-    }
 
     const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim().toLowerCase();
     const probe = document.createElement('span');

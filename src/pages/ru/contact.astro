@@ -6,9 +6,9 @@ import ConsentCheckbox from '../../components/ConsentCheckbox.astro';
   <main class="contact shell">
     <div class="intro">
       <span class="eyebrow">НАЧАТЬ ПРОЕКТ / RM CREATIVES</span>
-      <h1>Поговорим.</h1>
-      <p>Расскажите немного о вашей клинике и задаче. Мы изучим информацию и свяжемся с вами.</p>
-    </div>
+      <h1>По­ка­жи­те про­бле­му роста вашей кли­ни­ки.</h1>
+      <p>Расскажите, какие услуги вы хотите развивать, откуда сегодня приходят пациенты и что происходит после обращения. Мы посмотрим на спрос, рекламу, поисковую видимость, конверсию сайта и измерение как на одну систему, прежде чем предложить следующий шаг.</p>
+    <p>Аккаунт анализируют специалисты. ИИ помогает в исследовании и анализе, но не принимает без контроля маркетинговые или клинические решения.</p></div>
     <form name="project-enquiry-ru" method="POST" action="/ru/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="form">
       <input type="hidden" name="form-name" value="project-enquiry-ru" />
       <p class="hidden"><label>Не заполняйте это поле: <input name="bot-field" /></label></p>
@@ -28,9 +28,9 @@ import ConsentCheckbox from '../../components/ConsentCheckbox.astro';
         <p>Мы используем выбранный канал только для ответа на эту заявку.</p>
       </fieldset>
       <label><span>Что вас интересует? *</span><select name="service" required><option value="">Выберите</option><option value="Industry marketing">Маркетинг стоматологии / медицины / эстетики</option><option>RM Performance — Meta Ads</option><option>RM Search — Google Ads</option><option>RM Sites — сайт</option><option>Несколько продуктов</option></select></label>
-      <label><span>Коротко о задаче</span><textarea name="message" rows="5"></textarea></label>
+      <label><span>Коротко о задаче</span><textarea name="message" rows="5" placeholder="Полезно указать: приоритетные услуги, локации, месячный рекламный бюджет, текущий объём обращений, доступную загрузку и инструменты аналитики, CRM или онлайн-записи."></textarea></label>
       <ConsentCheckbox lang="ru" />
-      <button type="submit">Отправить заявку ↗</button>
+      <button type="submit">Отправить детали проекта ↗</button>
     </form>
   </main>
 </BaseLayout>
