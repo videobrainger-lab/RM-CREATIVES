@@ -1,0 +1,78 @@
+/* Preserve whole words; typography adjustments are limited to commercial layouts. */
+h1, h2, h3 {
+  hyphens: none;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+main.copy-page[class] .hero h1 {
+  font-size: clamp(42px, 6.3vw, 92px);
+  line-height: 1.02;
+  letter-spacing: -.055em;
+  margin: 0;
+  font-weight: 650;
+}
+:root:lang(ru) main.copy-page[class] .hero h1 { font-size: clamp(36px, 5.5vw, 80px); }
+main.product-page[class] .hero { padding: 38px 0 90px; min-height: 620px; }
+main.product-page[class] .hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(250px, .65fr);
+  gap: 50px;
+  align-items: end;
+  margin-top: 70px;
+}
+main.home-page[class] .hero { min-height: 700px; gap: 36px; }
+main.home-page[class] .hero-top { gap: 24px; margin-bottom: 10px; }
+main.home-page[class] .about { padding: 85px 0; }
+main.home-page[class] .about-grid {
+  grid-template-columns: minmax(120px, .35fr) minmax(0, 1fr) minmax(0, .9fr);
+  gap: 36px;
+}
+main.home-page[class] .about h2 { font-size: clamp(34px, 3.7vw, 54px); line-height: 1.05; }
+main.home-page[class] .about-copy p { font-size: 17px; line-height: 1.5; margin: 0 0 18px; }
+main.industry-page[class] .industry-hero h1 { font-size: clamp(36px, 5.5vw, 80px); line-height: 1.02; }
+@media (max-width: 1050px) {
+  main.home-page[class] .hero-core, main.home-page[class] .hero-bottom, main.home-page[class] .about-grid { grid-template-columns: 1fr; }
+  main.home-page[class] .hero-actions { justify-content: flex-start; }
+  main.home-page[class] .hero { min-height: 0; }
+}
+@media (max-width: 850px) {
+  main.product-page[class] .hero-grid { grid-template-columns: 1fr; gap: 32px; margin-top: 48px; }
+  main.product-page[class] .hero { min-height: 0; padding-bottom: 65px; }
+}
+@media (max-width: 560px) {
+  main.copy-page[class] .hero h1 { font-size: clamp(34px, 10vw, 52px); }
+  :root:lang(ru) main.copy-page[class] .hero h1 { font-size: clamp(30px, 9vw, 46px); }
+  :root main.copy-page[class] h2 { font-size: clamp(30px, 8vw, 42px); line-height: 1.08; }
+  :root main.copy-page[class] h3 { font-size: clamp(24px, 6.5vw, 30px); }
+  main.home-page[class] .hero-actions { flex-direction: column; }
+  main.home-page[class] .about { padding: 60px 0; }
+  main.seo-page[class] .hero h1, main.seo-page[class] .final h2, main.industry-page[class] .industry-hero h1 {
+    font-size: clamp(30px, 9vw, 42px);
+    line-height: 1.04;
+  }
+  main.seo-page[class] .case h2, main.seo-page[class] .faq h2 { font-size: 34px; line-height: 1.05; }
+  main.seo-page[class] .content li { font-size: 18px; grid-template-columns: 42px minmax(0, 1fr); }
+  main.seo-page[class] .steps article { grid-template-columns: 32px minmax(0, 1fr); gap: 12px; }
+  main.seo-page[class] .steps h3 { font-size: 22px; }
+}
+/* Keep compound words intact without forcing the whole heading onto one line. */
+.whole-word { white-space: nowrap; }
+main.product-page[class] .hero h1 { font-size: clamp(34px, 5.2vw, 70px); }
+:root:lang(ru) main.product-page[class] .hero h1 { font-size: clamp(30px, 4.8vw, 66px); }
+@media (max-width: 560px) {
+  main.product-page[class] .hero h1 { font-size: clamp(30px, 9vw, 46px); }
+  :root:lang(ru) main.product-page[class] .hero h1 { font-size: clamp(28px, 8.5vw, 44px); }
+  main.contact[class] .intro { min-width: 0; }
+  main.contact[class] h1 { font-size: clamp(32px, 9vw, 46px); line-height: 1.04; }
+}
+/* Let grid children shrink to the viewport rather than their longest word. */
+main.home-page[class] .product-card,
+main.seo-page[class] .content > div,
+main.seo-page[class] .steps article > div,
+main.industry-page[class] .case-copy { min-width: 0; }
+@media (max-width: 560px) {
+  :root main.contact[class] h1 { font-size: clamp(30px, 8vw, 42px); line-height: 1.04; }
+  :root main.industry-page[class] h2 { font-size: 30px; line-height: 1.06; }
+  main.seo-page[class] .final h2 { font-size: clamp(28px, 8vw, 40px); }
+  main.home-page[class] .search-flow { flex-wrap: wrap; }
+}

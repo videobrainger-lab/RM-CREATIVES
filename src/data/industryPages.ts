@@ -315,7 +315,7 @@ enIndustryPages.push({
 // Approved EN/RU master copy; proof metrics and route definitions above stay intact.
 const masterCopy: Record<string, Partial<IndustryPage>> = {
   "dental-marketing": {
-    "headline": "Dental marketing managed as one ac­qui­si­tion system — with AI helping us see more of it.",
+    "headline": "Dental marketing managed as one acquisition system — with AI helping us see more of it.",
     "intro": "We connect SEO, Google Ads, landing pages and measurement around the treatments your clinic wants to grow. Specialists own each channel; AI helps them analyse demand, performance and patient-journey signals across the system instead of working from isolated reports.",
     "capabilities": [
       "Demand research — AI-assisted analysis expands the number of treatment, location and competitor signals we can review; a strategist decides which opportunities matter commercially.",
@@ -330,15 +330,15 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "strategySteps": [
       {
         "title": "Demand research",
-        "copy": "AI-assisted analysis expands the number of treatment, location and com­peti­tor signals we can review; a strate­gist decides which op­por­tu­ni­ties matter com­mer­cial­ly."
+        "copy": "AI-assisted analysis expands the number of treatment, location and competitor signals we can review; a strategist decides which opportunities matter commercially."
       },
       {
         "title": "SEO / GEO",
-        "copy": "spe­cial­ists map treatment and local demand, while AI helps inspect query sets, page overlap, Search Console signals, com­peti­tor coverage and emerging AI-search vis­i­bil­i­ty."
+        "copy": "specialists map treatment and local demand, while AI helps inspect query sets, page overlap, Search Console signals, competitor coverage and emerging AI-search visibility."
       },
       {
         "title": "Google Ads",
-        "copy": "a paid-search spe­cial­ist manages budgets; AI helps review larger volumes of search terms, spend and con­ver­sion patterns to find waste sooner."
+        "copy": "a paid-search specialist manages budgets; AI helps review larger volumes of search terms, spend and conversion patterns to find waste sooner."
       },
       {
         "title": "Landing pages",
@@ -348,10 +348,10 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "measurement": "Enquiry optimisation — calls, forms and available CRM outcomes feed back into decisions so the system can learn which demand is actually useful.",
     "title": "Dental Marketing Agency for Clinics | RM CREATIVES",
     "description": "Dental Marketing Agency for Clinics. Specialists connect search, advertising, websites and enquiry data. AI expands research and analysis; humans make the decisions.",
-    "ctaTitle": "Turn dental demand into mea­sur­able enquiries."
+    "ctaTitle": "Turn dental demand into measurable enquiries."
   },
   "ru/dental-marketing": {
-    "headline": "Маркетинг сто­ма­то­ло­гии. Спе­ци­а­ли­сты + ИИ.",
+    "headline": "Маркетинг стоматологии. Специалисты + ИИ.",
     "intro": "Мы связываем SEO, Google Ads, посадочные страницы и аналитику вокруг тех видов лечения, которые клиника хочет развивать. Каждый канал находится у профильного специалиста; ИИ помогает анализировать спрос, эффективность и путь пациента на уровне всей системы, а не отдельных отчётов.",
     "capabilities": [
       "Исследование спроса — AI-анализ расширяет количество сигналов по лечению, географии и конкурентам; стратег определяет, какие возможности имеют коммерческий смысл.",
@@ -365,26 +365,26 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "eyebrow": "DENTAL MARKETING / HUMAN + AI",
     "strategySteps": [
       {
-        "title": "Ис­сле­до­ва­ние спроса",
-        "copy": "AI-анализ расширяет ко­ли­че­ство сигналов по лечению, географии и кон­ку­рен­там; стратег опре­де­ля­ет, какие воз­мож­но­сти имеют ком­мер­че­ский смысл."
+        "title": "Исследование спроса",
+        "copy": "AI-анализ расширяет количество сигналов по лечению, географии и конкурентам; стратег определяет, какие возможности имеют коммерческий смысл."
       },
       {
         "title": "SEO / GEO",
-        "copy": "спе­ци­а­ли­сты строят карту спроса по лечению и географии, а ИИ помогает ана­ли­зи­ро­вать запросы, пе­ре­се­че­ния страниц, Search Console, кон­ку­рен­тов и видимость в AI-поиске."
+        "copy": "специалисты строят карту спроса по лечению и географии, а ИИ помогает анализировать запросы, пересечения страниц, Search Console, конкурентов и видимость в AI-поиске."
       },
       {
         "title": "Google Ads",
-        "copy": "спе­ци­а­лист управляет бюджетом; ИИ помогает чаще и глубже проверять поисковые запросы, расходы и паттерны конверсий, чтобы раньше находить потери."
+        "copy": "специалист управляет бюджетом; ИИ помогает чаще и глубже проверять поисковые запросы, расходы и паттерны конверсий, чтобы раньше находить потери."
       },
       {
-        "title": "По­са­доч­ные страницы",
-        "copy": "UX и контент опираются на данные поиска, рекламы и поведения, а не на аб­стракт­ные best practices."
+        "title": "Посадочные страницы",
+        "copy": "UX и контент опираются на данные поиска, рекламы и поведения, а не на абстрактные best practices."
       }
     ],
     "measurement": "Оптимизация обращений — звонки, формы и доступные результаты CRM возвращаются в систему, чтобы понимать, какой спрос действительно полезен.",
     "title": "Маркетинг стоматологии | RM CREATIVES",
     "description": "Маркетинг стоматологии. Специалисты связывают рекламу, SEO, сайт и обращения. ИИ помогает анализировать больше данных и точнее выбирать приоритеты.",
-    "ctaTitle": "Превратим сто­ма­то­ло­ги­че­ский спрос в измеримые обращения."
+    "ctaTitle": "Превратим стоматологический спрос в измеримые обращения."
   },
   "dental-marketing/seo": {
     "headline": "Dental SEO with human strategy and AI-scale analysis.",
@@ -401,29 +401,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Show us the site and priority treatments. We will map where organic demand is being missed, duplicated or wasted.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Technical and in­dex­a­tion audit with AI-assisted pattern detection across larger sets of URLs."
+        "title": "Specialist + AI",
+        "copy": "Technical and indexation audit with AI-assisted pattern detection across larger sets of URLs."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Treatment, spe­cial­ist and location demand mapping based on real search language."
+        "title": "Specialist + AI",
+        "copy": "Treatment, specialist and location demand mapping based on real search language."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Com­mer­cial page ar­chi­tec­ture designed to prevent can­ni­bal­i­sa­tion between services, articles and locations."
+        "title": "Specialist + AI",
+        "copy": "Commercial page architecture designed to prevent cannibalisation between services, articles and locations."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Content briefs grounded in patient questions, com­mer­cial intent and clinical review."
+        "title": "Specialist + AI",
+        "copy": "Content briefs grounded in patient questions, commercial intent and clinical review."
       }
     ],
     "measurement": "AI makes it possible to inspect more queries and pages; the SEO specialist decides what deserves a page, what should be consolidated and which opportunities match the clinic’s economics and expertise.",
     "title": "Dental SEO Agency | RM CREATIVES",
     "description": "Dental SEO Agency. Human SEO strategy with AI-assisted demand, Search Console and page-overlap analysis. Build visibility around useful patient enquiries.",
-    "ctaTitle": "Show us the site and priority treat­ments."
+    "ctaTitle": "Show us the site and priority treatments."
   },
   "ru/dental-marketing/seo": {
-    "headline": "SEO для сто­ма­то­ло­гии: стратегия человека и масштаб анализа ИИ.",
+    "headline": "SEO для стоматологии: стратегия человека и масштаб анализа ИИ.",
     "intro": "Развиваем видимость по тем услугам и локациям, которые пациенты действительно ищут, без публикации десятков страниц, конкурирующих друг с другом. SEO-специалист использует ИИ для анализа больших семантических массивов, Search Console, структуры сайта, конкурентов и пересечения страниц, а затем принимает решение, какие темы клинике действительно стоит занимать в поиске.",
     "capabilities": [
       "Технический и индексный аудит с AI-поиском повторяющихся проблем на больших массивах URL.",
@@ -437,26 +437,26 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Покажите сайт и приоритетные услуги. Мы найдём, где органический спрос теряется, дублируется или уходит не на те страницы.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Тех­ни­че­ский и индексный аудит с AI-поиском по­вто­ря­ю­щих­ся проблем на больших массивах URL."
+        "title": "Специалист + ИИ",
+        "copy": "Технический и индексный аудит с AI-поиском повторяющихся проблем на больших массивах URL."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
+        "title": "Специалист + ИИ",
         "copy": "Карта спроса по услугам, врачам и локациям на основе реального языка поиска пациентов."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Ар­хи­тек­ту­ра ком­мер­че­ских страниц, которая снижает кан­ни­ба­ли­за­цию между услугами, статьями и гео­гра­фи­че­ски­ми стра­ни­ца­ми."
+        "title": "Специалист + ИИ",
+        "copy": "Архитектура коммерческих страниц, которая снижает каннибализацию между услугами, статьями и географическими страницами."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "ТЗ на контент, осно­ван­ные на вопросах пациентов, ком­мер­че­ском намерении и ме­ди­цин­ской проверке."
+        "title": "Специалист + ИИ",
+        "copy": "ТЗ на контент, основанные на вопросах пациентов, коммерческом намерении и медицинской проверке."
       }
     ],
     "measurement": "ИИ позволяет проверить больше запросов и страниц; SEO-специалист решает, что заслуживает отдельной страницы, что нужно объединить и какие возможности соответствуют экономике и экспертизе клиники.",
     "title": "SEO для стоматологии | RM CREATIVES",
     "description": "SEO для стоматологии. AI-анализ спроса, Search Console, пересечения страниц и видимости в поиске. Решения принимает SEO-специалист.",
-    "ctaTitle": "Покажите сайт и при­о­ри­тет­ные услуги."
+    "ctaTitle": "Покажите сайт и приоритетные услуги."
   },
   "dental-marketing/google-ads": {
     "headline": "Google Ads for dentists with deeper account control.",
@@ -472,29 +472,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "We will map active dental demand by treatment and location before recommending budget or campaign structure.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Separate emergency, restora­tive, implant, or­thodon­tic and cosmetic intent so one service does not consume another service’s budget."
+        "title": "Specialist + AI",
+        "copy": "Separate emergency, restorative, implant, orthodontic and cosmetic intent so one service does not consume another service’s budget."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Use AI-assisted query analysis to surface ir­rel­e­vant, ambiguous and emerging search patterns faster."
+        "title": "Specialist + AI",
+        "copy": "Use AI-assisted query analysis to surface irrelevant, ambiguous and emerging search patterns faster."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Compare spend, con­ver­sions and landing-page per­for­mance together instead of op­ti­mis­ing keywords in isolation."
+        "title": "Specialist + AI",
+        "copy": "Compare spend, conversions and landing-page performance together instead of optimising keywords in isolation."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Feed available call or CRM quality signals back into campaign decisions."
       }
     ],
     "measurement": "Keep healthcare and local advertising judgement under human control.",
     "title": "Google Ads for Dentists | RM CREATIVES",
     "description": "Google Ads for Dentists. Specialist budget control with AI-assisted search-term, spend, conversion and landing-page analysis for useful patient enquiries.",
-    "ctaTitle": "We will map active dental demand by treatment and location before rec­om­mend­ing budget or campaign structure."
+    "ctaTitle": "We will map active dental demand by treatment and location before recommending budget or campaign structure."
   },
   "ru/dental-marketing/google-ads": {
-    "headline": "Google Ads для сто­ма­то­ло­гии с более глубоким контролем аккаунта.",
+    "headline": "Google Ads для стоматологии с более глубоким контролем аккаунта.",
     "intro": "Поиск в стоматологии может быть дорогим, потому что пациент уже близок к выбору клиники. Аккаунтом управляет специалист по поисковой рекламе; ИИ помогает чаще и на большем объёме данных анализировать запросы, распределение бюджета, паттерны конверсий и релевантность посадочных.",
     "capabilities": [],
     "challenge": "Поиск в стоматологии может быть дорогим, потому что пациент уже близок к выбору клиники. Аккаунтом управляет специалист по поисковой рекламе; ИИ помогает чаще и на большем объёме данных анализировать запросы, распределение бюджета, паттерны конверсий и релевантность посадочных.",
@@ -519,29 +519,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Build an implant acquisition system around qualified consultation demand, not raw lead volume.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Implant and full-arch demand map across com­mer­cial and research-stage intent."
+        "title": "Specialist + AI",
+        "copy": "Implant and full-arch demand map across commercial and research-stage intent."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "AI-assisted analysis of common questions, com­peti­tor po­si­tion­ing and content gaps."
+        "title": "Specialist + AI",
+        "copy": "AI-assisted analysis of common questions, competitor positioning and content gaps."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Google Ads structure around high-intent treatment demand."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Con­sul­ta­tion-led landing pages with clinician, process and proof signals."
+        "title": "Specialist + AI",
+        "copy": "Consultation-led landing pages with clinician, process and proof signals."
       }
     ],
     "measurement": "Measurement from source to enquiry and, where available, consultation outcome.",
     "title": "Dental Implant Marketing | RM CREATIVES",
     "description": "Dental Implant Marketing. Specialists connect search, advertising, websites and enquiry data. AI expands research and analysis; humans make the decisions.",
-    "ctaTitle": "Build an implant ac­qui­si­tion system around qualified con­sul­ta­tion demand, not raw lead volume."
+    "ctaTitle": "Build an implant acquisition system around qualified consultation demand, not raw lead volume."
   },
   "ru/dental-marketing/dental-implants": {
-    "headline": "Маркетинг им­план­та­ции для решения, которое нельзя свести к лид-форме.",
+    "headline": "Маркетинг имплантации для решения, которое нельзя свести к лид-форме.",
     "intro": "Пациенты, выбирающие имплантацию и полную реабилитацию, изучают методы, стоимость, доверие, восстановление, финансирование и альтернативы ещё до обращения. ИИ помогает масштабно анализировать эту карту выбора; специалисты превращают её в поисковое покрытие, убедительные страницы и путь к консультации.",
     "capabilities": [
       "Карту спроса на имплантацию и full-arch от коммерческих запросов до этапа исследования.",
@@ -554,26 +554,26 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Строим систему привлечения на имплантацию вокруг качественного спроса на консультацию, а не сырого количества лидов.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Карту спроса на им­план­та­цию и full-arch от ком­мер­че­ских запросов до этапа ис­сле­до­ва­ния."
+        "title": "Специалист + ИИ",
+        "copy": "Карту спроса на имплантацию и full-arch от коммерческих запросов до этапа исследования."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "AI-анализ частых вопросов, по­зи­ци­о­ни­ро­ва­ния кон­ку­рен­тов и кон­тент­ных пробелов."
+        "title": "Специалист + ИИ",
+        "copy": "AI-анализ частых вопросов, позиционирования конкурентов и контентных пробелов."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Структуру Google Ads вокруг вы­со­ко­ин­тент­но­го спроса на лечение."
+        "title": "Специалист + ИИ",
+        "copy": "Структуру Google Ads вокруг высокоинтентного спроса на лечение."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "По­са­доч­ные страницы под кон­суль­та­цию с ин­фор­ма­ци­ей о враче, процессе и до­ка­за­тель­ствах."
+        "title": "Специалист + ИИ",
+        "copy": "Посадочные страницы под консультацию с информацией о враче, процессе и доказательствах."
       }
     ],
     "measurement": "Измерение от источника до обращения и, где возможно, до результата консультации.",
     "title": "Маркетинг имплантации зубов | RM CREATIVES",
     "description": "Маркетинг имплантации зубов. Специалисты связывают рекламу, SEO, сайт и обращения. ИИ помогает анализировать больше данных и точнее выбирать приоритеты.",
-    "ctaTitle": "Строим систему при­вле­че­ния на им­план­та­цию вокруг ка­че­ствен­но­го спроса на кон­суль­та­цию, а не сырого ко­ли­че­ства лидов."
+    "ctaTitle": "Строим систему привлечения на имплантацию вокруг качественного спроса на консультацию, а не сырого количества лидов."
   },
   "dental-marketing/websites": {
     "headline": "Dental websites built from patient demand, not internal clinic structure.",
@@ -589,29 +589,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Turn the website into the conversion layer for the whole dental acquisition system.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Patient-first in­for­ma­tion ar­chi­tec­ture across treat­ments, clin­i­cians and locations."
+        "title": "Specialist + AI",
+        "copy": "Patient-first information architecture across treatments, clinicians and locations."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Pages that answer the same questions patients bring from Google Ads and organic search."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Mobile con­ver­sion paths for calls, forms, messages and booking."
+        "title": "Specialist + AI",
+        "copy": "Mobile conversion paths for calls, forms, messages and booking."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "SEO-ready technical foun­da­tions and analytics from launch."
+        "title": "Specialist + AI",
+        "copy": "SEO-ready technical foundations and analytics from launch."
       }
     ],
     "measurement": "AI-assisted QA for consistency, metadata, links and repeated implementation issues.",
     "title": "Dental Website Design | RM CREATIVES",
     "description": "Dental Website Design. Human UX with AI-assisted demand research, content analysis and QA. Build clear patient journeys from search to enquiry.",
-    "ctaTitle": "Turn the website into the con­ver­sion layer for the whole dental ac­qui­si­tion system."
+    "ctaTitle": "Turn the website into the conversion layer for the whole dental acquisition system."
   },
   "ru/dental-marketing/websites": {
-    "headline": "Сайты сто­ма­то­ло­гий, по­стро­ен­ные от спроса пациентов, а не от вну­трен­ней структуры клиники.",
+    "headline": "Сайты стоматологий, построенные от спроса пациентов, а не от внутренней структуры клиники.",
     "intro": "Мы используем поисковый спрос, данные платной рекламы и поведение пациентов, чтобы сформировать сайт до того, как дизайн станет неизменяемым. ИИ помогает анализировать большие массивы запросов, текущих страниц и контента; финальный путь пациента определяют UX-специалисты и клиническая логика.",
     "capabilities": [
       "Patient-first архитектуру по услугам, врачам и локациям.",
@@ -624,30 +624,30 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Превращаем сайт в конверсионный слой всей системы привлечения стоматологии.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Patient-first ар­хи­тек­ту­ру по услугам, врачам и локациям."
+        "title": "Специалист + ИИ",
+        "copy": "Patient-first архитектуру по услугам, врачам и локациям."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Страницы, которые отвечают на те же вопросы, с которыми пациент приходит из Google Ads и ор­га­ни­че­ско­го поиска."
+        "title": "Специалист + ИИ",
+        "copy": "Страницы, которые отвечают на те же вопросы, с которыми пациент приходит из Google Ads и органического поиска."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
+        "title": "Специалист + ИИ",
         "copy": "Мобильные сценарии конверсии для звонков, форм, сообщений и записи."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "SEO-ready тех­ни­че­скую базу и аналитику с момента запуска."
+        "title": "Специалист + ИИ",
+        "copy": "SEO-ready техническую базу и аналитику с момента запуска."
       }
     ],
     "measurement": "AI-QA согласованности, метаданных, ссылок и повторяющихся ошибок реализации.",
     "title": "Сайты для стоматологий | RM CREATIVES",
     "description": "Сайты для стоматологий. UX под управлением людей, AI-анализ спроса, контента и техническая проверка. Понятный путь пациента к обращению.",
-    "ctaTitle": "Пре­вра­ща­ем сайт в кон­вер­си­он­ный слой всей системы при­вле­че­ния сто­ма­то­ло­гии."
+    "ctaTitle": "Превращаем сайт в конверсионный слой всей системы привлечения стоматологии."
   },
   "medical-marketing": {
-    "headline": "Medical marketing with more data in view — and human judgement in control.",
-    "intro": "Private clinics and specialist centres need measurable patient demand without reducing healthcare decisions to generic performance marketing. We combine specialist channel management with AI-assisted research and analysis, so more demand, policy, page and outcome signals can be reviewed together.",
+    "headline": "Medical marketing. Better data. Human judgement.",
+    "intro": "Measurable patient demand for private clinics and specialist centres. Specialists make the decisions; AI expands research and data analysis.",
     "capabilities": [
       "Demand and competitor research across service, specialist, condition and location intent.",
       "SEO architecture that keeps informational visibility from competing with commercial clinic pages.",
@@ -661,30 +661,30 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "eyebrow": "MEDICAL MARKETING / HUMAN + AI",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Demand and com­peti­tor research across service, spe­cial­ist, condition and location intent."
+        "title": "Specialist + AI",
+        "copy": "Demand and competitor research across service, specialist, condition and location intent."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "SEO ar­chi­tec­ture that keeps in­for­ma­tion­al vis­i­bil­i­ty from competing with com­mer­cial clinic pages."
+        "title": "Specialist + AI",
+        "copy": "SEO architecture that keeps informational visibility from competing with commercial clinic pages."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Google Ads con­trolled by a spe­cial­ist with AI-assisted query, spend and con­ver­sion analysis."
+        "title": "Specialist + AI",
+        "copy": "Google Ads controlled by a specialist with AI-assisted query, spend and conversion analysis."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Landing pages designed around el­i­gi­bil­i­ty, trust and the correct next step."
+        "title": "Specialist + AI",
+        "copy": "Landing pages designed around eligibility, trust and the correct next step."
       }
     ],
     "measurement": "Lead-quality feedback used to improve acquisition when the clinic can return it.",
     "title": "Medical Marketing Agency | RM CREATIVES",
     "description": "Medical Marketing Agency. Specialists connect search, advertising, websites and enquiry data. AI expands research and analysis; humans make the decisions.",
-    "ctaTitle": "Build the ac­qui­si­tion system around the medical services, locations and patient journeys that actually matter to the clinic."
+    "ctaTitle": "Build the acquisition system around the medical services, locations and patient journeys that actually matter to the clinic."
   },
   "ru/medical-marketing": {
-    "headline": "Ме­ди­цин­ский маркетинг: больше данных в поле зрения, решения — под контролем человека.",
-    "intro": "Частным клиникам и специализированным центрам нужен измеримый пациентский спрос без превращения медицинского выбора в обычный performance-маркетинг. Мы соединяем профильное управление каналами с AI-исследованиями и анализом, чтобы спрос, политики, страницы и результаты обращений рассматривались вместе.",
+    "headline": "Медицинский маркетинг. Больше данных. Решают люди.",
+    "intro": "Измеримый спрос для частных клиник и профильных центров. Специалисты принимают решения; ИИ расширяет исследования и анализ данных.",
     "capabilities": [
       "Исследование спроса и конкурентов по услугам, специалистам, состояниям и географии.",
       "SEO-архитектура, в которой информационный контент усиливает, а не конкурирует с коммерческими страницами клиники.",
@@ -698,29 +698,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "eyebrow": "MEDICAL MARKETING / HUMAN + AI",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Ис­сле­до­ва­ние спроса и кон­ку­рен­тов по услугам, спе­ци­а­ли­стам, со­сто­я­ни­ям и географии."
+        "title": "Специалист + ИИ",
+        "copy": "Исследование спроса и конкурентов по услугам, специалистам, состояниям и географии."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "SEO-ар­хи­тек­ту­ра, в которой ин­фор­ма­ци­он­ный контент усиливает, а не кон­ку­ри­ру­ет с ком­мер­че­ски­ми стра­ни­ца­ми клиники."
+        "title": "Специалист + ИИ",
+        "copy": "SEO-архитектура, в которой информационный контент усиливает, а не конкурирует с коммерческими страницами клиники."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Google Ads под управ­ле­ни­ем спе­ци­а­ли­ста с AI-анализом запросов, расходов и конверсий."
+        "title": "Специалист + ИИ",
+        "copy": "Google Ads под управлением специалиста с AI-анализом запросов, расходов и конверсий."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "По­са­доч­ные страницы, по­стро­ен­ные вокруг показаний, доверия и пра­виль­но­го сле­ду­ю­ще­го шага."
+        "title": "Специалист + ИИ",
+        "copy": "Посадочные страницы, построенные вокруг показаний, доверия и правильного следующего шага."
       }
     ],
     "measurement": "Обратная связь по качеству лидов возвращается в систему, если клиника может её передавать.",
     "title": "Маркетинг медицинских клиник | RM CREATIVES",
     "description": "Маркетинг медицинских клиник. Специалисты связывают рекламу, SEO, сайт и обращения. ИИ помогает анализировать больше данных и точнее выбирать приоритеты.",
-    "ctaTitle": "Строим систему при­вле­че­ния вокруг тех ме­ди­цин­ских услуг, локаций и па­ци­ент­ских сценариев, которые дей­стви­тель­но важны клинике."
+    "ctaTitle": "Строим систему привлечения вокруг тех медицинских услуг, локаций и пациентских сценариев, которые действительно важны клинике."
   },
   "medical-marketing/seo": {
-    "headline": "Medical SEO that separates vis­i­bil­i­ty from useful patient demand.",
+    "headline": "Medical SEO that separates visibility from useful patient demand.",
     "intro": "Medical search spans services, specialists, symptoms, conditions and questions. AI helps us analyse that large semantic landscape, page overlap, Search Console performance and competitor coverage. An SEO specialist decides how those signals should become a safe, useful site architecture.",
     "capabilities": [
       "Technical and indexation audit across the full site.",
@@ -734,29 +734,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Find where medical search demand is being missed, duplicated or routed to the wrong page.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Technical and in­dex­a­tion audit across the full site."
+        "title": "Specialist + AI",
+        "copy": "Technical and indexation audit across the full site."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Service, spe­cial­ist, symptom and location demand mapping."
+        "title": "Specialist + AI",
+        "copy": "Service, specialist, symptom and location demand mapping."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Clear roles for com­mer­cial pages and in­for­ma­tion­al content to reduce can­ni­bal­i­sa­tion."
+        "title": "Specialist + AI",
+        "copy": "Clear roles for commercial pages and informational content to reduce cannibalisation."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "AI-assisted content-gap and internal-link analysis."
       }
     ],
     "measurement": "Organic enquiry measurement instead of traffic-only reporting.",
     "title": "Medical SEO Agency | RM CREATIVES",
     "description": "Medical SEO Agency. Human SEO strategy with AI-assisted demand, Search Console and page-overlap analysis. Build visibility around useful patient enquiries.",
-    "ctaTitle": "Find where medical search demand is being missed, du­pli­cat­ed or routed to the wrong page."
+    "ctaTitle": "Find where medical search demand is being missed, duplicated or routed to the wrong page."
   },
   "ru/medical-marketing/seo": {
-    "headline": "Ме­ди­цин­ское SEO, которое отделяет видимость от полезного па­ци­ент­ско­го спроса.",
+    "headline": "Медицинское SEO, которое отделяет видимость от полезного пациентского спроса.",
     "intro": "Медицинский поиск охватывает услуги, врачей, симптомы, состояния и вопросы. ИИ помогает анализировать большой семантический массив, пересечения страниц, Search Console и конкурентов. SEO-специалист решает, как превратить эти сигналы в безопасную и полезную архитектуру сайта.",
     "capabilities": [
       "Технический и индексный аудит всего сайта.",
@@ -770,29 +770,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Найдём, где медицинский поисковый спрос теряется, дублируется или попадает не на ту страницу.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Тех­ни­че­ский и индексный аудит всего сайта."
+        "title": "Специалист + ИИ",
+        "copy": "Технический и индексный аудит всего сайта."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
+        "title": "Специалист + ИИ",
         "copy": "Карту спроса по услугам, врачам, симптомам и географии."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Чёткие роли ком­мер­че­ских страниц и ин­фор­ма­ци­он­но­го контента для снижения кан­ни­ба­ли­за­ции."
+        "title": "Специалист + ИИ",
+        "copy": "Чёткие роли коммерческих страниц и информационного контента для снижения каннибализации."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "AI-анализ кон­тент­ных пробелов и вну­трен­ней пе­ре­лин­ков­ки."
+        "title": "Специалист + ИИ",
+        "copy": "AI-анализ контентных пробелов и внутренней перелинковки."
       }
     ],
     "measurement": "Измерение органических обращений вместо отчётности только по трафику.",
     "title": "SEO для медицинских клиник | RM CREATIVES",
     "description": "SEO для медицинских клиник. AI-анализ спроса, Search Console, пересечения страниц и видимости в поиске. Решения принимает SEO-специалист.",
-    "ctaTitle": "Найдём, где ме­ди­цин­ский поисковый спрос теряется, ду­бли­ру­ет­ся или попадает не на ту страницу."
+    "ctaTitle": "Найдём, где медицинский поисковый спрос теряется, дублируется или попадает не на ту страницу."
   },
   "medical-marketing/google-ads": {
-    "headline": "Google Ads for medical clinics: spe­cial­ist control with AI-assisted vigilance.",
+    "headline": "Google Ads for medical clinics: specialist control with AI-assisted vigilance.",
     "intro": "Medical accounts combine fragmented search intent, policy constraints and high-value patient decisions. A paid-search specialist owns the account; AI helps scan search terms, spend, conversions, account changes and landing-page signals more broadly and more often.",
     "capabilities": [
       "Forecast active demand by service and location before allocating budget.",
@@ -806,29 +806,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Capture active medical demand without letting platform automation decide what is clinically or commercially important.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Forecast active demand by service and location before al­lo­cat­ing budget."
+        "title": "Specialist + AI",
+        "copy": "Forecast active demand by service and location before allocating budget."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Separate brand, service, location and research intent."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Use AI-assisted analysis to surface ir­rel­e­vant queries, spend anomalies and con­ver­sion shifts sooner."
+        "title": "Specialist + AI",
+        "copy": "Use AI-assisted analysis to surface irrelevant queries, spend anomalies and conversion shifts sooner."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Align ads with compliant, service-specific landing pages."
       }
     ],
     "measurement": "Keep policy, clinical wording and final budget decisions under human review.",
     "title": "Google Ads for Medical Clinics | RM CREATIVES",
     "description": "Google Ads for Medical Clinics. Specialist budget control with AI-assisted search-term, spend, conversion and landing-page analysis for patient enquiries.",
-    "ctaTitle": "Capture active medical demand without letting platform au­to­ma­tion decide what is clin­i­cal­ly or com­mer­cial­ly important."
+    "ctaTitle": "Capture active medical demand without letting platform automation decide what is clinically or commercially important."
   },
   "ru/medical-marketing/google-ads": {
-    "headline": "Google Ads для ме­ди­цин­ских клиник: контроль спе­ци­а­ли­ста и AI-мо­ни­то­ринг.",
+    "headline": "Google Ads для медицинских клиник: контроль специалиста и AI-мониторинг.",
     "intro": "Медицинские аккаунты объединяют фрагментированный спрос, ограничения рекламных политик и дорогие решения пациентов. Аккаунтом управляет paid-search специалист; ИИ помогает шире и чаще проверять запросы, расходы, конверсии, изменения в аккаунте и сигналы посадочных страниц.",
     "capabilities": [
       "Прогноз активного спроса по услугам и географии до распределения бюджета.",
@@ -842,29 +842,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Забираем активный медицинский спрос, не позволяя автоматике платформы решать, что клинически и коммерчески важно.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Прогноз активного спроса по услугам и географии до рас­пре­де­ле­ния бюджета."
+        "title": "Специалист + ИИ",
+        "copy": "Прогноз активного спроса по услугам и географии до распределения бюджета."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Раз­де­ле­ние брен­до­во­го, сер­вис­но­го, гео­гра­фи­че­ско­го и ис­сле­до­ва­тель­ско­го намерения."
+        "title": "Специалист + ИИ",
+        "copy": "Разделение брендового, сервисного, географического и исследовательского намерения."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "AI-анализ для раннего об­на­ру­же­ния не­ре­ле­вант­ных запросов, аномалий расходов и сдвигов конверсии."
+        "title": "Специалист + ИИ",
+        "copy": "AI-анализ для раннего обнаружения нерелевантных запросов, аномалий расходов и сдвигов конверсии."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Связку объ­яв­ле­ний с кор­рект­ны­ми стра­ни­ца­ми кон­крет­ных услуг."
+        "title": "Специалист + ИИ",
+        "copy": "Связку объявлений с корректными страницами конкретных услуг."
       }
     ],
     "measurement": "Политики площадок, медицинские формулировки и финальные бюджетные решения остаются под человеческим контролем.",
     "title": "Google Ads для медицинских клиник | RM CREATIVES",
     "description": "Google Ads для медицинских клиник. Контроль бюджета специалистом и AI-анализ запросов, расходов, конверсий и посадочных для привлечения целевых обращений.",
-    "ctaTitle": "Забираем активный ме­ди­цин­ский спрос, не позволяя ав­то­ма­ти­ке платформы решать, что кли­ни­че­ски и ком­мер­че­ски важно."
+    "ctaTitle": "Забираем активный медицинский спрос, не позволяя автоматике платформы решать, что клинически и коммерчески важно."
   },
   "medical-marketing/hair-transplant": {
-    "headline": "Hair Trans­plant Marketing with human judgement and AI-scale research.",
+    "headline": "Hair Transplant Marketing with human judgement and AI-scale research.",
     "intro": "Hair-transplant acquisition combines technique research, surgeon comparison, trust, price and often cross-border planning. AI helps us analyse the full research landscape; specialists build the search, page and consultation system around the real decision.",
     "capabilities": [
       "Analyse technique, location and surgeon-related demand at scale.",
@@ -877,29 +877,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Start with the patient decision, the service economics and the evidence the clinic can responsibly support.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Analyse technique, location and surgeon-related demand at scale."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Map the research journey before the con­sul­ta­tion request."
+        "title": "Specialist + AI",
+        "copy": "Map the research journey before the consultation request."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Use AI-assisted com­peti­tor and content-gap analysis without copying generic clinic claims."
+        "title": "Specialist + AI",
+        "copy": "Use AI-assisted competitor and content-gap analysis without copying generic clinic claims."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Build paid and organic capture around qualified con­sul­ta­tion intent."
+        "title": "Specialist + AI",
+        "copy": "Build paid and organic capture around qualified consultation intent."
       }
     ],
     "measurement": "Measure source-to-consultation outcomes where systems allow.",
     "title": "Hair Transplant Marketing | RM CREATIVES",
     "description": "Hair Transplant Marketing. Specialists connect search, advertising, websites and enquiry data. AI expands research and analysis; humans make the decisions.",
-    "ctaTitle": "Start with the patient decision, the service economics and the evidence the clinic can re­spon­si­bly support."
+    "ctaTitle": "Start with the patient decision, the service economics and the evidence the clinic can responsibly support."
   },
   "ru/medical-marketing/hair-transplant": {
-    "headline": "Маркетинг транс­план­та­ции волос: че­ло­ве­че­ское решение и AI-масштаб ис­сле­до­ва­ния.",
+    "headline": "Маркетинг трансплантации волос: человеческое решение и AI-масштаб исследования.",
     "intro": "Привлечение на трансплантацию волос включает изучение методов, сравнение хирургов, доверие, цену и часто международную поездку. ИИ помогает анализировать весь исследовательский ландшафт; специалисты строят поисковую, контентную и консультационную систему вокруг реального решения пациента.",
     "capabilities": [
       "Анализ спроса по методам, географии и хирургам в масштабе.",
@@ -912,26 +912,26 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Начинаем с решения пациента, экономики услуги и доказательств, которые клиника может корректно подтвердить.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
+        "title": "Специалист + ИИ",
         "copy": "Анализ спроса по методам, географии и хирургам в масштабе."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Карту пути ис­сле­до­ва­ния до запроса на кон­суль­та­цию."
+        "title": "Специалист + ИИ",
+        "copy": "Карту пути исследования до запроса на консультацию."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "AI-анализ кон­ку­рен­тов и кон­тент­ных пробелов без ко­пи­ро­ва­ния типичных кли­ни­че­ских обещаний."
+        "title": "Специалист + ИИ",
+        "copy": "AI-анализ конкурентов и контентных пробелов без копирования типичных клинических обещаний."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Платный и ор­га­ни­че­ский захват спроса вокруг ква­ли­фи­ци­ро­ван­но­го намерения за­пи­сать­ся на кон­суль­та­цию."
+        "title": "Специалист + ИИ",
+        "copy": "Платный и органический захват спроса вокруг квалифицированного намерения записаться на консультацию."
       }
     ],
     "measurement": "Измерение от источника до консультации там, где системы это позволяют.",
     "title": "Маркетинг трансплантации волос | RM CREATIVES",
     "description": "Маркетинг трансплантации волос. Специалисты связывают рекламу, SEO, сайт и обращения. ИИ помогает анализировать больше данных и точнее выбирать приоритеты.",
-    "ctaTitle": "Начинаем с решения пациента, экономики услуги и до­ка­за­тельств, которые клиника может корректно под­твер­дить."
+    "ctaTitle": "Начинаем с решения пациента, экономики услуги и доказательств, которые клиника может корректно подтвердить."
   },
   "medical-marketing/plastic-surgery": {
     "headline": "Plastic Surgery Marketing with human judgement and AI-scale research.",
@@ -947,29 +947,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Start with the patient decision, the service economics and the evidence the clinic can responsibly support.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Map procedure-specific search demand and com­par­i­son behaviour."
+        "title": "Specialist + AI",
+        "copy": "Map procedure-specific search demand and comparison behaviour."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Use AI-assisted analysis to find recurring concerns, questions and content gaps."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Build surgeon authority and con­sul­ta­tion-led pages."
+        "title": "Specialist + AI",
+        "copy": "Build surgeon authority and consultation-led pages."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Review visual proof and claims under human control."
       }
     ],
     "measurement": "Connect enquiries to consultation outcomes where possible.",
     "title": "Plastic Surgery Marketing | RM CREATIVES",
     "description": "Plastic Surgery Marketing. Specialists connect search, advertising, websites and enquiry data. AI expands research and analysis; humans make the decisions.",
-    "ctaTitle": "Start with the patient decision, the service economics and the evidence the clinic can re­spon­si­bly support."
+    "ctaTitle": "Start with the patient decision, the service economics and the evidence the clinic can responsibly support."
   },
   "ru/medical-marketing/plastic-surgery": {
-    "headline": "Маркетинг пла­сти­че­ской хирургии: че­ло­ве­че­ское решение и AI-масштаб ис­сле­до­ва­ния.",
+    "headline": "Маркетинг пластической хирургии: человеческое решение и AI-масштаб исследования.",
     "intro": "Пластической хирургии нужен одновременно захват спроса, обучение пациента и реалистичные ожидания. ИИ помогает команде изучать больше поисковых паттернов, вопросов и сообщений конкурентов; хирурги и специалисты сохраняют контроль над медицинскими утверждениями и доказательствами.",
     "capabilities": [
       "Карту поискового спроса и сравнения по конкретным операциям.",
@@ -982,26 +982,26 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Начинаем с решения пациента, экономики услуги и доказательств, которые клиника может корректно подтвердить.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Карту по­ис­ко­во­го спроса и сравнения по кон­крет­ным операциям."
+        "title": "Специалист + ИИ",
+        "copy": "Карту поискового спроса и сравнения по конкретным операциям."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "AI-анализ по­вто­ря­ю­щих­ся опасений, вопросов и кон­тент­ных пробелов."
+        "title": "Специалист + ИИ",
+        "copy": "AI-анализ повторяющихся опасений, вопросов и контентных пробелов."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Экс­перт­ность хирурга и страницы, ведущие к кон­суль­та­ции."
+        "title": "Специалист + ИИ",
+        "copy": "Экспертность хирурга и страницы, ведущие к консультации."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Че­ло­ве­че­скую проверку ви­зу­аль­ных до­ка­за­тельств и утвер­жде­ний."
+        "title": "Специалист + ИИ",
+        "copy": "Человеческую проверку визуальных доказательств и утверждений."
       }
     ],
     "measurement": "Связь обращений с результатами консультаций, где это возможно.",
     "title": "Маркетинг пластической хирургии | RM CREATIVES",
     "description": "Маркетинг пластической хирургии. Специалисты связывают рекламу, SEO, сайт и обращения. ИИ помогает анализировать больше данных и точнее выбирать приоритеты.",
-    "ctaTitle": "Начинаем с решения пациента, экономики услуги и до­ка­за­тельств, которые клиника может корректно под­твер­дить."
+    "ctaTitle": "Начинаем с решения пациента, экономики услуги и доказательств, которые клиника может корректно подтвердить."
   },
   "medical-marketing/fertility-clinics": {
     "headline": "Fertility Clinic Marketing with human judgement and AI-scale research.",
@@ -1017,29 +1017,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Start with the patient decision, the service economics and the evidence the clinic can responsibly support.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Analyse service and in­for­ma­tion demand without exposing sensitive intent un­nec­es­sar­i­ly."
+        "title": "Specialist + AI",
+        "copy": "Analyse service and information demand without exposing sensitive intent unnecessarily."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Build clear pathways across services, team and process in­for­ma­tion."
+        "title": "Specialist + AI",
+        "copy": "Build clear pathways across services, team and process information."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Use AI-assisted content analysis to identify unan­swered questions and du­pli­ca­tion."
+        "title": "Specialist + AI",
+        "copy": "Use AI-assisted content analysis to identify unanswered questions and duplication."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Design privacy-conscious enquiry paths and mea­sure­ment."
+        "title": "Specialist + AI",
+        "copy": "Design privacy-conscious enquiry paths and measurement."
       }
     ],
     "measurement": "Optimise around appropriate consultation actions rather than raw traffic.",
     "title": "Fertility Clinic Marketing | RM CREATIVES",
     "description": "Fertility Clinic Marketing. Specialists connect search, advertising, websites and enquiry data. AI expands research and analysis; humans make the decisions.",
-    "ctaTitle": "Start with the patient decision, the service economics and the evidence the clinic can re­spon­si­bly support."
+    "ctaTitle": "Start with the patient decision, the service economics and the evidence the clinic can responsibly support."
   },
   "ru/medical-marketing/fertility-clinics": {
-    "headline": "Маркетинг клиник ре­про­дук­ции: че­ло­ве­че­ское решение и AI-масштаб ис­сле­до­ва­ния.",
+    "headline": "Маркетинг клиник репродукции: человеческое решение и AI-масштаб исследования.",
     "intro": "Маркетинг репродуктивной медицины сочетает сложное исследование, чувствительный контекст, доверие и приватность. ИИ может ускорять исследование и поиск паттернов, но чувствительные медицинские данные должны обрабатываться осознанно, а финальная коммуникация с пациентом остаётся под управлением людей.",
     "capabilities": [
       "Анализ спроса по услугам и информации без ненужного раскрытия чувствительного намерения.",
@@ -1052,30 +1052,30 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Начинаем с решения пациента, экономики услуги и доказательств, которые клиника может корректно подтвердить.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Анализ спроса по услугам и ин­фор­ма­ции без ненужного раскрытия чув­стви­тель­но­го намерения."
+        "title": "Специалист + ИИ",
+        "copy": "Анализ спроса по услугам и информации без ненужного раскрытия чувствительного намерения."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Понятные пути между услугами, командой и ин­фор­ма­ци­ей о процессе."
+        "title": "Специалист + ИИ",
+        "copy": "Понятные пути между услугами, командой и информацией о процессе."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "AI-анализ контента для поиска не­от­ве­чен­ных вопросов и дублей."
+        "title": "Специалист + ИИ",
+        "copy": "AI-анализ контента для поиска неотвеченных вопросов и дублей."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Кон­вер­си­он­ные и из­ме­ри­тель­ные сценарии с учётом при­ват­но­сти."
+        "title": "Специалист + ИИ",
+        "copy": "Конверсионные и измерительные сценарии с учётом приватности."
       }
     ],
     "measurement": "Оптимизацию по правильным действиям к консультации, а не по сырому трафику.",
     "title": "Маркетинг клиник репродукции | RM CREATIVES",
     "description": "Маркетинг клиник репродукции. Специалисты связывают рекламу, SEO, сайт и обращения. ИИ помогает анализировать больше данных и точнее выбирать приоритеты.",
-    "ctaTitle": "Начинаем с решения пациента, экономики услуги и до­ка­за­тельств, которые клиника может корректно под­твер­дить."
+    "ctaTitle": "Начинаем с решения пациента, экономики услуги и доказательств, которые клиника может корректно подтвердить."
   },
   "aesthetic-clinic-marketing": {
-    "headline": "Aesthetic clinic growth with faster learning across every channel.",
-    "intro": "Aesthetic demand moves between active search and discovery. We connect Meta, Google, SEO, landing pages and booking feedback around the same treatment priorities. Specialists make the decisions; AI helps them compare more offers, queries, creatives, pages and lead-quality signals at once.",
+    "headline": "Aesthetic clinic marketing. Human judgement. AI scale.",
+    "intro": "We connect search, advertising and booking feedback around your priority treatments. Specialists decide; AI helps them compare more data and learn faster.",
     "capabilities": [
       "Meta: human creative and offer strategy with AI-assisted pattern analysis across tests and lead quality.",
       "Google Ads: specialist budget control with AI-assisted search-term and conversion analysis.",
@@ -1088,20 +1088,20 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "eyebrow": "AESTHETIC CLINIC MARKETING / HUMAN + AI",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Meta: human creative and offer strategy with AI-assisted pattern analysis across tests and lead quality."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Google Ads: spe­cial­ist budget control with AI-assisted search-term and con­ver­sion analysis."
+        "title": "Specialist + AI",
+        "copy": "Google Ads: specialist budget control with AI-assisted search-term and conversion analysis."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "SEO / GEO: demand, Search Console, page overlap, com­peti­tor and AI-search vis­i­bil­i­ty reviewed together."
+        "title": "Specialist + AI",
+        "copy": "SEO / GEO: demand, Search Console, page overlap, competitor and AI-search visibility reviewed together."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Website: con­ver­sion journeys informed by paid, organic and behaviour data."
+        "title": "Specialist + AI",
+        "copy": "Website: conversion journeys informed by paid, organic and behaviour data."
       }
     ],
     "measurement": "CRM / booking feedback: use booked, attended and repeat signals where available to distinguish cheap leads from useful demand.",
@@ -1110,8 +1110,8 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaTitle": "Build the channel mix around treatment demand, capacity and long-term client value — not around whichever platform reports the cheapest lead."
   },
   "ru/aesthetic-clinic-marketing": {
-    "headline": "Рост эсте­ти­че­ской клиники с более быстрым обучением на каждом канале.",
-    "intro": "Спрос в эстетике перемещается между активным поиском и discovery. Мы связываем Meta, Google, SEO, посадочные и обратную связь из системы записи вокруг одних приоритетных процедур. Решения принимают специалисты; ИИ помогает одновременно сравнивать больше офферов, запросов, креативов, страниц и сигналов качества лидов.",
+    "headline": "Маркетинг эстетических клиник. Решения людей. Масштаб ИИ.",
+    "intro": "Связываем поиск, рекламу и данные о записи вокруг приоритетных процедур. Специалисты решают; ИИ помогает сравнивать больше данных и быстрее учиться.",
     "capabilities": [
       "Meta: человеческая креативная и офферная стратегия + AI-анализ паттернов тестов и качества лидов.",
       "Google Ads: контроль бюджета специалистом + AI-анализ запросов и конверсий.",
@@ -1124,26 +1124,26 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "eyebrow": "AESTHETIC CLINIC MARKETING / HUMAN + AI",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Meta: че­ло­ве­че­ская кре­а­тив­ная и офферная стратегия + AI-анализ паттернов тестов и качества лидов."
+        "title": "Специалист + ИИ",
+        "copy": "Meta: человеческая креативная и офферная стратегия + AI-анализ паттернов тестов и качества лидов."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Google Ads: контроль бюджета спе­ци­а­ли­стом + AI-анализ запросов и конверсий."
+        "title": "Специалист + ИИ",
+        "copy": "Google Ads: контроль бюджета специалистом + AI-анализ запросов и конверсий."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "SEO / GEO: спрос, Search Console, пе­ре­се­че­ния страниц, кон­ку­рен­ты и AI-search vis­i­bil­i­ty ана­ли­зи­ру­ют­ся вместе."
+        "title": "Специалист + ИИ",
+        "copy": "SEO / GEO: спрос, Search Console, пересечения страниц, конкуренты и AI-search visibility анализируются вместе."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Сайт: кон­вер­си­он­ные маршруты фор­ми­ру­ют­ся на данных платного, ор­га­ни­че­ско­го и по­ве­ден­че­ско­го трафика."
+        "title": "Специалист + ИИ",
+        "copy": "Сайт: конверсионные маршруты формируются на данных платного, органического и поведенческого трафика."
       }
     ],
     "measurement": "Эстетический маркетинг меняется быстро. Выгорание креативов, сезонные офферы, давление конкурентов и спрос на процедуры могут измениться раньше, чем это будет видно в месячном отчёте. AI-анализ помогает увидеть изменения раньше; специалисты решают, как реагировать, не разрушая позиционирование процедур и доверие к врачу.",
     "title": "Маркетинг эстетических клиник | RM CREATIVES",
     "description": "Маркетинг эстетических клиник. Специалисты связывают рекламу, SEO, сайт и обращения. ИИ помогает анализировать больше данных и точнее выбирать приоритеты.",
-    "ctaTitle": "Строим микс каналов вокруг спроса на процедуры, загрузки и дол­го­сроч­ной ценности клиента — а не вокруг того, где рекламная платформа по­ка­зы­ва­ет самый дешёвый лид."
+    "ctaTitle": "Строим микс каналов вокруг спроса на процедуры, загрузки и долгосрочной ценности клиента — а не вокруг того, где рекламная платформа показывает самый дешёвый лид."
   },
   "aesthetic-clinic-marketing/seo": {
     "headline": "SEO for aesthetic clinics with AI-assisted demand and page analysis.",
@@ -1160,29 +1160,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Grow organic visibility around the treatments and concerns that can become real consultations.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Technical and in­dex­a­tion audit across the site."
+        "title": "Specialist + AI",
+        "copy": "Technical and indexation audit across the site."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Procedure, concern and location demand mapping."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "AI-assisted Search Console, com­peti­tor and can­ni­bal­i­sa­tion analysis."
+        "title": "Specialist + AI",
+        "copy": "AI-assisted Search Console, competitor and cannibalisation analysis."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Com­mer­cial page ar­chi­tec­ture instead of dozens of in­ter­change­able treatment pages."
+        "title": "Specialist + AI",
+        "copy": "Commercial page architecture instead of dozens of interchangeable treatment pages."
       }
     ],
     "measurement": "Organic enquiry tracking alongside visibility and sessions.",
     "title": "SEO for Aesthetic Clinics | RM CREATIVES",
     "description": "SEO for Aesthetic Clinics. Human SEO strategy with AI-assisted demand, Search Console and page-overlap analysis. Build visibility around patient enquiries.",
-    "ctaTitle": "Grow organic vis­i­bil­i­ty around the treat­ments and concerns that can become real con­sul­ta­tions."
+    "ctaTitle": "Grow organic visibility around the treatments and concerns that can become real consultations."
   },
   "ru/aesthetic-clinic-marketing/seo": {
-    "headline": "SEO для эсте­ти­че­ских клиник с AI-анализом спроса и страниц.",
+    "headline": "SEO для эстетических клиник с AI-анализом спроса и страниц.",
     "intro": "Пациенты ищут по процедуре, проблеме, локации, результату, цене и восстановлению. ИИ помогает анализировать long tail и сайт в масштабе; SEO-специалист решает, какие страницы должны существовать, какие нужно объединить и какие поисковые возможности действительно поддерживают приоритетные процедуры клиники.",
     "capabilities": [
       "Технический и индексный аудит сайта.",
@@ -1196,26 +1196,26 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Развиваем органическую видимость вокруг процедур и запросов, которые могут стать реальными консультациями.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Тех­ни­че­ский и индексный аудит сайта."
+        "title": "Специалист + ИИ",
+        "copy": "Технический и индексный аудит сайта."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Карту спроса по про­це­ду­рам, проблемам и географии."
+        "title": "Специалист + ИИ",
+        "copy": "Карту спроса по процедурам, проблемам и географии."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "AI-анализ Search Console, кон­ку­рен­тов и кан­ни­ба­ли­за­ции."
+        "title": "Специалист + ИИ",
+        "copy": "AI-анализ Search Console, конкурентов и каннибализации."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Ар­хи­тек­ту­ру ком­мер­че­ских страниц вместо десятков вза­и­мо­за­ме­ня­е­мых страниц процедур."
+        "title": "Специалист + ИИ",
+        "copy": "Архитектуру коммерческих страниц вместо десятков взаимозаменяемых страниц процедур."
       }
     ],
     "measurement": "Отслеживание органических обращений вместе с видимостью и сессиями.",
     "title": "SEO для эстетических клиник | RM CREATIVES",
     "description": "SEO для эстетических клиник. AI-анализ спроса, Search Console, пересечения страниц и видимости в поиске. Решения принимает SEO-специалист.",
-    "ctaTitle": "Развиваем ор­га­ни­че­скую видимость вокруг процедур и запросов, которые могут стать реальными кон­суль­та­ци­я­ми."
+    "ctaTitle": "Развиваем органическую видимость вокруг процедур и запросов, которые могут стать реальными консультациями."
   },
   "aesthetic-clinic-marketing/google-ads": {
     "headline": "Google Ads for aesthetic clinics with less budget hidden in the wrong searches.",
@@ -1232,29 +1232,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Capture people already comparing treatments — with enough account control to know where the money is going.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Treatment and location demand forecast before budget al­lo­ca­tion."
+        "title": "Specialist + AI",
+        "copy": "Treatment and location demand forecast before budget allocation."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Campaign structure around treatment value and search readiness."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "AI-assisted query and spend analysis to surface waste earlier."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Dedicated landing pages that answer price, suit­abil­i­ty, prac­ti­tion­er and downtime questions."
+        "title": "Specialist + AI",
+        "copy": "Dedicated landing pages that answer price, suitability, practitioner and downtime questions."
       }
     ],
     "measurement": "Human approval of all budget, offer and medical-aesthetic claims.",
     "title": "Google Ads for Aesthetic Clinics | RM CREATIVES",
     "description": "Google Ads for Aesthetic Clinics. Specialist budget control with AI-assisted search-term, spend, conversion and landing-page analysis for patient enquiries.",
-    "ctaTitle": "Capture people already comparing treat­ments — with enough account control to know where the money is going."
+    "ctaTitle": "Capture people already comparing treatments — with enough account control to know where the money is going."
   },
   "ru/aesthetic-clinic-marketing/google-ads": {
-    "headline": "Google Ads для эсте­ти­че­ских клиник: меньше бюджета спрятано в не­пра­виль­ных запросах.",
+    "headline": "Google Ads для эстетических клиник: меньше бюджета спрятано в неправильных запросах.",
     "intro": "Специалист по поисковой рекламе контролирует ставки, структуру и приоритеты. ИИ помогает анализировать запросы, расходы, конверсии и релевантность посадочных на большем массиве данных, чтобы быстрее отделять готовый к процедуре спрос от исследовательского трафика и слабого шума.",
     "capabilities": [
       "Прогноз спроса по процедурам и географии до распределения бюджета.",
@@ -1268,26 +1268,26 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Забираем людей, которые уже сравнивают процедуры, и сохраняем достаточный контроль аккаунта, чтобы понимать, куда уходит каждый значимый кусок бюджета.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Прогноз спроса по про­це­ду­рам и географии до рас­пре­де­ле­ния бюджета."
+        "title": "Специалист + ИИ",
+        "copy": "Прогноз спроса по процедурам и географии до распределения бюджета."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Структуру кампаний вокруг ценности процедуры и го­тов­но­сти к покупке."
+        "title": "Специалист + ИИ",
+        "copy": "Структуру кампаний вокруг ценности процедуры и готовности к покупке."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
+        "title": "Специалист + ИИ",
         "copy": "AI-анализ запросов и расходов для более раннего поиска потерь."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Отдельные по­са­доч­ные, которые отвечают на вопросы о цене, по­ка­за­ни­ях, спе­ци­а­ли­сте и вос­ста­нов­ле­нии."
+        "title": "Специалист + ИИ",
+        "copy": "Отдельные посадочные, которые отвечают на вопросы о цене, показаниях, специалисте и восстановлении."
       }
     ],
     "measurement": "Человеческое подтверждение бюджета, офферов и medical-aesthetic формулировок.",
     "title": "Google Ads для эстетических клиник | RM CREATIVES",
     "description": "Google Ads для эстетических клиник. Контроль бюджета специалистом и AI-анализ запросов, расходов, конверсий и посадочных для привлечения целевых обращений.",
-    "ctaTitle": "Забираем людей, которые уже срав­ни­ва­ют процедуры, и сохраняем до­ста­точ­ный контроль аккаунта, чтобы понимать, куда уходит каждый значимый кусок бюджета."
+    "ctaTitle": "Забираем людей, которые уже сравнивают процедуры, и сохраняем достаточный контроль аккаунта, чтобы понимать, куда уходит каждый значимый кусок бюджета."
   },
   "aesthetic-clinic-marketing/meta-ads": {
     "headline": "Meta Ads for aesthetic clinics: human creative strategy, AI-assisted learning speed.",
@@ -1304,20 +1304,20 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Create patient demand, then make every new test smarter than the last one.",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Offer and audience strategy around treatment economics and capacity."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Creative systems organised by concern, treatment, prac­ti­tion­er and seasonal moment."
+        "title": "Specialist + AI",
+        "copy": "Creative systems organised by concern, treatment, practitioner and seasonal moment."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "AI-assisted analysis of creative fatigue, cost changes and response patterns."
       },
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Lead-form and landing-page funnels with mea­sur­able enquiry actions."
+        "title": "Specialist + AI",
+        "copy": "Lead-form and landing-page funnels with measurable enquiry actions."
       }
     ],
     "measurement": "Human control over claims, visuals, budget and the next test.",
@@ -1326,7 +1326,7 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaTitle": "Create patient demand, then make every new test smarter than the last one."
   },
   "ru/aesthetic-clinic-marketing/meta-ads": {
-    "headline": "Meta Ads для эсте­ти­че­ских клиник: че­ло­ве­че­ская кре­а­тив­ная стратегия, AI-скорость обучения.",
+    "headline": "Meta Ads для эстетических клиник: человеческая креативная стратегия, AI-скорость обучения.",
     "intro": "Meta создаёт спрос ещё до того, как человек начал искать. Поэтому креатив, оффер и момент показа критичны. Специалист задаёт направление; ИИ помогает сравнивать большую историю процедур, углов, аудиторий, стоимости и качества лидов, чтобы учиться быстрее, чем при ручной проверке кампаний по одной.",
     "capabilities": [
       "Стратегию офферов и аудиторий вокруг экономики процедур и загрузки.",
@@ -1340,29 +1340,29 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "ctaCopy": "Создаём пациентский спрос и делаем каждый следующий тест умнее предыдущего.",
     "strategySteps": [
       {
-        "title": "Спе­ци­а­лист + ИИ",
+        "title": "Специалист + ИИ",
         "copy": "Стратегию офферов и аудиторий вокруг экономики процедур и загрузки."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Систему креативов по проблемам, про­це­ду­рам, спе­ци­а­ли­стам и сезонным моментам."
+        "title": "Специалист + ИИ",
+        "copy": "Систему креативов по проблемам, процедурам, специалистам и сезонным моментам."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
+        "title": "Специалист + ИИ",
         "copy": "AI-анализ выгорания креативов, изменений стоимости и паттернов реакции."
       },
       {
-        "title": "Спе­ци­а­лист + ИИ",
-        "copy": "Воронки лид-форм и по­са­доч­ных с из­ме­ри­мы­ми дей­стви­я­ми."
+        "title": "Специалист + ИИ",
+        "copy": "Воронки лид-форм и посадочных с измеримыми действиями."
       }
     ],
     "measurement": "Человеческий контроль утверждений, визуалов, бюджета и следующего теста.",
     "title": "Meta Ads для эстетических клиник | RM CREATIVES",
     "description": "Meta Ads для эстетических клиник. Стратегия специалиста и AI-анализ креативов, офферов и качества лидов. Каждый тест опирается на историю кампаний.",
-    "ctaTitle": "Создаём па­ци­ент­ский спрос и делаем каждый следующий тест умнее пре­ды­ду­ще­го."
+    "ctaTitle": "Создаём пациентский спрос и делаем каждый следующий тест умнее предыдущего."
   },
   "med-spa-marketing": {
-    "headline": "Med spa growth with AI-assisted ac­qui­si­tion and human com­mer­cial judgement.",
+    "headline": "Med spa growth with AI-assisted acquisition and human commercial judgement.",
     "intro": "US med spa growth sits across local search, treatment discovery, offers, booking and repeat value. We use specialists to own channel strategy and AI tools to connect more data across acquisition, consultation and rebooking so decisions are not made from CPL alone.",
     "capabilities": [
       "Treatment economics and capacity model before scaling acquisition.",
@@ -1377,26 +1377,26 @@ const masterCopy: Record<string, Partial<IndustryPage>> = {
     "eyebrow": "MED SPA MARKETING / HUMAN + AI",
     "strategySteps": [
       {
-        "title": "Spe­cial­ist + AI",
-        "copy": "Treatment economics and capacity model before scaling ac­qui­si­tion."
+        "title": "Specialist + AI",
+        "copy": "Treatment economics and capacity model before scaling acquisition."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Local SEO and Google Ads for active treatment intent."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Meta demand creation with AI-assisted creative and offer analysis."
       },
       {
-        "title": "Spe­cial­ist + AI",
+        "title": "Specialist + AI",
         "copy": "Landing pages and booking paths built around treatment questions and trust."
       }
     ],
     "measurement": "Human review for state-level rules, clinical wording, visual proof and platform policy.",
     "title": "Med Spa Marketing Agency | RM CREATIVES",
     "description": "Med Spa Marketing Agency. Specialists connect search, advertising, websites and enquiry data. AI expands research and analysis; humans make the decisions.",
-    "ctaTitle": "Build the ac­qui­si­tion mix around con­sul­ta­tions, treatment margin and lifetime value — not a screen­shot of cheap leads."
+    "ctaTitle": "Build the acquisition mix around consultations, treatment margin and lifetime value — not a screenshot of cheap leads."
   }
 };
 for (const page of [...enIndustryPages, ...ruIndustryPages]) {
