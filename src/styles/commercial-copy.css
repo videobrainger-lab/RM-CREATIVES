@@ -20,7 +20,7 @@ main.product-page[class] .hero-grid {
   align-items: end;
   margin-top: 70px;
 }
-main.home-page[class] .hero { min-height: 700px; gap: 36px; }
+main.home-page[class] .hero { min-height: 0; gap: 32px; padding: 32px 0 48px; }
 main.home-page[class] .hero-top { gap: 24px; margin-bottom: 10px; }
 main.home-page[class] .about { padding: 85px 0; }
 main.home-page[class] .about-grid {
