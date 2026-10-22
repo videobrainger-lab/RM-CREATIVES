@@ -1,3 +1,4 @@
+import { validateDeliveryImport } from '../lib/kpi-delivery.mjs';
 import { env, headers, equal, session, authenticated, sameOrigin, json } from '../lib/kpi-auth.mjs';
 import { store, getSnapshot, getSettings } from '../lib/kpi-store.mjs';
 import { buildReport, previousRange, PROJECTS, validateRange } from '../lib/kpi-model.mjs';
@@ -29,9 +30,9 @@ export default async function handler(req) {
       const query = new URL(req.url).searchParams;
       const from = query.get('from'), to = query.get('to');
       validateRange(from,to);
-      const [snapshot,crm] = await Promise.all([getSnapshot(),store().get('crm-denta',{type:'json'})]);
+      const [snapshot,crm,miloDelivery] = await Promise.all([getSnapshot(),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'})]);
       if (!snapshot) return json({error:'Данные ещё не загружены. Откройте подключения.'},503);
-      snapshot.crm={denta:crm};
+      snapshot.crm={denta:crm,miloDelivery};
       const previous = previousRange(from,to);
       return json({current:buildReport(snapshot,from,to),previous:buildReport(snapshot,previous.from,previous.to)});
     }
@@ -54,8 +55,8 @@ export default async function handler(req) {
       const body=await req.text();
       if (body.length>1000000) return json({error:'Слишком большой запрос.'},413);
       let crm;
-      try { crm=validateCrmImport(JSON.parse(body)); } catch { return json({error:'Некорректные агрегированные данные CRM.'},400); }
-      await store().setJSON('crm-denta',crm);
+      try { const source=JSON.parse(body);crm=source.project==='milo-delivery'?validateDeliveryImport(source):validateCrmImport(source); } catch { return json({error:'Некорректные агрегированные данные CRM.'},400); }
+      await store().setJSON(crm.project==='milo-delivery'?'crm-milo-delivery':'crm-denta',crm);
       return json({ok:true,coverage:crm.coverage,updatedAt:crm.updatedAt});
     }
     if (path === '/internal/import' && req.method === 'POST') {

@@ -1,3 +1,4 @@
+import { buildDeliveryReport } from './kpi-delivery.mjs';
 import { buildCrmReport } from './kpi-crm.mjs';
 export const PROJECTS = [
   { id: 'denta', name: 'DENTA', kind: 'clinic', note: 'Стоматология' },
@@ -69,6 +70,8 @@ export function buildReport(snapshot, from, to) {
       return { id:group, channels };
     }) };
   });
+  const milo=projects.find(p=>p.id==='milo');
+  milo.deliveryCrm=buildDeliveryReport(snapshot.crm?.miloDelivery,from,to,milo.groups.find(g=>g.id==='delivery').channels);
   const denta=projects.find(p=>p.id==='denta');
   denta.crm=buildCrmReport(snapshot.crm?.denta,from,to,denta.groups[0].channels);
   return { from, to, covered, coverage:snapshot.coverage, updatedAt:snapshot.updatedAt, sources:snapshot.sources, projects,
