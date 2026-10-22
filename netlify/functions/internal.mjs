@@ -1,3 +1,4 @@
+import { validateServicesImport } from '../lib/kpi-services.mjs';
 import { validateDeliveryImport } from '../lib/kpi-delivery.mjs';
 import { env, headers, equal, session, authenticated, sameOrigin, json } from '../lib/kpi-auth.mjs';
 import { store, getSnapshot, getSettings } from '../lib/kpi-store.mjs';
@@ -23,16 +24,16 @@ export default async function handler(req) {
   if (req.method === 'GET' && path === '/internal') return html(dashboardPage);
   try {
     if (path === '/internal/status' && req.method === 'GET') {
-      const [snapshot,settings,status,crm,miloDelivery] = await Promise.all([getSnapshot(),getSettings(),store().get('sync-status',{type:'json'}),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'})]);
-      return json({configured:Boolean(settings?.windsorKey),coverage:snapshot?.coverage||null,updatedAt:snapshot?.updatedAt||null,crmDenta:crm?{updatedAt:crm.updatedAt,coverage:crm.coverage}:null,crmMiloDelivery:miloDelivery?{updatedAt:miloDelivery.updatedAt,coverage:miloDelivery.coverage}:null,status:status||{status:'needs_key'},today:todayRiga(),projects:PROJECTS});
+      const [snapshot,settings,status,crm,miloDelivery,miloServices] = await Promise.all([getSnapshot(),getSettings(),store().get('sync-status',{type:'json'}),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'}),store().get('crm-milo-services',{type:'json'})]);
+      return json({configured:Boolean(settings?.windsorKey),coverage:snapshot?.coverage||null,updatedAt:snapshot?.updatedAt||null,crmDenta:crm?{updatedAt:crm.updatedAt,coverage:crm.coverage}:null,crmMiloServices:miloServices?{updatedAt:miloServices.updatedAt,coverage:miloServices.coverage}:null,crmMiloDelivery:miloDelivery?{updatedAt:miloDelivery.updatedAt,coverage:miloDelivery.coverage}:null,status:status||{status:'needs_key'},today:todayRiga(),projects:PROJECTS});
     }
     if (path === '/internal/data' && req.method === 'GET') {
       const query = new URL(req.url).searchParams;
       const from = query.get('from'), to = query.get('to');
       validateRange(from,to);
-      const [snapshot,crm,miloDelivery] = await Promise.all([getSnapshot(),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'})]);
+      const [snapshot,crm,miloDelivery,miloServices] = await Promise.all([getSnapshot(),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'}),store().get('crm-milo-services',{type:'json'})]);
       if (!snapshot) return json({error:'Данные ещё не загружены. Откройте подключения.'},503);
-      snapshot.crm={denta:crm,miloDelivery};
+      snapshot.crm={denta:crm,miloDelivery,miloServices};
       const previous = previousRange(from,to);
       return json({current:buildReport(snapshot,from,to),previous:buildReport(snapshot,previous.from,previous.to)});
     }
@@ -55,8 +56,8 @@ export default async function handler(req) {
       const body=await req.text();
       if (body.length>1000000) return json({error:'Слишком большой запрос.'},413);
       let crm;
-      try { const source=JSON.parse(body);crm=source.project==='milo-delivery'?validateDeliveryImport(source):validateCrmImport(source); } catch { return json({error:'Некорректные агрегированные данные CRM.'},400); }
-      await store().setJSON(crm.project==='milo-delivery'?'crm-milo-delivery':'crm-denta',crm);
+      try { const source=JSON.parse(body);crm=source.project==='milo-services'?validateServicesImport(source):source.project==='milo-delivery'?validateDeliveryImport(source):validateCrmImport(source); } catch { return json({error:'Некорректные агрегированные данные CRM.'},400); }
+      await store().setJSON(crm.project==='milo-services'?'crm-milo-services':crm.project==='milo-delivery'?'crm-milo-delivery':'crm-denta',crm);
       return json({ok:true,coverage:crm.coverage,updatedAt:crm.updatedAt});
     }
     if (path === '/internal/import' && req.method === 'POST') {
