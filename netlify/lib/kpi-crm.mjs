@@ -25,12 +25,12 @@ export function buildCrmReport(source,from,to,advertising=[]) {
   const channels=['google','meta'].map(channel=>{
     const records=rows.filter(r=>r.channel===channel),ad=advertising.find(c=>c.channel===channel);
     const counts=Object.fromEntries(COUNTS.map(k=>[k,available?records.reduce((n,r)=>n+r[k],0):null]));
-    return {channel,...counts,attended:available&&source.visitTracking?counts.attendedMarked:null,spend:ad?.spend??null,currency:ad?.currency||'EUR',costBooking:complete&&counts.bookings>0&&ad?.spend!==null&&ad?.spend!==undefined?ad.spend/counts.bookings:null};
+    return {channel,...counts,attended:available&&source.visitTracking?counts.attendedMarked:null,spend:ad?.spend??null,currency:ad?.currency||'EUR',costInquiry:complete&&counts.inquiries>0&&ad?.spend!==null&&ad?.spend!==undefined?ad.spend/counts.inquiries:null,costBooking:complete&&counts.bookings>0&&ad?.spend!==null&&ad?.spend!==undefined?ad.spend/counts.bookings:null};
   });
   const total=Object.fromEntries(COUNTS.map(k=>[k,available?channels.reduce((n,c)=>n+c[k],0):null]));
   total.attended=available&&source.visitTracking?total.attendedMarked:null;
   const paid=channels.filter(c=>['google','meta'].includes(c.channel));
   const paidBookings=available?paid.reduce((n,c)=>n+c.bookings,0):null;
   const paidSpend=paid.every(c=>c.spend!==null&&c.currency==='EUR')?paid.reduce((n,c)=>n+c.spend,0):null;
-  return {available,complete,partial:available&&!complete,coverage:source.coverage,sourceName:source.sourceName,sourceUrl:source.sourceUrl,sheetName:source.sheetName,updatedAt:source.updatedAt,duplicatesRemoved:source.duplicatesRemoved,channels,total,paidBookings,paidSpend,costPaidBooking:complete&&paidSpend!==null&&paidBookings>0?paidSpend/paidBookings:null,visitTracking:source.visitTracking,method:'inquiry_cohort_current_status'};
+  return {available,complete,partial:available&&!complete,coverage:source.coverage,sourceName:source.sourceName,sourceUrl:source.sourceUrl,sheetName:source.sheetName,updatedAt:source.updatedAt,duplicatesRemoved:source.duplicatesRemoved,channels,total,paidBookings,paidSpend,costPaidInquiry:complete&&paidSpend!==null&&total.inquiries>0?paidSpend/total.inquiries:null,costPaidBooking:complete&&paidSpend!==null&&paidBookings>0?paidSpend/paidBookings:null,visitTracking:source.visitTracking,method:'inquiry_cohort_current_status'};
 }
