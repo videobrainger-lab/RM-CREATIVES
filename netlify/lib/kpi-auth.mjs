@@ -3,7 +3,7 @@ export const env = key => globalThis.Netlify?.env?.get(key) || process.env[key];
 export const headers = {
   'Cache-Control':'private, no-store, max-age=0', 'Netlify-CDN-Cache-Control':'no-store',
   'X-Robots-Tag':'noindex, nofollow, noarchive', 'X-Content-Type-Options':'nosniff',
-  'X-Frame-Options':'DENY', 'Referrer-Policy':'no-referrer',
+  'X-Frame-Options':'DENY', 'Referrer-Policy':'same-origin',
   'Content-Security-Policy':"default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"
 };
 export function equal(a,b) {
@@ -29,5 +29,17 @@ export function authenticated(request) {
 export const json = (body,status=200,extra={}) => new Response(JSON.stringify(body),{status,headers:{...headers,'Content-Type':'application/json; charset=utf-8',...extra}});
 export function sameOrigin(request) {
   const origin = request.headers.get('origin');
-  return !origin ? Boolean(request.headers.get('authorization')) : origin === new URL(request.url).origin;
+  const expected = new URL(request.url).origin;
+  // no-referrer can make WebKit send Origin: null for a same-origin form.
+  // A concrete foreign Origin always fails, regardless of other headers.
+  if (origin && origin !== 'null') return origin === expected;
+  const site = request.headers.get('sec-fetch-site');
+  if (site === 'same-origin') return true;
+  if (site === 'cross-site' || site === 'same-site') return false;
+  const referer = request.headers.get('referer');
+  if (referer) {
+    try { return new URL(referer).origin === expected; } catch { return false; }
+  }
+  // Non-browser clients must present their own Authorization credential.
+  return request.headers.get('authorization')?.startsWith('Basic ') || false;
 }

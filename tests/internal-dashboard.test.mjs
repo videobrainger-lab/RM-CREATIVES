@@ -27,6 +27,18 @@ test('periods are inclusive with correct equal-length comparison and strict vali
   assert.equal(report.covered,false);
   assert.equal(report.projects[0].groups[0].channels[0].spend,null);
 });
+test('WebKit null Origin falls back to same-origin metadata or Referer, never a foreign origin',()=>{
+  const check = headers => sameOrigin(new Request('https://rmcreatives.com/internal/login',{method:'POST',headers}));
+  assert.equal(check({origin:'null','sec-fetch-site':'same-origin'}),true);
+  assert.equal(check({'sec-fetch-site':'same-origin'}),true);
+  assert.equal(check({origin:'null',referer:'https://rmcreatives.com/internal/'}),true);
+  assert.equal(check({referer:'https://rmcreatives.com/internal/'}),true);
+  assert.equal(check({origin:'https://evil.example','sec-fetch-site':'same-origin'}),false);
+  assert.equal(check({origin:'null','sec-fetch-site':'cross-site',referer:'https://rmcreatives.com/internal/'}),false);
+  assert.equal(check({origin:'null','sec-fetch-site':'same-site'}),false);
+  assert.equal(check({origin:'null',referer:'https://rmcreatives.com.evil.example/internal/'}),false);
+  assert.equal(check({origin:'null'}),false);
+});
 test('MILO allocates by ID, leaves brand/shared spend outside delivery CPA',()=>{
   assert.equal(direction('milo','shared-id',assignments),'shared');
   assert.equal(direction('milo','services-id',assignments),'services');
