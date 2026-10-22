@@ -21,7 +21,8 @@ export function buildCrmReport(source,from,to,advertising=[]) {
   const available=to>=source.coverage.from&&from<=source.coverage.to;
   const complete=from>=source.coverage.from&&to<=source.coverage.to;
   const rows=source.daily.filter(row=>row.date>=from&&row.date<=to);
-  const channels=CHANNELS.map(channel=>{
+  // Pulse reports only paid acquisition; keep other sources in the private import.
+  const channels=['google','meta'].map(channel=>{
     const records=rows.filter(r=>r.channel===channel),ad=advertising.find(c=>c.channel===channel);
     const counts=Object.fromEntries(COUNTS.map(k=>[k,available?records.reduce((n,r)=>n+r[k],0):null]));
     return {channel,...counts,attended:available&&source.visitTracking?counts.attendedMarked:null,spend:ad?.spend??null,currency:ad?.currency||'EUR',costBooking:complete&&counts.bookings>0&&ad?.spend!==null&&ad?.spend!==undefined?ad.spend/counts.bookings:null};

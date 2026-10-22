@@ -5,15 +5,15 @@ const source=()=>({version:1,project:'denta',sourceName:'Fixture CRM',sourceUrl:
 const ads=[{channel:'google',spend:90,currency:'EUR'},{channel:'meta',spend:60,currency:'EUR'}];
 test('CRM counts source outcomes, separates calls and prices only paid-source bookings',()=>{
  const r=buildCrmReport(source(),'2026-10-15','2026-10-21',ads);
- assert.equal(r.total.inquiries,26);assert.equal(r.total.calls,15);assert.equal(r.total.forms,11);
- assert.equal(r.total.bookings,6);assert.equal(r.paidBookings,5);assert.equal(r.costPaidBooking,30);
+ assert.equal(r.total.inquiries,17);assert.equal(r.total.calls,8);assert.equal(r.total.forms,9);
+ assert.equal(r.total.bookings,5);assert.equal(r.paidBookings,5);assert.equal(r.costPaidBooking,30);
  assert.equal(r.channels[0].costBooking,30);assert.equal(r.channels[1].costBooking,30);
- assert.equal(r.channels[2].costBooking,null);assert.equal(r.total.attended,null);
- assert.equal(r.total.bookingsMissingDate,5);
+ assert.deepEqual(r.channels.map(c=>c.channel),['google','meta']);assert.equal(r.total.attended,null);
+ assert.equal(r.total.bookingsMissingDate,4);
 });
 test('partial CRM periods retain known counts but never calculate mismatched CPA',()=>{
  const r=buildCrmReport(source(),'2026-10-01','2026-10-21',ads);
- assert.equal(r.partial,true);assert.equal(r.total.bookings,6);assert.equal(r.costPaidBooking,null);assert.equal(r.channels[0].costBooking,null);
+ assert.equal(r.partial,true);assert.equal(r.total.bookings,5);assert.equal(r.costPaidBooking,null);assert.equal(r.channels[0].costBooking,null);
  const before=buildCrmReport(source(),'2026-09-01','2026-09-30',ads);
  assert.equal(before.available,false);assert.equal(before.total.inquiries,null);assert.equal(before.total.bookings,null);
 });
