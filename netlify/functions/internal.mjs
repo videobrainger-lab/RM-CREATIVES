@@ -23,8 +23,8 @@ export default async function handler(req) {
   if (req.method === 'GET' && path === '/internal') return html(dashboardPage);
   try {
     if (path === '/internal/status' && req.method === 'GET') {
-      const [snapshot,settings,status,crm] = await Promise.all([getSnapshot(),getSettings(),store().get('sync-status',{type:'json'}),store().get('crm-denta',{type:'json'})]);
-      return json({configured:Boolean(settings?.windsorKey),coverage:snapshot?.coverage||null,updatedAt:snapshot?.updatedAt||null,crmDenta:crm?{updatedAt:crm.updatedAt,coverage:crm.coverage}:null,status:status||{status:'needs_key'},today:todayRiga(),projects:PROJECTS});
+      const [snapshot,settings,status,crm,miloDelivery] = await Promise.all([getSnapshot(),getSettings(),store().get('sync-status',{type:'json'}),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'})]);
+      return json({configured:Boolean(settings?.windsorKey),coverage:snapshot?.coverage||null,updatedAt:snapshot?.updatedAt||null,crmDenta:crm?{updatedAt:crm.updatedAt,coverage:crm.coverage}:null,crmMiloDelivery:miloDelivery?{updatedAt:miloDelivery.updatedAt,coverage:miloDelivery.coverage}:null,status:status||{status:'needs_key'},today:todayRiga(),projects:PROJECTS});
     }
     if (path === '/internal/data' && req.method === 'GET') {
       const query = new URL(req.url).searchParams;
