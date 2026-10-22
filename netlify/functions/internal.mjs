@@ -3,6 +3,7 @@ import { store, getSnapshot, getSettings } from '../lib/kpi-store.mjs';
 import { buildReport, previousRange, PROJECTS, validateRange } from '../lib/kpi-model.mjs';
 import { dashboardPage, loginPage } from '../lib/kpi-page.mjs';
 import { todayRiga } from '../lib/kpi-sync.mjs';
+import { validateCrmImport } from '../lib/kpi-crm.mjs';
 const html = (body,status=200,extra={}) => new Response(body,{status,headers:{...headers,'Content-Type':'text/html; charset=utf-8',...extra}});
 const redirect = (location,extra={}) => new Response(null,{status:303,headers:{...headers,Location:location,...extra}});
 const cookie = value => '__Host-rm_internal=' + value + '; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=' + (value ? 604800 : 0);
@@ -21,15 +22,16 @@ export default async function handler(req) {
   if (req.method === 'GET' && path === '/internal') return html(dashboardPage);
   try {
     if (path === '/internal/status' && req.method === 'GET') {
-      const [snapshot,settings,status] = await Promise.all([getSnapshot(),getSettings(),store().get('sync-status',{type:'json'})]);
-      return json({configured:Boolean(settings?.windsorKey),coverage:snapshot?.coverage||null,updatedAt:snapshot?.updatedAt||null,status:status||{status:'needs_key'},today:todayRiga(),projects:PROJECTS});
+      const [snapshot,settings,status,crm] = await Promise.all([getSnapshot(),getSettings(),store().get('sync-status',{type:'json'}),store().get('crm-denta',{type:'json'})]);
+      return json({configured:Boolean(settings?.windsorKey),coverage:snapshot?.coverage||null,updatedAt:snapshot?.updatedAt||null,crmDenta:crm?{updatedAt:crm.updatedAt,coverage:crm.coverage}:null,status:status||{status:'needs_key'},today:todayRiga(),projects:PROJECTS});
     }
     if (path === '/internal/data' && req.method === 'GET') {
       const query = new URL(req.url).searchParams;
       const from = query.get('from'), to = query.get('to');
       validateRange(from,to);
-      const snapshot = await getSnapshot();
+      const [snapshot,crm] = await Promise.all([getSnapshot(),store().get('crm-denta',{type:'json'})]);
       if (!snapshot) return json({error:'Данные ещё не загружены. Откройте подключения.'},503);
+      snapshot.crm={denta:crm};
       const previous = previousRange(from,to);
       return json({current:buildReport(snapshot,from,to),previous:buildReport(snapshot,previous.from,previous.to)});
     }
@@ -46,6 +48,15 @@ export default async function handler(req) {
       const result = await fetch(target,{method:'POST',headers:{Authorization:'Basic '+Buffer.from('rm:'+env('RM_DASHBOARD_PASSWORD')).toString('base64')}});
       if (!result.ok) return json({error:'Не удалось запустить обновление.'},502);
       return json({ok:true,status:'running'},202);
+    }
+    if (path === '/internal/crm-import' && req.method === 'POST') {
+      if (!req.headers.get('content-type')?.includes('application/json')) return json({error:'Ожидается JSON.'},415);
+      const body=await req.text();
+      if (body.length>1000000) return json({error:'Слишком большой запрос.'},413);
+      let crm;
+      try { crm=validateCrmImport(JSON.parse(body)); } catch { return json({error:'Некорректные агрегированные данные CRM.'},400); }
+      await store().setJSON('crm-denta',crm);
+      return json({ok:true,coverage:crm.coverage,updatedAt:crm.updatedAt});
     }
     if (path === '/internal/import' && req.method === 'POST') {
       if (!req.headers.get('content-type')?.includes('application/json')) return json({error:'Ожидается JSON.'},415);

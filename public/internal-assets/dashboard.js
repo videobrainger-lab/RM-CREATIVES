@@ -38,10 +38,10 @@
         const rows=channels.filter(c=>c.channel===ch);
         const result=p.id==='milo'?rows.filter(c=>p.groups.find(g=>g.id==='delivery')?.channels.includes(c)):rows;
         const key=p.id==='milo'?'purchases':ch==='google'?'primary':'leads';
-        const value=result.length&&result.every(c=>c[key]!==null)?result.reduce((s,c)=>s+c[key],0):null;
-        return '<div class="channel-mini"><div>'+(ch==='google'?'Google Ads':'Meta Ads')+'<small>'+spendHTML(rows)+'</small></div><div><strong>'+n(value)+'</strong><small>'+(p.id==='milo'?'покупок · доставка':ch==='google'?'Primary':'лидов в кабинете')+'</small></div></div>';
-      }).join('')+'<div class="crm-note">CRM: записи, визиты и оплаты ещё не подключены</div><button class="card-open" data-project="'+p.id+'">Открыть проект <span>↗</span></button></article>';
-    }).join('')+'</div><div class="crm-strip"><div><strong>Результат бизнеса — отдельный слой</strong><p>Конверсии рекламы уже доступны. Записи, квалификацию и фактические оплаты добавим из подтверждённых источников.</p></div></div>';
+        const value=p.crm?p.crm.channels.find(c=>c.channel===ch)?.bookings??null:result.length&&result.every(c=>c[key]!==null)?result.reduce((s,c)=>s+c[key],0):null;
+        return '<div class="channel-mini"><div>'+(ch==='google'?'Google Ads':'Meta Ads')+'<small>'+spendHTML(rows)+'</small></div><div><strong>'+n(value)+'</strong><small>'+(p.crm?'записей · CRM':p.id==='milo'?'покупок · доставка':ch==='google'?'Primary':'лидов в кабинете')+'</small></div></div>';
+      }).join('')+'<div class="crm-note">'+(p.crm?'CRM: '+n(p.crm.total.inquiries)+' обращений · '+n(p.crm.total.bookings)+' записей'+(p.crm.partial?' · неполный период':''):'CRM: записи, визиты и оплаты ещё не подключены')+'</div><button class="card-open" data-project="'+p.id+'">Открыть проект <span>↗</span></button></article>';
+    }).join('')+'</div><div class="crm-strip"><div><strong>Результат бизнеса — отдельный слой</strong><p>DENTA: обращения и записи из Google Таблицы. Остальные проекты пока показывают конверсии рекламных кабинетов.</p></div></div>';
   }
   function table(p,g){
     const columns=g.id==='delivery'?[['spend','Расход','money'],['purchases','Покупки · реклама'],['costPurchase','Цена покупки','money'],['revenue','Ценность покупок','money'],['roas','ROAS','roas']]:g.id==='services'?[['spend','Расход','money'],['primary','Primary · Google'],['leads','Лиды · Meta'],['qualified','Квал. заявки'],['paid','Оплачено','money']]:g.id==='shared'?[['spend','Расход','money'],['primary','Primary · Google'],['leads','Лиды · Meta'],['purchases','Покупки · реклама']]:[['spend','Расход','money'],['primary','Primary'],['secondary','Secondary'],['leads','Лиды · Meta'],['bookings','Записи · реклама'],['costBooking','Цена записи','money']];
@@ -61,10 +61,25 @@
     return '<details class="actions"><summary>Состав событий Google Ads</summary><div class="table-scroll"><table><thead><tr><th>Действие</th><th>Текущий тип</th><th>All conversions</th></tr></thead><tbody>'+google.actions.map(a=>'<tr><td>'+escape(a.name)+'</td><td class="primary-label">'+(a.primary===null?'Не определён':a.primary?'Primary':'Secondary')+'</td><td>'+n(a.count)+'</td></tr>').join('')+'</tbody></table></div>'+(google.actions.length?'':'<p class="table-foot">Нет зарегистрированных событий за выбранный период либо источник событий недоступен.</p>')+'</details><details class="actions"><summary>Кампании в этом блоке</summary><div class="table-foot">'+g.channels.map(c=>'<p><strong>'+(c.channel==='google'?'Google Ads':'Meta Ads')+'</strong><br>'+c.campaigns.map(a=>escape(a.name)).join('<br>')+'</p>').join('<br>')+'</div></details>';
   }
   function projectView(p){
+    if(p.crm)return dentaView(p);
     const channels=p.groups.flatMap(g=>g.channels);
     const google=channels.filter(c=>c.channel==='google'), meta=channels.filter(c=>c.channel==='meta');
     return '<div class="cards">'+metric('Расход · Google Ads',spendHTML(google),'В валюте рекламного кабинета')+metric('Расход · Meta Ads',spendHTML(meta),'В валюте рекламного кабинета')+metric(p.id==='milo'?'Квал. заявки · услуги':'Записи · CRM',n(null),'Источник бизнеса не подключён')+metric(p.id==='milo'?'Фактически оплачено':'Пришли на приём',n(null),'Источник бизнеса не подключён')+'</div>'+p.groups.map(g=>table(p,g)).join('')+'<div class="crm-strip"><div><strong>CRM и фактические оплаты пока не подключены</strong><p>Не заменяем записи кликами по телефону или WhatsApp. Пустые показатели означают отсутствие подтверждённых данных.</p></div></div>';
   }
+  function dentaView(p){
+    const c=p.crm,old=reports.previous.projects.find(x=>x.id===p.id)?.crm;
+    const names={google:'Google Ads',meta:'Meta Ads',unattributed:'Источник не определён',other:'Другие источники'};
+    const cards='<div class="cards">'+metric('Расход · платные каналы',money(c.paidSpend),'Google Ads + Meta, EUR')+metric('Обращения · CRM',n(c.total.inquiries),'Звонки: '+n(c.total.calls)+' · формы: '+n(c.total.forms),change(c.total.inquiries,old?.total.inquiries??null,true))+metric('Записи · CRM',n(c.total.bookings),'Все источники · текущий статус',change(c.total.bookings,old?.total.bookings??null,true))+metric('Цена записи · платные каналы',money(c.costPaidBooking),'Расход / записи из Google Ads и Meta',change(c.costPaidBooking,old?.costPaidBooking??null))+'</div>';
+    const rows=c.channels.map(row=>{
+      const prev=old?.channels.find(x=>x.channel===row.channel);
+      return '<tr><td>'+names[row.channel]+'</td><td>'+money(row.spend,row.currency)+'</td><td>'+n(row.inquiries)+change(row.inquiries,prev?.inquiries??null,true)+'</td><td>'+n(row.calls)+'</td><td>'+n(row.bookings)+change(row.bookings,prev?.bookings??null,true)+'</td><td>'+money(row.costBooking,row.currency)+'</td><td>'+n(row.attended)+'</td></tr>';
+    }).join('');
+    const rangeNote=c.partial?'<div class="notice">CRM содержит данные с '+fmtDate(c.coverage.from)+' по '+fmtDate(c.coverage.to)+'. В выбранный период попала только часть доступной истории. Цена записи за неполный период не рассчитывается.</div>':'';
+    const table='<section class="table-block"><div class="table-heading"><div><h2>Реальные результаты · DENTA</h2><p>Обращения по дате поступления, результат — текущий статус в CRM</p></div><span class="tag">Google Таблица</span></div><div class="table-scroll"><table><thead><tr><th>Источник</th><th>Расход</th><th>Обращения</th><th>Звонки</th><th>Записи</th><th>Цена записи</th><th>Пришли</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="table-foot">Обращения включают реальные звонки и формы. Это количество обращений, а не уникальных пациентов. Источник определяется по метке CRM, UTM и идентификаторам рекламного перехода.</div></section>';
+    const source='<div class="crm-strip"><div><strong>Источник: <a href="'+escape(c.sourceUrl)+'" target="_blank" rel="noreferrer" class="blue-text">'+escape(c.sourceName)+' ↗</a></strong><p>Срез: '+new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Moscow'}).format(new Date(c.updatedAt))+' МСК. Автоматическая синхронизация CRM пока не включена.</p><p>«Записался» — статус Pierakstījās. '+n(c.total.bookingsMissingDate)+' записей в выбранной группе обращений не имеют даты подтверждения. Поэтому это результат обращений выбранного периода, а не число новых записей, созданных в эти даты.</p><p>'+(c.visitTracking?'Посещения — по отметкам CRM.':'Посещения в CRM ещё не заполнены — показываем «нет данных».')+' Исключены повторные строки с одинаковым inquiry_id: '+n(c.duplicatesRemoved)+'.</p></div></div>';
+    return rangeNote+cards+table+source+'<details class="method"><summary>Конверсии и кампании рекламных кабинетов</summary>'+p.groups.map(g=>tableAds(p,g)).join('')+'</details>';
+  }
+  const tableAds=table;
   function render(){
     if(!reports)return;
     const p=reports.current.projects.find(p=>p.id===project);
@@ -77,8 +92,8 @@
   }
   function updateStatus(){
     const when=config.updatedAt?new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Moscow'}).format(new Date(config.updatedAt))+' МСК':'ещё не обновлены';
-    $('status').textContent='Данные обновлены: '+when+' · '+(config.configured?'Ежедневно в 07:00 МСК':'Автообновление ожидает ключ Windsor');
-    $('source-list').innerHTML='<div class="source-row"><span>Google Ads / Meta Ads</span><span>'+(config.updatedAt?'Данные загружены':'Ожидаем загрузку')+'</span></div><div class="source-row"><span>Автообновление Windsor</span><span>'+(config.configured?'Ключ сохранён':'Нужен API-ключ')+'</span></div><div class="source-row"><span>CRM / записи / оплаты</span><span>Не подключено</span></div>';
+    $('status').textContent='Данные обновлены: '+when+' · '+(config.configured?'Реклама: ежедневно в 07:00 МСК':'Реклама: автообновление ожидает ключ Windsor')+(config.crmDenta?' · DENTA CRM: срез '+fmtDate(config.crmDenta.coverage.to):'');
+    $('source-list').innerHTML='<div class="source-row"><span>Google Ads / Meta Ads</span><span>'+(config.updatedAt?'Данные загружены':'Ожидаем загрузку')+'</span></div><div class="source-row"><span>Автообновление Windsor</span><span>'+(config.configured?'Ключ сохранён':'Нужен API-ключ')+'</span></div><div class="source-row"><span>DENTA · Google Таблица</span><span>'+(config.crmDenta?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>EPILINE / MILO · CRM</span><span>Не подключено</span></div>';
   }
   async function load(){
     const id=++requestId;
@@ -129,5 +144,5 @@
     try{await api('settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({windsorKey:$('windsor-key').value.trim()})});$('windsor-key').value='';config.configured=true;updateStatus();await refresh();}
     catch(error){$('settings-status').textContent=error.message;}finally{submit.disabled=false;}
   });
-  (async()=>{try{config=await api('status');updateStatus();project=new URL(location).searchParams.get('project')||'all';if(!['all','denta','epiline','milo'].includes(project))project='all';$('to').max=dateOffset(config.today,-1);$('from').max=$('to').max;applyPeriod();await load();if(config.status?.status==='running')pollTimer=setTimeout(poll,10000);}catch(error){notice(error.message,true);}})();
+  (async()=>{try{config=await api('status');updateStatus();project=new URL(location).searchParams.get('project')||'all';if(!['all','denta','epiline','milo'].includes(project))project='all';$('to').max=config.today;$('from').max=$('to').max;applyPeriod();await load();if(config.status?.status==='running')pollTimer=setTimeout(poll,10000);}catch(error){notice(error.message,true);}})();
 })();
