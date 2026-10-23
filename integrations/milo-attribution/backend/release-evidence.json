@@ -28,8 +28,9 @@
       "cron": "*/5 * * * *"
     }
   ],
-  "production": "not published; automatic approval review rejected execution",
+  "production": "Published after separate explicit approval; see production-release-evidence.json",
   "productionBaseline": "6ada0e237386e2df5214b265",
   "testsPassed": 29,
-  "realOrdersOrMessagesSent": false
+  "realOrdersOrMessagesSent": false,
+  "productionDeploy": "6adb6356cd657902e5e9bb9d"
 }

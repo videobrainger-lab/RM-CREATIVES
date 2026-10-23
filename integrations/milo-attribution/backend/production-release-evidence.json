@@ -1,0 +1,32 @@
+{
+  "productionDeploy": "6adb6356cd657902e5e9bb9d",
+  "context": "production",
+  "publishedAt": "2026-10-23T13:38:40.792Z",
+  "baseline": "6ada0e237386e2df5214b265",
+  "preparedCodeCommit": "a7b87bb3d6363df7b3cff7de01748743f3f1151d",
+  "preview": "6adb610808c4655ea447efad",
+  "staticFilesUnchanged": 8,
+  "functions": {
+    "notify": "6d333724e01667ecf42d2f399cb85ae6bf2a0bb89da4c98c71724ca750a1ac1c",
+    "order-sheet-retry": "2cde6e0e9cd797df617a2b551cd41a89a4b9451a0aa819d3e60d14a4ef6ffcaf",
+    "wallet": "1967382e5eee29eed2ea148583f784adc96b57eca6a722f39d4719fbe077efcb"
+  },
+  "walletUnchanged": true,
+  "runtimeMemoryRegionRateLimitsUnchanged": true,
+  "schedule": [
+    {
+      "name": "order-sheet-retry",
+      "cron": "*/5 * * * *"
+    }
+  ],
+  "healthStatus": 200,
+  "health": {
+    "version": "created-simple-20261020-source-v1",
+    "configured": true,
+    "paymentCheck": false,
+    "mode": "order-created"
+  },
+  "testsPassed": 29,
+  "syntheticOrdersPaymentsOrMessagesSent": false,
+  "browserReportAndPulseActivated": false
+}
