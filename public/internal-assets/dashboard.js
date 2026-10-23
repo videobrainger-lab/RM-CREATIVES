@@ -5,7 +5,7 @@
   const n = value => value === null || value === undefined ? '<span class="missing">нет данных</span>' : new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(value);
   const money = (value,currency='EUR') => value === null || value === undefined ? n(null) : new Intl.NumberFormat('ru-RU',{style:'currency',currency,maximumFractionDigits:2}).format(value);
   const fmtDate = value => new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'short'}).format(new Date(value+'T12:00:00Z'));
-  let config, reports, project='all', requestId=0, pollTimer;
+  let config, reports, project='all', requestId=0, pollTimer, seoPollTimer;
   const labels = {clinic:'Платные каналы',delivery:'Доставка',services:'Банкеты и услуги',shared:'Общие и нераспределённые кампании'};
   const oldChannel = (projectId,groupId,channel) => reports?.previous.projects.find(p=>p.id===projectId)?.groups.find(g=>g.id===groupId)?.channels.find(c=>c.channel===channel);
   function change(value,previous,reverse=false) {
@@ -62,11 +62,33 @@
     return '<details class="actions"><summary>Состав событий Google Ads</summary><div class="table-scroll"><table><thead><tr><th>Действие</th><th>Текущий тип</th><th>All conversions</th></tr></thead><tbody>'+google.actions.map(a=>'<tr><td>'+escape(a.name)+'</td><td class="primary-label">'+(a.primary===null?'Не определён':a.primary?'Primary':'Secondary')+'</td><td>'+n(a.count)+'</td></tr>').join('')+'</tbody></table></div>'+(google.actions.length?'':'<p class="table-foot">Нет зарегистрированных событий за выбранный период либо источник событий недоступен.</p>')+'</details><details class="actions"><summary>Кампании в этом блоке</summary><div class="table-foot">'+g.channels.map(c=>'<p><strong>'+(c.channel==='google'?'Google Ads':'Meta Ads')+'</strong><br>'+c.campaigns.map(a=>escape(a.name)).join('<br>')+'</p>').join('<br>')+'</div></details>';
   }
   function projectView(p){
-    if(p.deliveryCrm)return miloView(p);
+    if(p.deliveryCrm)return seoView(p)+miloView(p);
     if(p.crm)return dentaView(p);
     const channels=p.groups.flatMap(g=>g.channels);
     const google=channels.filter(c=>c.channel==='google'), meta=channels.filter(c=>c.channel==='meta');
-    return '<div class="cards">'+metric('Расход · Google Ads',spendHTML(google),'В валюте рекламного кабинета')+metric('Расход · Meta Ads',spendHTML(meta),'В валюте рекламного кабинета')+metric(p.id==='milo'?'Квал. заявки · услуги':'Записи · CRM',n(null),'Источник бизнеса не подключён')+metric(p.id==='milo'?'Фактически оплачено':'Пришли на приём',n(null),'Источник бизнеса не подключён')+'</div>'+p.groups.map(g=>table(p,g)).join('')+'<div class="crm-strip"><div><strong>CRM и фактические оплаты пока не подключены</strong><p>Не заменяем записи кликами по телефону или WhatsApp. Пустые показатели означают отсутствие подтверждённых данных.</p></div></div>';
+    return (p.id==='milo'?seoView(p):'')+'<div class="cards">'+metric('Расход · Google Ads',spendHTML(google),'В валюте рекламного кабинета')+metric('Расход · Meta Ads',spendHTML(meta),'В валюте рекламного кабинета')+metric(p.id==='milo'?'Квал. заявки · услуги':'Записи · CRM',n(null),'Источник бизнеса не подключён')+metric(p.id==='milo'?'Фактически оплачено':'Пришли на приём',n(null),'Источник бизнеса не подключён')+'</div>'+p.groups.map(g=>table(p,g)).join('')+'<div class="crm-strip"><div><strong>CRM и фактические оплаты пока не подключены</strong><p>Не заменяем записи кликами по телефону или WhatsApp. Пустые показатели означают отсутствие подтверждённых данных.</p></div></div>';
+  }
+  const pct = value => value===null||value===undefined?n(null):n(value)+'%';
+  function seoChart(history,key,label,format=n){
+    const values=history.map(r=>r[key]), known=values.filter(v=>v!==null), max=Math.max(1,...known);
+    const points=values.map((v,i)=>v===null?null:[22+i*51,79-v/max*63]);
+    // Missing months break the line; they never become zero.
+    let segments=[],segment=[];
+    points.forEach(p=>{if(p)segment.push(p.join(','));else if(segment.length){segments.push(segment);segment=[];}});if(segment.length)segments.push(segment);
+    const svg=segments.map(s=>'<polyline points="'+s.join(' ')+'"/>').join('')+points.filter(Boolean).map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3"/>').join('');
+    return '<div class="seo-chart"><h3>'+label+'</h3><svg viewBox="0 0 300 96" role="img" aria-label="'+escape(label)+' за шесть месяцев"><path class="chart-baseline" d="M16 80H286"/>'+svg+'</svg><div class="seo-chart-months">'+history.map((r,i)=>'<span title="'+escape(r.month+': '+(values[i]===null?'нет данных':String(values[i])))+'">'+escape(r.month.slice(5))+'</span>').join('')+'</div><div class="metric-hint">Последний месяц: '+format(values.at(-1))+'</div></div>';
+  }
+  function seoView(p){
+    const c=p.seo;if(!c)return '';
+    const old=reports.previous.projects.find(x=>x.id===p.id)?.seo;
+    const busy=config.seoStatus?.status==='running';
+    const cards=metric('Выручка из SEO, €',money(c.seo.revenue),'Без вычета отмен и возвратов',change(c.seo.revenue,old?.seo.revenue??null))+metric('Заказы из SEO',n(c.seo.orders),'Покупки, зарегистрированные GA4',change(c.seo.orders,old?.seo.orders??null))+metric('Конверсия SEO → заказ',pct(c.seo.conversion),'Заказы / органические сессии · '+n(c.seo.sessions)+' сессий',change(c.seo.conversion,old?.seo.conversion??null))+metric('Небрендовые клики',n(c.clicks),'Google Search Console · '+fmtDate(c.searchRange.from)+' — '+fmtDate(c.searchRange.to),change(c.clicks,old?.clicks??null))+metric('Коммерческие запросы · топ-3 / топ-10',pct(c.visibility.top3)+' / '+pct(c.visibility.top10),'Нужен мониторинг фиксированных запросов · Рига / Юрмала · LV / RU')+metric('Заказы из AI · выручка',n(c.ai.orders)+' / '+money(c.ai.revenue),'Распознаваемые AI-переходы · '+n(c.ai.sessions)+' сессий',change(c.ai.revenue,old?.ai.revenue??null));
+    const names={riga:'Суши · Рига',jurmala:'Суши · Юрмала',sets:'Сеты суши',pizza:'Пицца',other:'Общие меню и остальные страницы'};
+    const rows=c.groups.map(r=>'<tr><td>'+names[r.id]+'</td><td>'+n(r.clicks)+'</td><td>'+n(r.sessions)+'</td><td>'+n(r.orders)+'</td><td>'+money(r.revenue)+'</td></tr>').join('');
+    const languageRows=c.languages.map(r=>'<tr><td>'+escape(r.id.toUpperCase())+'</td><td>'+n(r.clicks)+'</td><td>'+n(r.sessions)+'</td><td>'+n(r.orders)+'</td><td>'+money(r.revenue)+'</td></tr>').join('');
+    const sourceInfo=Object.entries(c.sources).map(([id,s])=>escape(id==='ga4'?'GA4':'Search Console')+': '+fmtDate(s.coverage.from)+' — '+fmtDate(s.coverage.to)+' · '+escape(new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Moscow'}).format(new Date(s.updatedAt)))+' МСК').join('<br>')||'Данные ещё не загружены. Нажмите «Обновить SEO». Нулевые значения не подставляются.';
+    const warning=config.seoStatus?.status==='error'?'<div class="notice">'+escape(config.seoStatus.message)+'</div>':'';
+    return '<section class="seo-section" aria-labelledby="seo-title"><div class="section-heading"><div><div class="eyebrow muted">ОРГАНИЧЕСКИЙ РОСТ</div><h2 id="seo-title">SEO / GEO</h2><p>От небрендового поиска до заказов</p></div><button class="secondary" id="seo-refresh" '+(busy?'disabled':'')+'>'+(busy?'Обновляем SEO…':'Обновить SEO ↻')+'</button></div>'+warning+'<div class="cards seo-cards">'+cards+'</div><div class="seo-charts">'+seoChart(c.history,'revenue','Выручка SEO, €',money)+seoChart(c.history,'orders','Заказы SEO')+seoChart(c.history,'clicks','Небрендовые клики')+'</div><p class="seo-caption">Шесть календарных месяцев. Последний — по выбранную дату. Пробел означает отсутствие полной истории, а не ноль.</p><section class="table-block"><div class="table-heading"><div><h3>Направления · органический поиск</h3><p>Группировка по странице входа</p></div><span class="tag">LV + RU</span></div><div class="table-scroll"><table><thead><tr><th>Направление</th><th>Небрендовые клики</th><th>SEO-сессии</th><th>Заказы SEO</th><th>Выручка SEO, €</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="table-foot">Клики — из Google, заказы и сессии — из всей органики GA4. Главная и общие меню не приписываются одному городу. Заказ связан со страницей входа, а не с конкретным поисковым запросом.</div><details class="actions"><summary>Разбивка по языку страницы входа</summary><div class="table-scroll"><table><thead><tr><th>Язык</th><th>Небрендовые клики</th><th>SEO-сессии</th><th>Заказы SEO</th><th>Выручка SEO, €</th></tr></thead><tbody>'+languageRows+'</tbody></table></div></details></section><div class="seo-diagnostics">'+metric('MILO рекомендуют в AI-ответах',pct(c.aiMentions),'Мониторинг ответов ещё не подключён. Фиксированные коммерческие вопросы LV/RU, с датой и ссылкой на ответ.')+metric('Показы в Google AI',n(c.googleAiImpressions),'Отдельный отчёт AI Overviews / AI Mode не доступен через текущий коннектор.')+'</div><div class="crm-strip"><div><strong>Источники SEO / GEO</strong><p>'+sourceInfo+'</p><p>Обновление ежедневно в 07:00 МСК при сохранённом ключе Windsor. Search Console загружается с запасом 3 дня. Для кликов берём такой же по длине период до последней доступной даты; сравнение сдвигается на столько же дней. Фактический период указан на карточке.</p></div></div><details class="method"><summary>Методика SEO / GEO и история по месяцам</summary><div><p>SEO — сессии Organic Search в GA4, атрибуция по источнику сессии. AI-переходы определяются по точным доменам ChatGPT, Perplexity, Gemini, Copilot и Claude; платные переходы исключены. AI-переходы выделяются отдельно и не дублируются в SEO.</p><p>Выручка — gross_purchase_revenue, без вычета отмен и возвратов. Это зарегистрированные покупки GA4, не подтверждение фактической оплаты. GA4 MILO ведётся в USD: суммы переводятся в EUR по дневному курсу ECB; в выходные используется последний опубликованный курс. Это пересчёт, а не восстановление исходной суммы заказа в евро.</p><p>Небрендовые клики исключают варианты MILO / MĪLO / МИЛО. Скрытые Google запросы не распределяются между брендом и небрендом. Небрендовые клики нельзя связать с конкретными заказами; выручка включает брендовый поиск. Видимость топ-3/топ-10 требует отдельной проверки фиксированного списка запросов в нужном городе и языке.</p></div><div class="table-scroll"><table><thead><tr><th>Месяц</th><th>Выручка SEO, €</th><th>Заказы SEO</th><th>Небрендовые клики</th></tr></thead><tbody>'+c.history.map(r=>'<tr><td>'+escape(r.month)+'</td><td>'+money(r.revenue)+'</td><td>'+n(r.orders)+'</td><td>'+n(r.clicks)+'</td></tr>').join('')+'</tbody></table></div></details></section><div class="section-heading"><div><div class="eyebrow muted">ПЛАТНЫЕ КАНАЛЫ И CRM</div><h2>Реклама и продажи</h2></div></div>';
   }
   function servicesView(p,g){
     const c=p.servicesCrm,old=reports.previous.projects.find(x=>x.id===p.id)?.servicesCrm;
@@ -110,7 +132,7 @@
   function updateStatus(){
     const when=config.updatedAt?new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Moscow'}).format(new Date(config.updatedAt))+' МСК':'ещё не обновлены';
     $('status').textContent='Данные обновлены: '+when+' · '+(config.configured?'Реклама: ежедневно в 07:00 МСК':'Реклама: автообновление ожидает ключ Windsor')+(config.crmDenta?' · DENTA CRM: срез '+fmtDate(config.crmDenta.coverage.to):'');
-    $('source-list').innerHTML='<div class="source-row"><span>Google Ads / Meta Ads</span><span>'+(config.updatedAt?'Данные загружены':'Ожидаем загрузку')+'</span></div><div class="source-row"><span>Автообновление Windsor</span><span>'+(config.configured?'Ключ сохранён':'Нужен API-ключ')+'</span></div><div class="source-row"><span>DENTA · Google Таблица</span><span>'+(config.crmDenta?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · доставка из CRM</span><span>'+(config.crmMiloDelivery?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · услуги из CRM</span><span>'+(config.crmMiloServices?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>EPILINE · CRM</span><span>Не подключено</span></div>';
+    $('source-list').innerHTML='<div class="source-row"><span>Google Ads / Meta Ads</span><span>'+(config.updatedAt?'Данные загружены':'Ожидаем загрузку')+'</span></div><div class="source-row"><span>Автообновление Windsor</span><span>'+(config.configured?'Ключ сохранён':'Нужен API-ключ')+'</span></div><div class="source-row"><span>DENTA · Google Таблица</span><span>'+(config.crmDenta?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · доставка из CRM</span><span>'+(config.crmMiloDelivery?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · услуги из CRM</span><span>'+(config.crmMiloServices?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · SEO / GEO</span><span>'+(config.seoMilo?'Срез загружен':'Ожидаем загрузку GA4 / GSC')+'</span></div><div class="source-row"><span>EPILINE · CRM</span><span>Не подключено</span></div>';
   }
   async function load(){
     const id=++requestId;
@@ -135,7 +157,17 @@
     if($('from').value>to)$('from').value=to;
   }
   function selectProject(value){project=value;render();const url=new URL(location);url.searchParams.set('project',value);history.replaceState(null,'',url);}
-  document.addEventListener('click',e=>{const b=e.target.closest('[data-project]');if(b)selectProject(b.dataset.project);});
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-project]');if(b)selectProject(b.dataset.project);if(e.target.closest('#seo-refresh'))refreshSeo();});
+  async function pollSeo(){
+    clearTimeout(seoPollTimer);
+    try { config=await api('status');updateStatus();await load();
+      if(config.seoStatus?.status==='running')seoPollTimer=setTimeout(pollSeo,10000);
+    } catch(error){notice(error.message,true);}
+  }
+  async function refreshSeo(){
+    try {await api('seo-refresh',{method:'POST'});config.seoStatus={status:'running'};render();seoPollTimer=setTimeout(pollSeo,10000);}
+    catch(error){notice(error.message,true);}
+  }
   $('project-select').addEventListener('change',()=>selectProject($('project-select').value));
   $('period').addEventListener('change',()=>{applyPeriod();load();});
   ['from','to'].forEach(id=>$(id).addEventListener('change',()=>{$('period').value='custom';load();}));
@@ -161,5 +193,5 @@
     try{await api('settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({windsorKey:$('windsor-key').value.trim()})});$('windsor-key').value='';config.configured=true;updateStatus();await refresh();}
     catch(error){$('settings-status').textContent=error.message;}finally{submit.disabled=false;}
   });
-  (async()=>{try{config=await api('status');updateStatus();project=new URL(location).searchParams.get('project')||'all';if(!['all','denta','epiline','milo'].includes(project))project='all';$('to').max=config.today;$('from').max=$('to').max;applyPeriod();await load();if(config.status?.status==='running')pollTimer=setTimeout(poll,10000);}catch(error){notice(error.message,true);}})();
+  (async()=>{try{config=await api('status');updateStatus();project=new URL(location).searchParams.get('project')||'all';if(!['all','denta','epiline','milo'].includes(project))project='all';if(project==='milo')$('period').value='28';$('to').max=config.today;$('from').max=$('to').max;applyPeriod();await load();if(config.status?.status==='running')pollTimer=setTimeout(poll,10000);if(config.seoStatus?.status==='running')seoPollTimer=setTimeout(pollSeo,10000);else if(project==='milo'&&!config.seoMilo&&config.configured&&config.seoStatus?.status==='not_loaded')await refreshSeo();}catch(error){notice(error.message,true);}})();
 })();

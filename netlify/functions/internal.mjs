@@ -9,6 +9,7 @@ import { validateCrmImport } from '../lib/kpi-crm.mjs';
 const html = (body,status=200,extra={}) => new Response(body,{status,headers:{...headers,'Content-Type':'text/html; charset=utf-8',...extra}});
 const redirect = (location,extra={}) => new Response(null,{status:303,headers:{...headers,Location:location,...extra}});
 const cookie = value => '__Host-rm_internal=' + value + '; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=' + (value ? 604800 : 0);
+const launchSeo = req => fetch(new URL('/.netlify/functions/internal-seo-background',req.url),{method:'POST',headers:{Authorization:'Basic '+Buffer.from('rm:'+env('RM_DASHBOARD_PASSWORD')).toString('base64')}});
 export default async function handler(req) {
   const path = new URL(req.url).pathname.replace(/\/+$/,'');
   if (!env('RM_DASHBOARD_PASSWORD')) return html(loginPage('Доступ ещё не настроен.'),503);
@@ -24,18 +25,28 @@ export default async function handler(req) {
   if (req.method === 'GET' && path === '/internal') return html(dashboardPage);
   try {
     if (path === '/internal/status' && req.method === 'GET') {
-      const [snapshot,settings,status,crm,miloDelivery,miloServices] = await Promise.all([getSnapshot(),getSettings(),store().get('sync-status',{type:'json'}),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'}),store().get('crm-milo-services',{type:'json'})]);
-      return json({configured:Boolean(settings?.windsorKey),coverage:snapshot?.coverage||null,updatedAt:snapshot?.updatedAt||null,crmDenta:crm?{updatedAt:crm.updatedAt,coverage:crm.coverage}:null,crmMiloServices:miloServices?{updatedAt:miloServices.updatedAt,coverage:miloServices.coverage}:null,crmMiloDelivery:miloDelivery?{updatedAt:miloDelivery.updatedAt,coverage:miloDelivery.coverage}:null,status:status||{status:'needs_key'},today:todayRiga(),projects:PROJECTS});
+      const [snapshot,settings,status,crm,miloDelivery,miloServices,seo,seoStatus] = await Promise.all([getSnapshot(),getSettings(),store().get('sync-status',{type:'json'}),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'}),store().get('crm-milo-services',{type:'json'}),store().get('seo-milo',{type:'json'}),store().get('seo-sync-status',{type:'json'})]);
+      return json({configured:Boolean(settings?.windsorKey),coverage:snapshot?.coverage||null,updatedAt:snapshot?.updatedAt||null,crmDenta:crm?{updatedAt:crm.updatedAt,coverage:crm.coverage}:null,crmMiloServices:miloServices?{updatedAt:miloServices.updatedAt,coverage:miloServices.coverage}:null,crmMiloDelivery:miloDelivery?{updatedAt:miloDelivery.updatedAt,coverage:miloDelivery.coverage}:null,seoMilo:seo?{updatedAt:seo.updatedAt,sources:seo.sources}:null,seoStatus:seoStatus||{status:'not_loaded'},status:status||{status:'needs_key'},today:todayRiga(),projects:PROJECTS});
     }
     if (path === '/internal/data' && req.method === 'GET') {
       const query = new URL(req.url).searchParams;
       const from = query.get('from'), to = query.get('to');
       validateRange(from,to);
-      const [snapshot,crm,miloDelivery,miloServices] = await Promise.all([getSnapshot(),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'}),store().get('crm-milo-services',{type:'json'})]);
+      const [snapshot,crm,miloDelivery,miloServices,seo] = await Promise.all([getSnapshot(),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'}),store().get('crm-milo-services',{type:'json'}),store().get('seo-milo',{type:'json'})]);
       if (!snapshot) return json({error:'Данные ещё не загружены. Откройте подключения.'},503);
       snapshot.crm={denta:crm,miloDelivery,miloServices};
+      snapshot.seo=seo;
+      // Shift both comparison windows equally to the last available GSC day.
+      const searchTo=seo?.sources?.searchconsole?.coverage.to;
+      snapshot.seoLagDays=searchTo?Math.max(0,Math.ceil((Date.parse(to)-Date.parse(searchTo))/86400000)):0;
       const previous = previousRange(from,to);
       return json({current:buildReport(snapshot,from,to),previous:buildReport(snapshot,previous.from,previous.to)});
+    }
+    if (path === '/internal/seo-refresh' && req.method === 'POST') {
+      if (!(await getSettings())?.windsorKey) return json({error:'Добавьте API-ключ Windsor в подключениях.'},409);
+      if (!env('RM_MILO_GA4_PROPERTY') || !env('RM_MILO_GSC_SITE')) return json({error:'Не настроены источники SEO MILO.'},409);
+      const result=await launchSeo(req);
+      return result.ok?json({ok:true,status:'running'},202):json({error:'Не удалось запустить обновление SEO.'},502);
     }
     if (path === '/internal/settings' && req.method === 'POST') {
       if (!req.headers.get('content-type')?.includes('application/json')) return json({error:'Ожидается JSON.'},415);
