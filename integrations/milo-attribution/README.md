@@ -2,22 +2,27 @@
 
 Status: agreed model and tested integration candidate. NOT active in production.
 
-The user selected the last known non-direct source within 30 days. A direct/internal return preserves the source and original timestamp. A later search, advertising, AI, email, social or referral entry replaces it. The timestamp expires after exactly 30 days; direct visits never renew it. Payment returns, reloads and internal kitchen/language navigation do not create acquisition touches. Unknown historical orders are not relabelled as SEO.
+The user selected the last known non-direct source within 30 days. A direct/internal return preserves the source and original timestamp. A later determined external source replaces it. The original timestamp expires after 30 days; direct visits never renew it. Unknown historical orders are not relabelled as SEO.
 
-`attribution.mjs` contains classification, expiry and order-field validation. `browser.mjs` is a candidate for the Tilda project head. It respects existing MILO analytics consent, stores only channel/source/medium/timestamp/model, and adds five `MILO_attribution_*` fields to T706 forms immediately before native submission. It emits no request, purchase, payment, order, or notification and does not replace the checkout controller. Browser storage denial leaves current-page attribution in memory; revocation removes stored and prepared form data.
+The existing core/browser candidate respects MILO analytics consent, stores only channel/source/medium/timestamp/model, and prepares five MILO_attribution_* fields for native T706 submission. It emits no orders or notifications and does not replace the checkout controller.
 
-## Required integration before activation
+## Handler preparation and verified preview — 23 October 2026
 
-1. Obtain the current full source/build of `milo-wallet-live`, deploy `6ada0e237386e2df5214b265` (2026-10-22). It contains `notify`, `order-sheet-retry` and `wallet`. The found local source is from an earlier two-function version and must not replace it.
-2. Add server validation of the five fields using `validateOrderAttribution(payload, orderCreationISO)`. Only a valid model and unexpired timestamp may classify a new delivery order. Continue deduplication by the existing order ID and preserve retry, notification and payment behavior.
-3. Write the validated source plus model/timestamp to the existing delivery-order integration. Do not infer organic orders from Other/Unknown. Preserve existing sheet rows, protections, column semantics and EUR amounts.
-4. Change Pulse's SEO orders/revenue to verified sheet aggregates once that flow is proven. Keep GA4 sessions and source attribution separate: GA4 session purchases are not this CRM model and cannot be used as its numerator silently. Revenue from the sheet is EUR before cancellation/refund deductions.
-5. Bundle/attach the browser candidate, publish the affected Tilda pages, verify native form serialization without sending an order, then observe one normal order. An actual test order/message/payment requires separate authorization.
+Current sources, writer, retry and all three original ZIPs were found in the read-only MILO project mirror. Their SHA256 values match production deploy 6ada0e237386e2df5214b265. This supersedes the earlier missing-source blocker.
 
-## Read-only blockers found
+[Backend patch and validation](backend/README.md) add bounded source metadata, 30-day validation, source categories and safe numeric Meta campaign IDs to independent receipts, with the same invoice and EUR amount. Missing collection, unknown touch, expiry and invalid metadata are distinct statuses. No missing metadata is inferred as SEO. Legacy social/cpc remains compatible.
 
-The connected Netlify MCP exposes deployment metadata, not function-source download. The current deploy reports no source ZIP. Exact GETs for the two function code resources returned 404 via the authenticated CLI; no write/replay was attempted. The existing Chrome profile has JavaScript from Apple Events disabled, so its UI cannot be inspected through that interface. No browser security preference was changed.
+Verified preview: 6adb610808c4655ea447efad. All 29 mocked source/bundle regression tests pass. All eight static/config digests, wallet ZIP, Telegram formatting/routing/authentication, ledger/dedup logic and five-minute retry schedule are preserved. Preview GET /notify returns HTTP 200; configured=false is expected because production secrets are not present in preview. Production still returns configured=true.
 
-Required input: current source/build containing the order-sheet writer and retry, or the maintained source location. No token or password is needed in chat.
+Production publication was rejected before execution by automatic approval review, which required explicit user permission for the production release of PR #13. No retry was made. Production remains 6ada0e237386e2df5214b265; no live test orders, payments, messages or sheet writes occurred.
 
-Validation: `node --test tests/milo-attribution*.test.mjs`; all browser tests use isolated mocks and do not call live services.
+## Remaining activation
+
+1. Obtain new relevant production-release approval and publish the already verified handler candidate once; recheck live state first.
+2. Activate consent-aware browser collection and verify native serialization without submitting an order. WEEEK #6893 language/branch label propagation is a requirement, not proven by this handler preview.
+3. Publish the authenticated read-only Sheet aggregate report and switch Pulse orders/revenue to verified Sheet EUR aggregates. Keep GA4 session purchases separate until then.
+4. Observe a subsequent ordinary order to establish actual end-to-end invoice/source/amount accuracy without synthetic customer messages.
+
+The existing Apps Script intake accepts arbitrary bounded source strings and retains the five-column schema; the handler change does not require altering its writer. The separate report endpoint is still pending. User-profile browser access is currently unavailable; no access settings or credentials were changed.
+
+Private release workspace retains original ZIPs and a baseline digest manifest. Recovery uses a new deploy of the preserved baseline, with both ledgers untouched. This draft PR does not merge or activate the browser/Pulse candidate.

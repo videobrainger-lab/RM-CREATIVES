@@ -1,0 +1,127 @@
+--- a/netlify/lib/notifications.mjs
++++ b/netlify/lib/notifications.mjs
+@@ -16,6 +16,14 @@
+ function utmSource(data){
+  const value=data.utm_source;
+  return typeof value==='string'?clean(value,500).replace(/[\s\u2028\u2029]+/g,' ').slice(0,120):'';
++}
++// Optional non-personal campaign IDs; never used by Telegram formatting or routing.
++function campaignMetadata(data){
++ const result={};
++ for(const key of ['utm_id','utm_term','utm_content'])if(typeof data[key]==='string'&&/^\d{5,30}$/.test(data[key]))result[key]=data[key];
++ for(const [key,allowed] of Object.entries({utm_source_platform:['meta'],meta_platform:['fb','ig','an','msg'],branch:['main','centre','all'],lang:['lv','ru','mixed']}))if(allowed.includes(data[key]))result[key]=data[key];
++ if(typeof data.utm_campaign==='string'&&/^milo_[a-z0-9_-]{1,100}$/.test(data.utm_campaign))result.utm_campaign=data.utm_campaign;
++ return result;
+ }
+ export function normalize(data){
+  const kitchen=routes[clean(data.formid)];
+@@ -39,7 +47,7 @@
+  }
+  const delivery=p.delivery||{};
+  const mode=['pickup','delivery'].includes(data.MILO_fulfillment)?data.MILO_fulfillment:/самовывоз|pašizve|līdzņem|pickup/i.test(clean(first(delivery.name,delivery.title,data.Piegade)))?'pickup':'delivery';
+- return {invoice,kitchen,mode,items,cutlery,utmSource:utmSource(data),deliveryFee:mode==='pickup'?0:number(first(delivery.price,data.MILO_delivery_fee)),amount:number(first(p.amount,p.sum,data.amount)),currency:clean(p.currency||'EUR',10),paymentSystem:system(data,p),name:clean(first(data.Name,data.name,data.first_name,data['Имя']),120),phone:clean(first(data.SMS,data.sms,data.Phone,data.phone,data['Телефон']),80),email:clean(first(data.email,data.Email,data['Почта']),160),address:clean(first(data.MILO_address,data.address_2_2,data['address_2 bonus_2'],data.address_2_bonus_2,data.address)),apartment:clean(data.MILO_apartment,60),entrance:clean(data.MILO_entrance,60),floor:clean(data.MILO_floor,30),intercom:clean(data.MILO_intercom,60),comment:clean(first(data.MILO_comment,data.comment,data.Comment)),when:clean(first(data.MILO_when,[first(data.DATE,data.date),data.Time].filter(Boolean).join(' ')),100)};
++ return {invoice,kitchen,mode,items,cutlery,campaign:campaignMetadata(data),attribution:Object.fromEntries(['model','channel','source','medium','at'].map(k=>['MILO_attribution_'+k,typeof data['MILO_attribution_'+k]==='string'?data['MILO_attribution_'+k].slice(0,200):''])),utmSource:utmSource(data),deliveryFee:mode==='pickup'?0:number(first(delivery.price,data.MILO_delivery_fee)),amount:number(first(p.amount,p.sum,data.amount)),currency:clean(p.currency||'EUR',10),paymentSystem:system(data,p),name:clean(first(data.Name,data.name,data.first_name,data['Имя']),120),phone:clean(first(data.SMS,data.sms,data.Phone,data.phone,data['Телефон']),80),email:clean(first(data.email,data.Email,data['Почта']),160),address:clean(first(data.MILO_address,data.address_2_2,data['address_2 bonus_2'],data.address_2_bonus_2,data.address)),apartment:clean(data.MILO_apartment,60),entrance:clean(data.MILO_entrance,60),floor:clean(data.MILO_floor,30),intercom:clean(data.MILO_intercom,60),comment:clean(first(data.MILO_comment,data.comment,data.Comment)),when:clean(first(data.MILO_when,[first(data.DATE,data.date),data.Time].filter(Boolean).join(' ')),100)};
+ }
+ export function format(o){
+  const out=['🆕 ЗАКАЗ №'+o.invoice,o.mode==='pickup'?'🥡 Самовывоз: '+kitchens[o.kitchen].address:'🛵 Доставка · кухня: '+kitchens[o.kitchen].address];
+--- a/netlify/lib/order-copy.mjs
++++ b/netlify/lib/order-copy.mjs
+@@ -1,14 +1,33 @@
+ import {format} from './notifications.mjs';
+-export const copyVersion='sheets-copy-20261022-v1';
+-function sourceCategory(order){
++import {validateOrderAttribution,MODEL} from './attribution.mjs';
++export const copyVersion='sheets-copy-20261023-attribution30d-v1';
++function sourceCategory(order,now){
++ if(order.attribution?.MILO_attribution_model){
++  const touch=validateOrderAttribution(order.attribution,now.toISOString());
++  return touch?({seo:'SEO',ai:'AI',google_ads:'Google Ads',meta_ads:'Meta Ads',paid_other:'Другая реклама',email:'Email',social:'Соцсети',referral:'Переход с сайта'}[touch.channel]||'Не определён'):'Не определён';
++ }
+  const source=(order.utmSource||'').toLowerCase(),medium=(order.utmMedium||'').toLowerCase();
+  if(source==='google'&&['cpc','ppc','paid','paid_search'].includes(medium))return 'Google Ads';
+- if(['facebook','instagram','meta','fb','ig'].includes(source)&&['cpc','paid','paid_social'].includes(medium))return 'Meta Ads';
++ if(['facebook','instagram','meta','fb','ig','social'].includes(source)&&['cpc','paid','paid_social'].includes(medium))return 'Meta Ads';
+  return source?'Другое':'Не определён';
++}
++export function attributionStatus(order,now=new Date()){
++ const a=order.attribution||{};
++ if(!a.MILO_attribution_model)return order.utmSource?'legacy_utm':'not_collected';
++ if(a.MILO_attribution_model!==MODEL)return 'invalid';
++ if(validateOrderAttribution(a,now.toISOString()))return 'verified';
++ if(a.MILO_attribution_channel==='unknown'&&!a.MILO_attribution_source&&!a.MILO_attribution_medium&&!a.MILO_attribution_at)return 'no_known_non_direct';
++ const at=Date.parse(a.MILO_attribution_at);
++ if(Number.isFinite(at)&&at<=now.getTime()&&now.getTime()-at>=30*86400000)return 'expired';
++ return 'invalid';
+ }
+ export function makeReceipt(order,now=new Date()){
+  const amount=order.currency==='EUR'?order.amount:null,cashAssumedPaid=order.paymentSystem==='Наличные / при получении';
+- return {version:copyVersion,invoice:order.invoice,transactionId:order.transactionId||'',createdAt:now.toISOString(),type:order.mode==='pickup'?'Самовывоз':'Доставка',source:sourceCategory(order),amount,cashAssumedPaid,comment:(format(order)+(cashAssumedPaid?'\nПо правилу владельца наличный заказ считается оплаченным; получено = сумме заказа. Фактическая дата оплаты неизвестна.':'')).slice(0,45000)};
++ const touch=validateOrderAttribution(order.attribution,now.toISOString()),status=attributionStatus(order,now),source=sourceCategory(order,now);
++ const campaign=order.campaign||{};
++ const attribution={model:order.attribution?.MILO_attribution_model===MODEL?MODEL:null,status,touch:touch?{channel:touch.channel,source:touch.source,medium:touch.medium,at:new Date(touch.touchedAt).toISOString()}:null,campaign};
++ const details='\nИсточник таблицы: '+source+'; проверка: '+status+(touch?'; модель: '+MODEL+'; непрямой переход: '+new Date(touch.touchedAt).toISOString():'')+(Object.keys(campaign).length?'\nИдентификаторы кампании: '+JSON.stringify(campaign):'');
++ return {version:copyVersion,invoice:order.invoice,transactionId:order.transactionId||'',createdAt:now.toISOString(),type:order.mode==='pickup'?'Самовывоз':'Доставка',source,amount,cashAssumedPaid,attribution,comment:(format(order)+details+(cashAssumedPaid?'\nПо правилу владельца наличный заказ считается оплаченным; получено = сумме заказа. Фактическая дата оплаты неизвестна.':'')).slice(0,45000)};
+ }
+ // Immutable receipts and independent acknowledgement objects. No Telegram writes.
+ export function copyQueue({store,env,fetcher=fetch}){
+--- /dev/null
++++ b/netlify/lib/attribution.mjs
+@@ -0,0 +1,58 @@
++export const MODEL = 'last_non_direct_30d_v1';
++export const WINDOW_MS = 30 * 86400000;
++export const STORAGE_KEY = 'milo_attribution_30d_v1';
++export const CHANNELS = ['seo','google_ads','meta_ads','paid_other','ai','email','social','referral'];
++const own = host => host === 'milo-cafe.lv' || host === 'www.milo-cafe.lv';
++const domain = (host, base) => host === base || host.endsWith('.'+base);
++const searches = ['google.com','google.lv','google.lt','google.ee','google.co.uk','google.de','google.fi','google.se','google.ru','bing.com','duckduckgo.com','search.yahoo.com','yandex.com','yandex.ru','search.brave.com'];
++const ai = ['chatgpt.com','chat.openai.com','perplexity.ai','gemini.google.com','copilot.microsoft.com','claude.ai'];
++const social = ['facebook.com','instagram.com','t.co','tiktok.com','vk.com'];
++// Payment returns do not represent a new acquisition touch.
++const payments = ['checkout.stripe.com','payments.stripe.com','hooks.stripe.com','paypal.com'];
++const text = (value, max) => typeof value === 'string' && value.length <= max && !/[\u0000-\u001f<>]/.test(value);
++export function validTouch(value, now) {
++  return !!value && value.model === MODEL && CHANNELS.includes(value.channel) &&
++    text(value.source,100) && text(value.medium,40) && Number.isSafeInteger(value.touchedAt) &&
++    value.touchedAt <= now && now-value.touchedAt < WINDOW_MS;
++}
++export function classify(url, referrer = '') {
++  let u, ref;
++  try { u=new URL(url); } catch { return null; }
++  try { ref=new URL(referrer); } catch { ref=null; }
++  const p=u.searchParams, source=(p.get('utm_source')||'').trim().toLowerCase(), medium=(p.get('utm_medium')||'').trim().toLowerCase(), host=ref?.hostname.toLowerCase()||'';
++  const paid=/^(cpc|ppc|paid.*|display|cpm|cpv)$/.test(medium);
++  const googleClick=['gclid','gbraid','wbraid'].some(k=>!!p.get(k));
++  const meta=source==='social'||/^(facebook|fb|instagram|ig|meta)$/.test(source)||p.get('utm_source_platform')==='meta';
++  if(googleClick)return {channel:'google_ads',source:'google',medium:'cpc'};
++  if(paid)return {channel:meta?'meta_ads':/^(google|adwords|googleads)$/.test(source)?'google_ads':'paid_other',source:text(source,100)&&source?source:'paid',medium};
++  if(source&&text(source,100)&&text(medium,40)) {
++    if(ai.some(h=>source===h||source===h.replace('.com','').replace('.ai','')))return {channel:'ai',source,medium:medium||'referral'};
++    if(medium==='organic'&&searches.some(h=>source===h||source===h.split('.')[0]))return {channel:'seo',source,medium:'organic'};
++    if(/^(email|e-mail)$/.test(medium))return {channel:'email',source,medium:'email'};
++    if(/^(social|social-network|organic_social)$/.test(medium))return {channel:'social',source,medium};
++    // A tagged campaign with an unknown medium is not labelled organic.
++    return {channel:'referral',source,medium:medium||'referral'};
++  }
++  if(!host||own(host)||payments.some(h=>domain(host,h)))return null;
++  if(ai.some(h=>domain(host,h)))return {channel:'ai',source:host,medium:'referral'};
++  if(searches.some(h=>domain(host,h)))return {channel:'seo',source:host,medium:'organic'};
++  if(social.some(h=>domain(host,h)))return {channel:'social',source:host,medium:'social'};
++  return {channel:'referral',source:host,medium:'referral'};
++}
++export function advance(previous, {url,referrer='',now=Date.now(),consent=false,navigation='navigate'}={}) {
++  if(!consent)return null;
++  const current=validTouch(previous,now)?previous:null;
++  let internal=false;try { internal=own(new URL(referrer).hostname); } catch {}
++  if(current&&(internal||navigation==='reload'||navigation==='back_forward'))return current;
++  const candidate=classify(url,referrer);
++  return candidate?{...candidate,touchedAt:now,model:MODEL}:current;
++}
++export function fields(touch,now=Date.now()) {
++  const valid=validTouch(touch,now);
++  return {MILO_attribution_model:MODEL,MILO_attribution_channel:valid?touch.channel:'unknown',MILO_attribution_source:valid?touch.source:'',MILO_attribution_medium:valid?touch.medium:'',MILO_attribution_at:valid?new Date(touch.touchedAt).toISOString():''};
++}
++export function validateOrderAttribution(payload,orderTime) {
++  const now=Date.parse(orderTime),at=Date.parse(payload?.MILO_attribution_at);
++  const touch={model:payload?.MILO_attribution_model,channel:payload?.MILO_attribution_channel,source:payload?.MILO_attribution_source,medium:payload?.MILO_attribution_medium,touchedAt:at};
++  return Number.isFinite(now)&&validTouch(touch,now)?touch:null;
++}

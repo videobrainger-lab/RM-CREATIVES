@@ -1,0 +1,35 @@
+{
+  "deployId": "6adb610808c4655ea447efad",
+  "url": "https://6adb610808c4655ea447efad--milo-wallet-live.netlify.app",
+  "functions": {
+    "notify": "6d333724e01667ecf42d2f399cb85ae6bf2a0bb89da4c98c71724ca750a1ac1c",
+    "order-sheet-retry": "2cde6e0e9cd797df617a2b551cd41a89a4b9451a0aa819d3e60d14a4ef6ffcaf",
+    "wallet": "1967382e5eee29eed2ea148583f784adc96b57eca6a722f39d4719fbe077efcb"
+  },
+  "health": {
+    "version": "created-simple-20261020-source-v1",
+    "configured": false,
+    "paymentCheck": false,
+    "mode": "order-created"
+  },
+  "staticFiles": {
+    "wallet.js": "c02cd58088acde91dd94343ae583878ed13bd1be",
+    "wallet-lv.js": "7610835767f68e03720a8518434abb7d084386ea",
+    "result.js": "6462d305bbbc835fa8fdc19d78a43c7fd59f02c0",
+    "result.html": "34d8275ff02fcf8ee34178fb38df0ec93a82912a",
+    "notification-simple.html": "5bb77fcec8f40e1a538ca5ac755de4364a0bb018",
+    "notification-check.html": "cb87eae4725041fbc8d9635a20c7ce89e7756cb1",
+    "index.html": "fe6d42e4f29fd9fd11c2ccc476183b2a26b98e4f",
+    "netlify.toml": "4aa13333b376a520f88946140e651e2884b51ad1"
+  },
+  "schedule": [
+    {
+      "name": "order-sheet-retry",
+      "cron": "*/5 * * * *"
+    }
+  ],
+  "production": "not published; automatic approval review rejected execution",
+  "productionBaseline": "6ada0e237386e2df5214b265",
+  "testsPassed": 29,
+  "realOrdersOrMessagesSent": false
+}
