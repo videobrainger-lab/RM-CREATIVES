@@ -4,6 +4,8 @@ export default async function handler(req,context) {
   const target = new URL('/.netlify/functions/internal-refresh-background',context.site.url);
   const response = await fetch(target,{method:'POST',headers:{Authorization:'Basic '+Buffer.from('rm:'+env('RM_DASHBOARD_PASSWORD')).toString('base64')}});
   if (!response.ok) throw new Error('Dashboard refresh could not be started');
+  const seo = await fetch(new URL('/.netlify/functions/internal-seo-background',context.site.url),{method:'POST',headers:{Authorization:'Basic '+Buffer.from('rm:'+env('RM_DASHBOARD_PASSWORD')).toString('base64')}});
+  if (!seo.ok) throw new Error('SEO refresh could not be started');
 }
 // 04:00 UTC = 07:00 Moscow, daily. Published deploys only.
 export const config = {schedule:'0 4 * * *'};

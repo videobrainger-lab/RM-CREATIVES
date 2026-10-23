@@ -1,6 +1,7 @@
 import { buildServicesReport } from './kpi-services.mjs';
 import { buildDeliveryReport } from './kpi-delivery.mjs';
 import { buildCrmReport } from './kpi-crm.mjs';
+import { buildSeoReport } from './kpi-seo.mjs';
 export const PROJECTS = [
   { id: 'denta', name: 'DENTA', kind: 'clinic', note: 'Стоматология' },
   { id: 'epiline', name: 'EPILINE', kind: 'clinic', note: 'Красота и эстетика' },
@@ -72,6 +73,7 @@ export function buildReport(snapshot, from, to) {
     }) };
   });
   const milo=projects.find(p=>p.id==='milo');
+  milo.seo=buildSeoReport(snapshot.seo,from,to,snapshot.seoLagDays||0);
   milo.servicesCrm=buildServicesReport(snapshot.crm?.miloServices,from,to,milo.groups.find(g=>g.id==='services').channels);
   milo.deliveryCrm=buildDeliveryReport(snapshot.crm?.miloDelivery,from,to,milo.groups.find(g=>g.id==='delivery').channels);
   const denta=projects.find(p=>p.id==='denta');
