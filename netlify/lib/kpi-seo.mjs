@@ -1,3 +1,4 @@
+import { commercialVisibility } from './kpi-commercial-search.mjs';
 // SEO and AI referrals stay separate from advertising and CRM totals.
 const day = 86400000;
 export const offsetDate = (date, days) => new Date(Date.parse(date) + days * day).toISOString().slice(0, 10);
@@ -95,6 +96,6 @@ export function buildSeoReport(snapshot, from, to, searchLagDays = 0) {
   }
   return { ...current, groups, languages, history, sources, updatedAt:snapshot?.updatedAt || null,
     // Fixed query monitoring and Google AI impressions need their own verified sources.
-    visibility:{top3:null,top10:null}, aiMentions:null, googleAiImpressions:null,
+    visibility:commercialVisibility(snapshot,searchRange.from,searchRange.to), aiMentions:null, googleAiImpressions:null,
     method:'ga4_session_attribution_gross_ecb', currency:'EUR', searchRange, searchLagDays };
 }

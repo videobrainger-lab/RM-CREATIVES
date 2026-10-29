@@ -1,6 +1,7 @@
 import { store, getSettings } from './kpi-store.mjs';
 import { pull, todayRiga } from './kpi-sync.mjs';
 import { aggregateGa, aggregateSearch, parseEcb, offsetDate } from './kpi-seo.mjs';
+import { aggregateCommercialSearch } from './kpi-commercial-search.mjs';
 import { env } from './kpi-auth.mjs';
 export async function syncSeo() {
   const cache = store(), settings = await getSettings();
@@ -40,6 +41,18 @@ export async function syncSeo() {
         }
         snapshot.search=aggregateSearch(rows);snapshot.sources.searchconsole={status:'ok',coverage:{from,to:scTo},updatedAt:new Date().toISOString()};
       } catch { failures.push('Search Console'); }
+    })()
+    ,(async()=>{
+      try {
+        if (!scAccount) throw Error('Missing GSC mapping');
+        const commercialFrom=offsetDate(scTo,-89), rows=[];
+        for(let a=commercialFrom;a<=scTo;a=offsetDate(a,28)) {
+          const b=[offsetDate(a,27),scTo].sort()[0];
+          rows.push(...await pull('searchconsole',['date','query','country','impressions','position'],a,b,settings.windsorKey,[scAccount]));
+        }
+        snapshot.commercial=aggregateCommercialSearch(rows);
+        snapshot.sources.commercial={status:'ok',coverage:{from:commercialFrom,to:scTo},country:'Latvia',timezone:'America/Los_Angeles',method:'gsc_query_average_position_v1',updatedAt:new Date().toISOString()};
+      } catch { failures.push('GSC commercial positions'); }
     })()
   ]);
   snapshot.updatedAt=new Date().toISOString();

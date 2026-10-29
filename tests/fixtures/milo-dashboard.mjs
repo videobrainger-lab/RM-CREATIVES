@@ -1,0 +1,8 @@
+// Synthetic review data only; no account IDs or client orders.
+export function miloFixture() {
+ const coverage={from:'2026-09-01',to:'2026-10-28'};
+ const crm={version:2,project:'milo-delivery',allSources:true,currency:'EUR',sourceName:'Synthetic review fixture',sourceUrl:'https://docs.google.com/spreadsheets/d/fixture/edit',updatedAt:'2026-10-29T12:00:00Z',coverage,daily:[{date:'2026-10-15',channel:'google',orders:3,amountCents:12345},{date:'2026-10-15',channel:'unknown',orders:20,amountCents:99999},{date:'2026-10-15',channel:'sendpulse',orders:2,amountCents:2000},{date:'2026-09-15',channel:'google',orders:2,amountCents:10000}],sendpulseCosts:{currency:'EUR',complete:true,sourceUrl:'https://login.sendpulse.com/emailservice/tasks/',coverage,daily:[{date:'2026-10-15',spendMicros:8342000},{date:'2026-09-15',spendMicros:5000000}]}};
+ const sources={google:{status:'ok'},meta:{status:'ok'},events:{status:'ok'},definitions:{status:'ok'}};
+ const seoSource={status:'ok',coverage,updatedAt:'2026-10-29T12:00:00Z'};
+ return {coverage,sources,updatedAt:'2026-10-29T12:00:00Z',accounts:{milo:{google:'fixture-google',meta:'fixture-meta'}},campaignDirections:{delivery:'delivery'},google:[{date:'2026-10-15',account_id:'fixture-google',campaign_id:'delivery',campaign:'Delivery review',spend:30,currency:'EUR'}],meta:[{date:'2026-10-15',account_id:'fixture-meta',campaign_id:'delivery',campaign:'Delivery review',spend:10,account_currency:'EUR'}],events:[],actionDefinitions:[],crm:{miloDelivery:crm},seo:{sources:{ga4:seoSource,searchconsole:seoSource,commercial:seoSource},ga:[],search:[],commercial:[{date:'2026-10-15',queryKey:'fixture-query',impressions:10,positionWeight:20}]}};
+}
