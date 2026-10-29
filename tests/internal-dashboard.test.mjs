@@ -69,3 +69,9 @@ test('missing source and actual zero are different, and EPILINE retains USD / EU
   assert.equal(channels[0].currency,'USD');assert.equal(channels[0].spend,0);
   assert.equal(channels[1].currency,'EUR');assert.equal(channels[1].spend,null);
 });
+test('month-to-date comparison uses identical calendar dates in previous month, custom periods keep equal length',async()=>{
+ const {comparisonRange}=await import('../netlify/lib/kpi-model.mjs');
+ assert.deepEqual(comparisonRange('2026-10-01','2026-10-28','calendar_month'),{from:'2026-09-01',to:'2026-09-28'});
+ assert.deepEqual(comparisonRange('2026-10-07','2026-10-14','previous_period'),{from:'2026-09-29',to:'2026-10-06'});
+ assert.deepEqual(comparisonRange('2024-03-01','2024-03-31','calendar_month'),{from:'2024-02-01',to:'2024-02-29'});
+});

@@ -62,3 +62,20 @@ test('explicit SendPulse source captured on an order can resolve an Other label 
  assert.equal(deliveryChannel('Другое','email'),'other');
  assert.throws(()=>deliveryChannel('Google Ads','sendpulse'));
 });
+test('all-order averages count calendar zero-order days, not only active days',()=>{
+ const s=source(),r=buildDeliveryReport(s,'2026-10-15','2026-10-21',ads);
+ assert.equal(r.allTotal.calendarDays,7);assert.equal(r.allTotal.ordersPerDay,25/7);assert.equal(r.allTotal.averageOrderValue,1143.44/25);
+ const z=buildDeliveryReport(s,'2026-10-01','2026-10-07',ads);assert.equal(z.allTotal.ordersPerDay,0);assert.equal(z.allTotal.averageOrderValue,null);
+ s.completeThrough='2026-10-20';const p=buildDeliveryReport(s,'2026-10-15','2026-10-21',ads);assert.equal(p.allTotal.ordersPerDay,null);assert.equal(p.allTotal.averageOrderValue,null);
+});
+test('owner-declared fixed subscription prorates each calendar month, SMS remains separate',async()=>{
+ const {monthlyEmailExpense}=await import('../netlify/lib/kpi-delivery.mjs');
+ assert.equal(monthlyEmailExpense('2026-09-01','2026-09-30',4900),49);
+ assert.equal(monthlyEmailExpense('2026-10-01','2026-10-28',4900),49*28/31);
+ assert.equal(monthlyEmailExpense('2028-02-01','2028-02-29',4900),49);
+ assert.equal(monthlyEmailExpense('2026-09-30','2026-10-01',4900),49/30+49/31);
+ const s=source();s.sendpulseCosts.emailSubscription={monthlyCents:4900,basis:'owner_declared'};
+ const r=buildDeliveryReport(validateDeliveryImport(s),'2026-10-15','2026-10-21',ads);
+ assert.equal(r.channels[2].emailSpend,49*7/31);assert.equal(r.channels[2].smsSpend,8.342);assert.equal(r.channels[2].spend,8.342+49*7/31);assert.equal(r.total.spend,40+8.342+49*7/31);
+ s.sendpulseCosts.emailSubscription.monthlyCents=0;const z=buildDeliveryReport(s,'2026-10-15','2026-10-21',ads);assert.equal(z.channels[2].emailMonthly,0);assert.equal(z.channels[2].emailSpend,0);assert.equal(z.channels[2].spend,8.342);
+});

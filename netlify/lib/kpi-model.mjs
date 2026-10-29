@@ -25,6 +25,18 @@ export function previousRange(from, to) {
   return { from: new Date(Date.parse(from) - duration).toISOString().slice(0,10), to: new Date(Date.parse(from) - 86400000).toISOString().slice(0,10) };
 }
 
+export function comparisonRange(from,to,mode='previous_period') {
+  validateRange(from,to);
+  if(mode!=='calendar_month')return previousRange(from,to);
+  const shift=date=>{
+    const d=new Date(date+'T12:00:00Z'),day=d.getUTCDate();
+    d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()-1);
+    const last=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0)).getUTCDate();
+    d.setUTCDate(Math.min(day,last));return d.toISOString().slice(0,10);
+  };
+  return {from:shift(from),to:shift(to)};
+}
+
 export function buildReport(snapshot, from, to) {
   validateRange(from, to);
   const covered = from >= snapshot.coverage.from && to <= snapshot.coverage.to;

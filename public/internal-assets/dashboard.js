@@ -5,6 +5,7 @@
   const n = value => value === null || value === undefined ? '<span class="missing">нет данных</span>' : new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(value);
   const money = (value,currency='EUR') => value === null || value === undefined ? n(null) : new Intl.NumberFormat('ru-RU',{style:'currency',currency,maximumFractionDigits:2}).format(value);
   const fmtDate = value => new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'short'}).format(new Date(value+'T12:00:00Z'));
+  const fmtRangeDate=value=>new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date(value+'T12:00:00Z'));
   let config, reports, project='all', requestId=0, pollTimer, seoPollTimer;
   const labels = {clinic:'Платные каналы',delivery:'Доставка',services:'Банкеты и услуги',shared:'Общие и нераспределённые кампании'};
   const oldChannel = (projectId,groupId,channel) => reports?.previous.projects.find(p=>p.id===projectId)?.groups.find(g=>g.id===groupId)?.channels.find(c=>c.channel===channel);
@@ -14,6 +15,12 @@
     if (previous===0) return '<span class="cell-change">'+(value===0?'без изменений':'ранее 0')+'</span>';
     const delta=(value/previous-1)*100;
     return '<span class="cell-change '+(Math.abs(delta)<.05?'':(delta>0)!==reverse?'up':'down')+'">'+(delta>0?'+':'')+n(delta)+'% к прошлому периоду</span>';
+  }
+  function expenseChange(current,previous,currency='EUR') {
+    if(!$('compare').checked)return '';
+    if(current===null||current===undefined||previous===null||previous===undefined)return '<span class="cell-change">нет сравнения расходов</span>';
+    const delta=current-previous,percent=previous>0?(delta/previous*100):null;
+    return '<span class="cell-change">'+(delta>0?'+':'')+money(delta,currency)+' · '+(percent===null?(current===0?'без изменений':'ранее 0; процент недоступен'):(percent>0?'+':'')+n(percent)+'%')+'</span>';
   }
   async function api(path,options) {
     const response = await fetch('/internal/'+path,{...options,cache:'no-store'});
@@ -98,18 +105,22 @@
     const names={google:'Google Ads',meta:'Meta Ads',sendpulse:'SendPulse'};
     const comparable=c.complete&&old?.complete;
     const prior=key=>comparable?old?.total[key]??null:null;
-    const all='<div class="cards crm-overview">'+metric('Все заказы · CRM',n(c.allTotal?.orders),'Все источники, включая неизвестный',change(c.allTotal?.orders??null,comparable?old?.allTotal?.orders??null:null,true))+metric('Сумма заказов · CRM',money(c.allTotal?.amount),'Все оформленные заказы · EUR',change(c.allTotal?.amount??null,comparable?old?.allTotal?.amount??null:null,true))+'</div>';
+    const all='<div class="cards crm-overview">'+metric('Все заказы · CRM',n(c.allTotal?.orders),'Все источники, включая неизвестный',change(c.allTotal?.orders??null,comparable?old?.allTotal?.orders??null:null,true))+metric('Сумма заказов · CRM',money(c.allTotal?.amount),'Все оформленные заказы · EUR',change(c.allTotal?.amount??null,comparable?old?.allTotal?.amount??null:null,true))+metric('Средний чек',money(c.allTotal?.averageOrderValue),'Сумма всех CRM-заказов / их количество',change(c.allTotal?.averageOrderValue??null,comparable?old?.allTotal?.averageOrderValue??null:null,true))+metric('Заказов в день · в среднем',n(c.allTotal?.ordersPerDay),'Заказы / '+n(c.allTotal?.calendarDays)+' календарных дней, включая дни без заказов',change(c.allTotal?.ordersPerDay??null,comparable?old?.allTotal?.ordersPerDay??null:null,true))+'</div>';
     const heading='<div class="section-heading"><div><div class="eyebrow muted">ПЛАТНЫЕ КАНАЛЫ И CRM</div><h2>Реклама и продажи</h2></div></div>';
     const costDisplay=r=>r.spend===null&&r.knownSpend!==null&&r.knownSpend!==undefined?money(r.knownSpend,r.currency)+'<small> · известная часть</small>':money(r.spend,r.currency);
-    const breakdown=c.channels.map(r=>names[r.channel]+': '+costDisplay(r)).join('<br>');
+    const email=c.channels.find(r=>r.channel==='sendpulse');
+    const emailMethod=email?.emailCostBasis==='owner_declared'?'<p>Email: '+money(email.emailMonthly)+' в месяц по данным владельца, не проверенный инвойс. За часть месяца: месячная сумма × выбранные календарные дни / все дни этого месяца. Email за период: '+money(email.emailSpend)+'. SMS отдельно: '+money(email.smsSpend)+'. Оценка email по кредитам не добавляется.</p>':'';
+    const oldCost=r=>{const prev=old?.channels.find(x=>x.channel===r.channel);return prev?.currency===r.currency?prev.spend:null;};
+    const breakdown=c.channels.map(r=>names[r.channel]+': '+costDisplay(r)+expenseChange(r.spend,oldCost(r),r.currency)).join('<br>');
+    const comparisonNote=$('compare').checked?'<p class="seo-caption">Сравнение: '+fmtRangeDate(reports.current.from)+' — '+fmtRangeDate(reports.current.to)+' с '+fmtRangeDate(reports.previous.from)+' — '+fmtRangeDate(reports.previous.to)+' · '+(reports.comparisonMode==='calendar_month'?'Те же календарные даты предыдущего месяца; несуществующее число ограничено последним днём месяца.':'Предыдущий период той же длины.')+'</p>':'';
     const orderBreakdown=c.channels.map(r=>names[r.channel]+': '+n(r.orders)).join(' · ');
-    const cards='<div class="cards paid-cards">'+metric('Расход · доставка',money(c.total.spend),breakdown)+metric('Заказы · CRM',n(c.total.orders),orderBreakdown,change(c.total.orders,prior('orders'),true))+metric('Цена заказа · CRM',money(c.total.costOrder),'Расход трёх платных каналов / их CRM-заказы',change(c.total.costOrder,prior('costOrder')))+metric('Сумма заказов · CRM',money(c.total.amount),'Google Ads + Meta Ads + SendPulse',change(c.total.amount,prior('amount'),true))+metric('ROAS',c.total.roas===null?n(null):n(c.total.roas)+'×','Сумма платных CRM-заказов / расход',change(c.total.roas,prior('roas'),true))+'</div>';
-    const rows=c.channels.map(r=>'<tr><td>'+names[r.channel]+'</td><td>'+costDisplay(r)+'</td><td>'+n(r.orders)+'</td><td>'+money(r.costOrder,r.currency)+'</td><td>'+money(r.amount)+'</td><td>'+(r.roas===null?n(null):n(r.roas)+'×')+'</td></tr>').join('');
-    const period=c.partial?'<div class="notice">CRM содержит данные с '+fmtDate(c.coverage.from)+' по '+fmtDate(c.coverage.to)+'. Полные дни — по '+fmtDate(c.completeThrough)+'. Показана доступная часть периода; сравнение, цена заказа и ROAS за неполный период не рассчитываются.</div>':'';
+    const cards='<div class="cards paid-cards">'+metric('Расход · доставка',money(c.total.spend),breakdown,expenseChange(c.total.spend,old?.total.spend??null))+metric('Заказы · CRM',n(c.total.orders),orderBreakdown,change(c.total.orders,prior('orders'),true))+metric('Цена заказа · CRM',money(c.total.costOrder),'Расход трёх платных каналов / их CRM-заказы',change(c.total.costOrder,prior('costOrder')))+metric('Сумма заказов · CRM',money(c.total.amount),'Google Ads + Meta Ads + SendPulse',change(c.total.amount,prior('amount'),true))+metric('ROAS',c.total.roas===null?n(null):n(c.total.roas)+'×','Сумма платных CRM-заказов / расход',change(c.total.roas,prior('roas'),true))+'</div>';
+    const rows=c.channels.map(r=>'<tr><td>'+names[r.channel]+'</td><td>'+costDisplay(r)+expenseChange(r.spend,oldCost(r),r.currency)+'</td><td>'+n(r.orders)+'</td><td>'+money(r.costOrder,r.currency)+'</td><td>'+money(r.amount)+'</td><td>'+(r.roas===null?n(null):n(r.roas)+'×')+'</td></tr>').join('');
+    const period=c.partial?'<div class="notice">CRM содержит данные с '+fmtDate(c.coverage.from)+' по '+fmtDate(c.coverage.to)+'. Полные дни — по '+fmtDate(c.completeThrough)+'. Показана доступная часть периода; сравнение, средний чек, заказы в день, цена заказа и ROAS за неполный период не рассчитываются. По умолчанию текущий незавершённый день исключён.</div>':'';
     const missing=c.missingCosts?.length?'<div class="notice">Не загружен полный расход: '+c.missingCosts.map(id=>names[id]).join(', ')+'. Общий расход, цена платного заказа и общий ROAS появятся после импорта всех расходов за период. Если показана известная часть SendPulse, она включает начисления по отчётам рассылок; стоимость использованного пакета email ещё не распределена. Пополнение баланса не считается расходом рассылки.</div>':'';
     const table='<section class="table-block"><div class="table-heading"><div><h2>Доставка · реальные заказы</h2><p>По дате оформления заказа в CRM</p></div><span class="tag">Google Таблица</span></div><div class="table-scroll"><table><thead><tr><th>Канал</th><th>Расход</th><th>Заказы · CRM</th><th>Цена заказа</th><th>Сумма заказов</th><th>ROAS</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="table-foot">Цена заказа = расход канала / заказы CRM. ROAS = сумма заказов CRM / расход канала. Все источники входят в верхний итог; здесь — Google Ads, Meta Ads и SendPulse по проверенной метке CRM. Повторные ID исключены. Заказы с неизвестным источником не распределяются между рекламными каналами. Для SendPulse нужны фактические расходы рассылок; общая метка email без подтверждения платформы не считается SendPulse. Ноль означает отсутствие заказов с такой меткой в таблице, а не отсутствие продаж канала.</div></section>';
     const source='<div class="crm-strip"><div><strong>Источник: <a href="'+escape(c.sourceUrl)+'" target="_blank" rel="noreferrer" class="blue-text">'+escape(c.sourceName)+' ↗</a></strong><p>Срез: '+new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Moscow'}).format(new Date(c.updatedAt))+' МСК. Автоматическая синхронизация таблицы с «Пульсом» пока не включена.</p><p>Количество и суммы отражают оформленные заказы доставки. Статусы отмен и подтверждения оплаты в текущей вкладке отсутствуют; фактические оплаты и возвраты не рассчитываются. Услуги и банкеты показаны отдельно по данным CRM.</p></div></div>';
-    return period+all+heading+missing+cards+table+source+p.groups.filter(g=>g.id!=='delivery').map(g=>tableAds(p,g)).join('')+'<details class="method"><summary>Покупки доставки по атрибуции рекламных кабинетов</summary>'+tableAds(p,p.groups.find(g=>g.id==='delivery'))+'</details>';
+    return period+all+comparisonNote+heading+missing+cards+table+emailMethod+source+p.groups.filter(g=>g.id!=='delivery').map(g=>tableAds(p,g)).join('')+'<details class="method"><summary>Покупки доставки по атрибуции рекламных кабинетов</summary>'+tableAds(p,p.groups.find(g=>g.id==='delivery'))+'</details>';
   }
   function dentaView(p){
     const c=p.crm,old=reports.previous.projects.find(x=>x.id===p.id)?.crm;
@@ -145,7 +156,7 @@
     if(!$('from').value||!$('to').value||$('from').value>$('to').value){notice('Проверьте даты периода.',true);return;}
     $('content').setAttribute('aria-busy','true');
     try{
-      const data=await api('data?'+new URLSearchParams({from:$('from').value,to:$('to').value}));
+      const data=await api('data?'+new URLSearchParams({from:$('from').value,to:$('to').value,comparison:($('period').value==='month'||($('from').value===config.today.slice(0,7)+'-01'&&$('to').value===dateOffset(config.today,-1)))?'calendar_month':'previous_period'}));
       if(id!==requestId)return;
       reports=data;render();
       if(!reports.current.covered)notice('Этот период ещё не загружен. Доступные данные: '+fmtDate(reports.current.coverage.from)+' — '+fmtDate(reports.current.coverage.to)+'. Обновите данные или выберите другой период.');

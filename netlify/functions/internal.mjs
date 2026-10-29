@@ -2,7 +2,7 @@ import { validateServicesImport } from '../lib/kpi-services.mjs';
 import { validateDeliveryImport } from '../lib/kpi-delivery.mjs';
 import { env, headers, equal, session, authenticated, sameOrigin, json } from '../lib/kpi-auth.mjs';
 import { store, getSnapshot, getSettings } from '../lib/kpi-store.mjs';
-import { buildReport, previousRange, PROJECTS, validateRange } from '../lib/kpi-model.mjs';
+import { buildReport, comparisonRange, PROJECTS, validateRange } from '../lib/kpi-model.mjs';
 import { dashboardPage, loginPage } from '../lib/kpi-page.mjs';
 import { todayRiga } from '../lib/kpi-sync.mjs';
 import { validateCrmImport } from '../lib/kpi-crm.mjs';
@@ -39,8 +39,9 @@ export default async function handler(req) {
       // Shift both comparison windows equally to the last available GSC day.
       const searchTo=seo?.sources?.searchconsole?.coverage.to;
       snapshot.seoLagDays=searchTo?Math.max(0,Math.ceil((Date.parse(to)-Date.parse(searchTo))/86400000)):0;
-      const previous = previousRange(from,to);
-      return json({current:buildReport(snapshot,from,to),previous:buildReport(snapshot,previous.from,previous.to)});
+      const comparisonMode=query.get('comparison')==='calendar_month'?'calendar_month':'previous_period';
+      const previous = comparisonRange(from,to,comparisonMode);
+      return json({comparisonMode,current:buildReport(snapshot,from,to),previous:buildReport(snapshot,previous.from,previous.to)});
     }
     if (path === '/internal/seo-refresh' && req.method === 'POST') {
       if (!(await getSettings())?.windsorKey) return json({error:'Добавьте API-ключ Windsor в подключениях.'},409);

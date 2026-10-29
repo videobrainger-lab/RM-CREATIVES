@@ -2,11 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import {buildReport,previousRange} from '../netlify/lib/kpi-model.mjs';
+import {buildReport,comparisonRange} from '../netlify/lib/kpi-model.mjs';
 import {miloFixture} from './fixtures/milo-dashboard.mjs';
 async function render(snapshot) {
- const from='2026-10-01',to='2026-10-28',old=previousRange(from,to);
- const reports={current:buildReport(snapshot,from,to),previous:buildReport(snapshot,old.from,old.to)};
+ const from='2026-10-01',to='2026-10-28',old=comparisonRange(from,to,'calendar_month');
+ const reports={comparisonMode:'calendar_month',current:buildReport(snapshot,from,to),previous:buildReport(snapshot,old.from,old.to)};
  const nodes=new Map();const get=id=>{if(!nodes.has(id))nodes.set(id,{value:'',checked:true,innerHTML:'',textContent:'',events:{},addEventListener(name,cb){this.events[name]=cb},setAttribute(){},removeAttribute(){}});return nodes.get(id)};
  const document={getElementById:get,querySelectorAll:()=>[],addEventListener(){}};
  const config={today:'2026-10-29',updatedAt:snapshot.updatedAt,configured:false,seoMilo:{},seoStatus:{status:'ok'}};
@@ -32,4 +32,14 @@ test('missing SendPulse expense is visible and does not prevent rendering per-ch
 test('known partial SendPulse charges display explicitly without showing a false complete total',async()=>{
  const s=miloFixture();s.crm.miloDelivery.sendpulseCosts.complete=false;
  const {html}=await render(s);assert.ok(html.includes('известная часть'));assert.ok(html.includes('стоимость использованного пакета email ещё не распределена'));assert.ok(html.includes('Не загружен полный расход: SendPulse'));
+});
+test('MILO shows average check, calendar-day average, explicit comparison dates and EUR/% expense changes',async()=>{
+ const s=miloFixture();s.crm.miloDelivery.sendpulseCosts.emailSubscription={monthlyCents:4900,basis:'owner_declared'};
+ const {html}=await render(s);
+ for(const text of ['Средний чек','Заказов в день · в среднем','28 календарных дней','Те же календарные даты предыдущего месяца','01.09.2026','28.09.2026','в месяц по данным владельца','SMS отдельно:','Оценка email по кредитам не добавляется','ранее 0; процент недоступен'])assert.ok(html.includes(text),text);
+ assert.ok(html.includes('€ · '));assert.ok(!html.includes('Infinity'));assert.ok(!html.includes('NaN'));
+});
+test('missing previous expense remains unavailable rather than becoming zero',async()=>{
+ const s=miloFixture();s.crm.miloDelivery.sendpulseCosts.coverage.from='2026-10-01';
+ const {html}=await render(s);assert.ok(html.includes('нет сравнения расходов'));
 });
