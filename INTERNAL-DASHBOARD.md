@@ -79,3 +79,12 @@ No production code deployment or merge is authorized by these data imports. The 
 Final follow-up validation: 47 Node tests passed after the averages, declared subscription, calendar-month comparisons, signed EUR/% changes, missing baselines and zero baselines were implemented. Astro built 135 pages. Source readback confirmed the complete September addition, no duplicate stable IDs, exact preservation of pre-existing orders and exact private CRM snapshot readback.
 
 Final UI verification used the current follow-up code at desktop 1280 and mobile 390 px. Switching between seven days and current month showed the intended comparison windows and zero-order averages; the mobile page width remained 390 px and wide tables scrolled inside their own containers.
+
+
+## Project-specific freshness status (draft correction)
+
+A read-only investigation found that the common status line appended the DENTA CRM snapshot date whenever any DENTA snapshot existed, including on EPILINE and MILO. Project switching did not recompute that line, and initialization rendered it before reading the deep-linked project. This was a presentation defect: the model filters advertising rows by each project's private account mapping and attaches DENTA CRM only to the DENTA result. The inspected live EPILINE report matched its own account-scoped advertising aggregates and continued to show its CRM as unconnected.
+
+The draft correction scopes the status suffix to the selected project: DENTA shows its own CRM date, MILO shows separate delivery/services dates, EPILINE states its own CRM connection status, and the all-project overview keeps a neutral advertising status. Sidebar/dropdown switching recomputes the status immediately, and deep links resolve the project before the first status render. The shared Connections dialog remains an all-project source inventory. No account mappings, calculations, API payloads, real snapshots or source-sheet data are changed.
+
+Regression validation: 54 Node tests pass, including direct links for all three projects and the overview, sidebar/dropdown switching, date changes and separate account/CRM data scopes. Production deployment of this correction remains pending separate approval.

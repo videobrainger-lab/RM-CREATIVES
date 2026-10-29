@@ -148,7 +148,9 @@
   }
   function updateStatus(){
     const when=config.updatedAt?new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Moscow'}).format(new Date(config.updatedAt))+' МСК':'ещё не обновлены';
-    $('status').textContent='Данные обновлены: '+when+' · '+(config.configured?'Реклама: ежедневно в 07:00 МСК':'Реклама: автообновление ожидает ключ Windsor')+(config.crmDenta?' · DENTA CRM: срез '+fmtDate(config.crmDenta.coverage.to):'');
+    const freshness=(name,source)=>name+': '+(source?.coverage?.to?'срез '+fmtDate(source.coverage.to):'не подключено');
+    const crmNote=project==='denta'?freshness('DENTA CRM',config.crmDenta):project==='epiline'?'EPILINE CRM: не подключено':project==='milo'?[freshness('MILO · доставка CRM',config.crmMiloDelivery),freshness('MILO · услуги CRM',config.crmMiloServices)].join(' · '):'';
+    $('status').textContent='Данные обновлены: '+when+' · '+(config.configured?'Реклама: ежедневно в 07:00 МСК':'Реклама: автообновление ожидает ключ Windsor')+(crmNote?' · '+crmNote:'');
     $('source-list').innerHTML='<div class="source-row"><span>Google Ads / Meta Ads</span><span>'+(config.updatedAt?'Данные загружены':'Ожидаем загрузку')+'</span></div><div class="source-row"><span>Автообновление Windsor</span><span>'+(config.configured?'Ключ сохранён':'Нужен API-ключ')+'</span></div><div class="source-row"><span>DENTA · Google Таблица</span><span>'+(config.crmDenta?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · доставка из CRM</span><span>'+(config.crmMiloDelivery?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · услуги из CRM</span><span>'+(config.crmMiloServices?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · SEO / GEO</span><span>'+(config.seoMilo?'Срез загружен':'Ожидаем загрузку GA4 / GSC')+'</span></div><div class="source-row"><span>EPILINE · CRM</span><span>Не подключено</span></div>';
   }
   async function load(){
@@ -173,7 +175,7 @@
     $('from').value=period==='month'?today.slice(0,7)+'-01':dateOffset(to,1-Number(period));
     if($('from').value>to)$('from').value=to;
   }
-  function selectProject(value){project=value;render();const url=new URL(location);url.searchParams.set('project',value);history.replaceState(null,'',url);}
+  function selectProject(value){project=value;if(config)updateStatus();render();const url=new URL(location);url.searchParams.set('project',value);history.replaceState(null,'',url);}
   document.addEventListener('click',e=>{const b=e.target.closest('[data-project]');if(b)selectProject(b.dataset.project);if(e.target.closest('#seo-refresh'))refreshSeo();});
   async function pollSeo(){
     clearTimeout(seoPollTimer);
@@ -210,5 +212,5 @@
     try{await api('settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({windsorKey:$('windsor-key').value.trim()})});$('windsor-key').value='';config.configured=true;updateStatus();await refresh();}
     catch(error){$('settings-status').textContent=error.message;}finally{submit.disabled=false;}
   });
-  (async()=>{try{config=await api('status');updateStatus();project=new URL(location).searchParams.get('project')||'all';if(!['all','denta','epiline','milo'].includes(project))project='all';if(project==='milo')$('period').value='28';$('to').max=config.today;$('from').max=$('to').max;applyPeriod();await load();if(config.status?.status==='running')pollTimer=setTimeout(poll,10000);if(config.seoStatus?.status==='running')seoPollTimer=setTimeout(pollSeo,10000);else if(project==='milo'&&!config.seoMilo&&config.configured&&config.seoStatus?.status==='not_loaded')await refreshSeo();}catch(error){notice(error.message,true);}})();
+  (async()=>{try{config=await api('status');project=new URL(location).searchParams.get('project')||'all';if(!['all','denta','epiline','milo'].includes(project))project='all';updateStatus();if(project==='milo')$('period').value='28';$('to').max=config.today;$('from').max=$('to').max;applyPeriod();await load();if(config.status?.status==='running')pollTimer=setTimeout(poll,10000);if(config.seoStatus?.status==='running')seoPollTimer=setTimeout(pollSeo,10000);else if(project==='milo'&&!config.seoMilo&&config.configured&&config.seoStatus?.status==='not_loaded')await refreshSeo();}catch(error){notice(error.message,true);}})();
 })();
