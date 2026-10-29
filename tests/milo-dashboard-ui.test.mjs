@@ -21,7 +21,7 @@ test('MILO renders all CRM first, paid channels then SEO, with SendPulse and no 
  assert.ok(html.indexOf('Реклама и продажи')<html.indexOf('ОРГАНИЧЕСКИЙ РОСТ'));
  assert.ok(html.includes('SendPulse'));assert.ok(html.includes('1143')||html.includes('1 143'));assert.ok(html.includes('25'));
  assert.ok(!html.includes('Направления · органический поиск'));assert.ok(!html.includes('Группировка по странице входа'));
- assert.ok(html.includes('100%'));assert.ok(html.includes('средняя позиция запроса'));assert.ok(html.includes('ROAS'));
+ assert.ok(html.includes('100%'));assert.ok(html.includes('1 / 1'));assert.ok(html.includes('из 1 запросов'));assert.ok(html.includes('средняя позиция запроса'));assert.ok(html.includes('ROAS'));
  assert.ok(html.includes('к прошлому периоду'));
  get('compare').checked=false;get('compare').events.change();assert.ok(!get('content').innerHTML.includes('к прошлому периоду'));
 });

@@ -4,8 +4,8 @@ const normalized = value => String(value || '').normalize('NFD').replace(/([a-zA
 export const SEARCH_BRAND = /(?:^|[^\p{L}])(?:milo|milu|mila|мило|мила|милу|ьшдщ)(?:$|[^\p{L}])/iu;
 export function isCommercialQuery(value) {
   const q = normalized(value);
-  if (!q || SEARCH_BRAND.test(q) || /(?:рецепт|приготов|калори|что такое|как сделать|recept|kalor|kas ir|ka pagatavot|wikipedia)/u.test(q)) return false;
-  return /(?:суши|ролл[ыаов]*|пицц|кейтеринг|кейтиринг|банкет|фуршет|еда на заказ|ед[уы].{0,15}(?:заказ|достав)|(?:заказ|достав).{0,20}(?:ед[уыа]|обед|закуск|канапе)|(?:день рождения|дня рождения|юбилей).{0,30}(?:риг|юрмал)|(?:где|мест[ао]|кафе|ресторан|помещени|зал).{0,40}(?:день рождения|дня рождения|юбилей)|(?:^|[^a-z])(?:sushi|susi|pica|picas|picu|pizza|catering|keitering[a-z]*|banket[a-z]*|picerij[a-z]*)(?:$|[^a-z])|(?:edien|pusdien).{0,20}(?:pasut|piegad)|(?:pasut|piegad).{0,20}(?:edien|pusdien)|(?:svin|vieta|telpa|restoran).{0,35}dzimsanas|dzimsanas.{0,35}(?:svin|vieta|telpa|restoran)|beru mielast)/u.test(q);
+  if (!q || SEARCH_BRAND.test(q) || /(?:рецепт|приготов|калори|что такое|как сделать|recept|kalor|kas ir|ka pagatavot|wikipedia|idejas|идеи|когда день рождения|кейтеринговыи бизнес|кейтеринговый бизнес|(?:^|[^\p{L}])это(?:$|[^\p{L}])|ka svinet)/u.test(q)) return false;
+  return /(?:суши|ролл[ыаов]*|пицц|кейтеринг|кейтиринг|банкет|фуршет|еда на заказ|ед[уы].{0,15}(?:заказ|достав)|(?:заказ|достав).{0,20}(?:ед[уыа]|обед|закуск|канапе)|(?:день рождения|дня рождения|юбилей).{0,30}(?:риг|юрмал)|(?:где|мест[ао]|кафе|ресторан|помещени|зал).{0,40}(?:день рождения|дня рождения|юбилей)|(?:^|[^a-z])(?:sushi|susi|pica|picas|picu|pizza|catering|keitering[a-z]*|banket[a-z]*|picerij[a-z]*)(?:$|[^a-z])|(?:edien|pusdien).{0,20}(?:pasut|piegad)|(?:pasut|piegad).{0,20}(?:edien|pusdien)|(?:kur.{0,20}svin|viet|telp|restoran).{0,35}dzimsanas|dzimsanas.{0,35}(?:viet|telp|restoran)|beru mielast)/u.test(q);
 }
 export function aggregateCommercialSearch(rows) {
   const result = [], keys = new Set();

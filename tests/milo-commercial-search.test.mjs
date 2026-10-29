@@ -4,7 +4,7 @@ import {aggregateCommercialSearch,commercialVisibility,isCommercialQuery} from '
 const row=(query,position,impressions=1,date='2026-10-15')=>({query,position,impressions,date,country:'Latvia'});
 const snapshot=rows=>({commercial:aggregateCommercialSearch(rows),sources:{commercial:{status:'ok',coverage:{from:'2026-09-01',to:'2026-10-26'}}}});
 test('commercial intent excludes brand variants and informational searches',()=>{
- for(const q of ['MILO sushi','Мило доставка','Milu piegāde','Mila sushi','mīlo pica','что такое кейтеринг','суши рецепт','suši receptes'])assert.equal(isCommercialQuery(q),false,q);
+ for(const q of ['MILO sushi','Мило доставка','Milu piegāde','Mila sushi','mīlo pica','что такое кейтеринг','суши рецепт','suši receptes','кейтеринг это','кейтеринг - это что','catering это','idejas dzimšanas dienas svinībām','kā svinēt dzimšanas dienu','когда день рождения риги','кейтеринговый бизнес'])assert.equal(isCommercialQuery(q),false,q);
  for(const q of ['kur svinēt dzimšanas dienu rīgā','restorāni rīgā dzimšanas dienā','заказать суши','суши рига','кейтеринг рига','suši piegāde','picu piegāde'])assert.equal(isCommercialQuery(q),true,q);
 });
 test('thresholds use impression-weighted query average across the full period, not summed daily rankings',()=>{
