@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
-    "@netlify/blobs": "^11.1.6",
+    "@netlify/blobs": "^11.1.7",
     "astro": "^5.13.5"
   }
 }

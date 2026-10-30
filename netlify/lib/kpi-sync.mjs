@@ -1,19 +1,19 @@
 import { PROJECTS } from './kpi-model.mjs';
 import { getSettings, getSnapshot, store } from './kpi-store.mjs';
 export const todayRiga = () => new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Riga',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-export async function pull(connector, fields, from, to, key, accounts) {
+export async function pull(connector, fields, from, to, key, accounts, {maxWaitMs=11*60000,requestTimeoutMs=55000}={}) {
   const url = new URL('https://connectors.windsor.ai/' + connector);
   url.search = new URLSearchParams({ api_key:key, fields:fields.join(','), select_accounts:accounts.join(','), date_from:from, date_to:to }).toString();
-  const deadline = Date.now() + 11*60000;
+  const deadline = Date.now() + maxWaitMs;
   while (Date.now() < deadline) {
-    const response = await fetch(url, {signal:AbortSignal.timeout(55000)});
+    const response = await fetch(url, {signal:AbortSignal.timeout(Math.max(1,Math.min(requestTimeoutMs,deadline-Date.now())))});
     if (!response.ok && response.status !== 202) throw new Error('Источник ' + connector + ': HTTP ' + response.status);
     const body = await response.json();
     if (body.error) throw new Error('Источник ' + connector + ': проверьте доступ и поля в Windsor.');
     if (Array.isArray(body.data) && !body.next && !body.next_page) return body.data;
     if (Array.isArray(body)) return body;
     if (response.status !== 202 && body.status !== 'pending' && body.status !== 'running') throw new Error('Не удалось получить полный ответ ' + connector);
-    await new Promise(resolve=>setTimeout(resolve,5000));
+    await new Promise(resolve=>setTimeout(resolve,Math.min(5000,Math.max(0,deadline-Date.now()))));
   }
   throw new Error('Windsor готовит отчёт слишком долго. Повторите обновление позже.');
 }

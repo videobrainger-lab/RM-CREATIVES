@@ -7,6 +7,8 @@
   const fmtDate = value => new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'short'}).format(new Date(value+'T12:00:00Z'));
   const fmtRangeDate=value=>new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date(value+'T12:00:00Z'));
   let config, reports, project='all', requestId=0, pollTimer, seoPollTimer;
+  const funnelStates=new Map();
+  const funnelKey=()=>reports?.current?reports.current.from+':'+reports.current.to:null;
   const labels = {clinic:'Платные каналы',delivery:'Доставка',services:'Банкеты и услуги',shared:'Общие и нераспределённые кампании'};
   const oldChannel = (projectId,groupId,channel) => reports?.previous.projects.find(p=>p.id===projectId)?.groups.find(g=>g.id===groupId)?.channels.find(c=>c.channel===channel);
   function change(value,previous,reverse=false) {
@@ -69,11 +71,41 @@
     return '<details class="actions"><summary>Состав событий Google Ads</summary><div class="table-scroll"><table><thead><tr><th>Действие</th><th>Текущий тип</th><th>All conversions</th></tr></thead><tbody>'+google.actions.map(a=>'<tr><td>'+escape(a.name)+'</td><td class="primary-label">'+(a.primary===null?'Не определён':a.primary?'Primary':'Secondary')+'</td><td>'+n(a.count)+'</td></tr>').join('')+'</tbody></table></div>'+(google.actions.length?'':'<p class="table-foot">Нет зарегистрированных событий за выбранный период либо источник событий недоступен.</p>')+'</details><details class="actions"><summary>Кампании в этом блоке</summary><div class="table-foot">'+g.channels.map(c=>'<p><strong>'+(c.channel==='google'?'Google Ads':'Meta Ads')+'</strong><br>'+c.campaigns.map(a=>escape(a.name)).join('<br>')+'</p>').join('<br>')+'</div></details>';
   }
   function projectView(p){
-    if(p.deliveryCrm)return miloView(p)+seoView(p);
+    if(p.deliveryCrm)return miloView(p)+funnelView()+seoView(p);
     if(p.crm)return dentaView(p);
     const channels=p.groups.flatMap(g=>g.channels);
     const google=channels.filter(c=>c.channel==='google'), meta=channels.filter(c=>c.channel==='meta');
-    return (p.id==='milo'?seoView(p):'')+'<div class="cards">'+metric('Расход · Google Ads',spendHTML(google),'В валюте рекламного кабинета')+metric('Расход · Meta Ads',spendHTML(meta),'В валюте рекламного кабинета')+metric(p.id==='milo'?'Квал. заявки · услуги':'Записи · CRM',n(null),'Источник бизнеса не подключён')+metric(p.id==='milo'?'Фактически оплачено':'Пришли на приём',n(null),'Источник бизнеса не подключён')+'</div>'+p.groups.map(g=>table(p,g)).join('')+'<div class="crm-strip"><div><strong>CRM и фактические оплаты пока не подключены</strong><p>Не заменяем записи кликами по телефону или WhatsApp. Пустые показатели означают отсутствие подтверждённых данных.</p></div></div>';
+    return (p.id==='milo'?funnelView()+seoView(p):'')+'<div class="cards">'+metric('Расход · Google Ads',spendHTML(google),'В валюте рекламного кабинета')+metric('Расход · Meta Ads',spendHTML(meta),'В валюте рекламного кабинета')+metric(p.id==='milo'?'Квал. заявки · услуги':'Записи · CRM',n(null),'Источник бизнеса не подключён')+metric(p.id==='milo'?'Фактически оплачено':'Пришли на приём',n(null),'Источник бизнеса не подключён')+'</div>'+p.groups.map(g=>table(p,g)).join('')+'<div class="crm-strip"><div><strong>CRM и фактические оплаты пока не подключены</strong><p>Не заменяем записи кликами по телефону или WhatsApp. Пустые показатели означают отсутствие подтверждённых данных.</p></div></div>';
+  }
+  // Independent GA4 event users, not a sequential conversion funnel.
+  function funnelView(){
+    const state=funnelStates.get(funnelKey()),report=state?.report;
+    const heading='<div class="section-heading"><div><div class="eyebrow muted">GA4 · ДИАГНОСТИКА</div><h2 id="milo-funnel-title">Воронка заказов</h2><p>Пользователи по событиям — последовательность не подтверждена</p></div></div>';
+    const requested=reports.current;
+    let body='<p class="funnel-status" role="status">'+(!state||state.loading?'Загружаем GA4 за выбранный период…':state.error?'Не удалось обновить GA4. Отсутствующие данные не заменены нулями.':'Нет подтверждённых данных GA4.')+'</p>';
+    if(report){
+      const stages=[{id:'site',label:'Пользователи на сайте',users:report.users},...['view_item','add_to_cart','begin_checkout','purchase'].map((event,i)=>({label:['Просмотр товаров','Корзина · добавление','Чекаут','Покупка'][i],...report.steps.find(s=>s.event===event||s.id===event)}))];
+      body=(state.loading?'<p class="funnel-status" role="status">Обновляем GA4; показан предыдущий срез этого же периода.</p>':'')+((state.error||state.stale)?'<div class="notice">Не удалось получить свежие данные. Показан последний доступный срез этого же периода.</div>':'');
+      body+='<p class="seo-caption">Выбрано: '+fmtRangeDate(requested.from)+' — '+fmtRangeDate(requested.to)+'. '+(report.range?'GA4: '+fmtRangeDate(report.range.from)+' — '+fmtRangeDate(report.range.to):'В выбранном периоде ещё нет завершённых дней GA4.')+' · America/Los_Angeles. '+(report.updatedAt?'Срез: '+escape(new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'America/Los_Angeles'}).format(new Date(report.updatedAt)))+' (Pacific Time).':'')+'</p>';
+      body+='<div class="cards funnel-cards">'+stages.map(stage=>metric(stage.label,n(stage.users),stage.id==='site'?'Уникальные пользователи за весь период':'Пользователей с событием'+(stage.events!==null&&stage.events!==undefined?'<br>Событий: '+n(stage.events):'<br>Нет зарегистрированных данных о событиях'))).join('')+'</div>';
+    }
+    if(state?.warning&&!state.stale&&!state.error)body+='<div class="notice">'+escape(state.warning)+'</div>';
+    if(state?.error&&!state.loading)body+='<button class="secondary" id="milo-funnel-retry">Повторить загрузку GA4</button>';
+    return '<section class="milo-funnel" aria-labelledby="milo-funnel-title">'+heading+body+'<p class="seo-caption">Этапы считаются независимо: один пользователь может попасть сразу на несколько этапов. Проценты потерь не рассчитываются. «Корзина» — событие add_to_cart, не просмотр корзины. Данные всей GA4 property включают доставку и кейтеринг; разделение по кухням недоступно. Дни GA4 — America/Los_Angeles, дни CRM — Europe/Riga. Незавершённый день GA4 исключён; последние дни могут уточняться.</p></section>';
+  }
+  async function loadFunnel(retry=false){
+    if(project!=='milo'||!reports)return;
+    const key=funnelKey(),viewRequestId=requestId,previous=funnelStates.get(key);
+    if(previous?.loading||previous&&!retry&&Date.now()-previous.checkedAt<3600000)return;
+    const state={...previous,loading:true,error:false,warning:null};funnelStates.set(key,state);
+    if(retry)render();
+    try{
+      const body=await api('milo-funnel?'+new URLSearchParams({from:reports.current.from,to:reports.current.to}));
+      const r=body.report;
+      if(!r||!Array.isArray(r.steps)||r.method!=='independent_event_users'||r.requestedRange?.from+':'+r.requestedRange?.to!==key)throw Error('Invalid GA4 report');
+      state.report=r;state.stale=Boolean(body.stale);state.error=state.stale;state.warning=typeof body.error==='string'?body.error:null;
+    }catch{state.error=true;}
+    finally{state.loading=false;state.checkedAt=Date.now();if(project==='milo'&&funnelKey()===key&&requestId===viewRequestId)render();}
   }
   const pct = value => value===null||value===undefined?n(null):n(value)+'%';
   function seoChart(history,key,label,format=n){
@@ -105,7 +137,17 @@
     const names={google:'Google Ads',meta:'Meta Ads',sendpulse:'SendPulse'};
     const comparable=c.complete&&old?.complete;
     const prior=key=>comparable?old?.total[key]??null:null;
-    const all='<div class="cards crm-overview">'+metric('Все заказы · CRM',n(c.allTotal?.orders),'Все источники, включая неизвестный',change(c.allTotal?.orders??null,comparable?old?.allTotal?.orders??null:null,true))+metric('Сумма заказов · CRM',money(c.allTotal?.amount),'Все оформленные заказы · EUR',change(c.allTotal?.amount??null,comparable?old?.allTotal?.amount??null:null,true))+metric('Средний чек',money(c.allTotal?.averageOrderValue),'Сумма всех CRM-заказов / их количество',change(c.allTotal?.averageOrderValue??null,comparable?old?.allTotal?.averageOrderValue??null:null,true))+metric('Заказов в день · в среднем',n(c.allTotal?.ordersPerDay),'Заказы / '+n(c.allTotal?.calendarDays)+' календарных дней, включая дни без заказов',change(c.allTotal?.ordersPerDay??null,comparable?old?.allTotal?.ordersPerDay??null:null,true))+'</div>';
+    const kitchenCard=(label,key,value,hint,format=n)=>{
+      const parts='<div class="order-kitchens" aria-label="Показатели по кухне">'+[['center','Центр'],['highway','Трасса'],['unknown','Не распределены']].map(([id,name])=>{
+        const row=c.kitchens?.find(r=>r.kitchen===id),before=old?.kitchens?.find(r=>r.kitchen===id);
+        const known=row?row[key]:(id==='unknown'?c.allTotal?.[key]:null);
+        const display=id!=='unknown'&&row?.orders===0&&!c.kitchenComplete?null:known;
+        const delta=c.kitchenComplete&&old?.kitchenComplete?change(known,before?.[key]??null,true):$('compare').checked?'<span class="cell-change">нет сравнения по кухне</span>':'';
+        return '<div><span>'+name+'</span><strong>'+format(display)+'</strong>'+delta+'</div>';
+      }).join('')+'</div>';
+      return '<div class="metric orders-card"><div>'+metric(label,format(value),hint,change(value,comparable?old?.allTotal?.[key]??null:null,true))+'</div>'+parts+'<p class="kitchen-note">'+(c.kitchenComplete?'Кухня после выбора адреса или точки самовывоза.':'Разбивка неполная: часть заказов без кухни. По точкам показана известная часть; сравнение недоступно.')+'</p></div>';
+    };
+    const all='<div class="cards crm-overview">'+kitchenCard('Все заказы · CRM','orders',c.allTotal?.orders,'Все источники, включая неизвестный')+kitchenCard('Сумма заказов · CRM','amount',c.allTotal?.amount,'Все оформленные заказы · EUR',money)+kitchenCard('Средний чек','averageOrderValue',c.allTotal?.averageOrderValue,'Сумма CRM-заказов / их количество',money)+kitchenCard('Заказов в день · в среднем','ordersPerDay',c.allTotal?.ordersPerDay,'Заказы / '+n(c.allTotal?.calendarDays)+' календарных дней, включая дни без заказов')+'</div>';
     const heading='<div class="section-heading"><div><div class="eyebrow muted">ПЛАТНЫЕ КАНАЛЫ И CRM</div><h2>Реклама и продажи</h2></div></div>';
     const costDisplay=r=>r.spend===null&&r.knownSpend!==null&&r.knownSpend!==undefined?money(r.knownSpend,r.currency)+'<small> · известная часть</small>':money(r.spend,r.currency);
     const email=c.channels.find(r=>r.channel==='sendpulse');
@@ -119,7 +161,7 @@
     const period=c.partial?'<div class="notice">CRM содержит данные с '+fmtDate(c.coverage.from)+' по '+fmtDate(c.coverage.to)+'. Полные дни — по '+fmtDate(c.completeThrough)+'. Показана доступная часть периода; сравнение, средний чек, заказы в день, цена заказа и ROAS за неполный период не рассчитываются. По умолчанию текущий незавершённый день исключён.</div>':'';
     const missing=c.missingCosts?.length?'<div class="notice">Не загружен полный расход: '+c.missingCosts.map(id=>names[id]).join(', ')+'. Общий расход, цена платного заказа и общий ROAS появятся после импорта всех расходов за период. Если показана известная часть SendPulse, она включает начисления по отчётам рассылок; стоимость использованного пакета email ещё не распределена. Пополнение баланса не считается расходом рассылки.</div>':'';
     const table='<section class="table-block"><div class="table-heading"><div><h2>Доставка · реальные заказы</h2><p>По дате оформления заказа в CRM</p></div><span class="tag">Google Таблица</span></div><div class="table-scroll"><table><thead><tr><th>Канал</th><th>Расход</th><th>Заказы · CRM</th><th>Цена заказа</th><th>Сумма заказов</th><th>ROAS</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="table-foot">Цена заказа = расход канала / заказы CRM. ROAS = сумма заказов CRM / расход канала. Все источники входят в верхний итог; здесь — Google Ads, Meta Ads и SendPulse по проверенной метке CRM. Повторные ID исключены. Заказы с неизвестным источником не распределяются между рекламными каналами. Для SendPulse нужны фактические расходы рассылок; общая метка email без подтверждения платформы не считается SendPulse. Ноль означает отсутствие заказов с такой меткой в таблице, а не отсутствие продаж канала.</div></section>';
-    const source='<div class="crm-strip"><div><strong>Источник: <a href="'+escape(c.sourceUrl)+'" target="_blank" rel="noreferrer" class="blue-text">'+escape(c.sourceName)+' ↗</a></strong><p>Срез: '+new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Moscow'}).format(new Date(c.updatedAt))+' МСК. Автоматическая синхронизация таблицы с «Пульсом» пока не включена.</p><p>Количество и суммы отражают оформленные заказы доставки. Статусы отмен и подтверждения оплаты в текущей вкладке отсутствуют; фактические оплаты и возвраты не рассчитываются. Услуги и банкеты показаны отдельно по данным CRM.</p></div></div>';
+    const source='<div class="crm-strip"><div><strong>Источник: <a href="'+escape(c.sourceUrl)+'" target="_blank" rel="noreferrer" class="blue-text">'+escape(c.sourceName)+' ↗</a></strong><p>Срез: '+new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Moscow'}).format(new Date(c.updatedAt))+' МСК. '+(config.miloDeliverySync?.enabled?'Заказы проверяются каждый час. Последняя успешная синхронизация и задержки указаны сверху. Сегодня — неполный день; для сравнения используются завершённые дни.':'Автоматическая синхронизация таблицы с «Пульсом» пока не включена.')+'</p><p>Количество и суммы отражают оформленные заказы доставки и самовывоза. Статусы отмен и подтверждения оплаты в текущей вкладке отсутствуют; фактические оплаты и возвраты не рассчитываются. Услуги и банкеты показаны отдельно по данным CRM.</p></div></div>';
     return period+all+comparisonNote+heading+missing+cards+table+emailMethod+source+p.groups.filter(g=>g.id!=='delivery').map(g=>tableAds(p,g)).join('')+'<details class="method"><summary>Покупки доставки по атрибуции рекламных кабинетов</summary>'+tableAds(p,p.groups.find(g=>g.id==='delivery'))+'</details>';
   }
   function dentaView(p){
@@ -145,11 +187,15 @@
     $('content').innerHTML=p?projectView(p):overview();
     document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.project===project));
     $('project-select').value=project;
+    if(project==='milo')loadFunnel();
   }
   function updateStatus(){
     const when=config.updatedAt?new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Moscow'}).format(new Date(config.updatedAt))+' МСК':'ещё не обновлены';
     const freshness=(name,source)=>name+': '+(source?.coverage?.to?'срез '+fmtDate(source.coverage.to):'не подключено');
-    const crmNote=project==='denta'?freshness('DENTA CRM',config.crmDenta):project==='epiline'?'EPILINE CRM: не подключено':project==='milo'?[freshness('MILO · доставка CRM',config.crmMiloDelivery),freshness('MILO · услуги CRM',config.crmMiloServices)].join(' · '):'';
+    const sync=config.miloDeliverySync;
+    const syncTime=sync?.lastSuccessAt?new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Riga'}).format(new Date(sync.lastSuccessAt))+' · Рига':null;
+    const deliveryNote=sync?.enabled?' · каждый час · '+(sync.status==='error'?'ошибка чтения, сохранён прошлый срез':sync.status==='stale'?'обновление задерживается':sync.status==='awaiting_first_sync'?'ожидается первая синхронизация':'синхронизировано '+syncTime):' · автообновление не включено';
+    const crmNote=project==='denta'?freshness('DENTA CRM',config.crmDenta):project==='epiline'?'EPILINE CRM: не подключено':project==='milo'?[freshness('MILO · доставка CRM',config.crmMiloDelivery)+deliveryNote,freshness('MILO · услуги CRM',config.crmMiloServices)].join(' · '):'';
     $('status').textContent='Данные обновлены: '+when+' · '+(config.configured?'Реклама: ежедневно в 07:00 МСК':'Реклама: автообновление ожидает ключ Windsor')+(crmNote?' · '+crmNote:'');
     $('source-list').innerHTML='<div class="source-row"><span>Google Ads / Meta Ads</span><span>'+(config.updatedAt?'Данные загружены':'Ожидаем загрузку')+'</span></div><div class="source-row"><span>Автообновление Windsor</span><span>'+(config.configured?'Ключ сохранён':'Нужен API-ключ')+'</span></div><div class="source-row"><span>DENTA · Google Таблица</span><span>'+(config.crmDenta?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · доставка из CRM</span><span>'+(config.crmMiloDelivery?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · услуги из CRM</span><span>'+(config.crmMiloServices?'Срез загружен':'Не подключено')+'</span></div><div class="source-row"><span>MILO · SEO / GEO</span><span>'+(config.seoMilo?'Срез загружен':'Ожидаем загрузку GA4 / GSC')+'</span></div><div class="source-row"><span>EPILINE · CRM</span><span>Не подключено</span></div>';
   }
@@ -176,7 +222,7 @@
     if($('from').value>to)$('from').value=to;
   }
   function selectProject(value){project=value;if(config)updateStatus();render();const url=new URL(location);url.searchParams.set('project',value);history.replaceState(null,'',url);}
-  document.addEventListener('click',e=>{const b=e.target.closest('[data-project]');if(b)selectProject(b.dataset.project);if(e.target.closest('#seo-refresh'))refreshSeo();});
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-project]');if(b)selectProject(b.dataset.project);if(e.target.closest('#seo-refresh'))refreshSeo();if(e.target.closest('#milo-funnel-retry'))loadFunnel(true);});
   async function pollSeo(){
     clearTimeout(seoPollTimer);
     try { config=await api('status');updateStatus();await load();
@@ -203,6 +249,7 @@
   }
   async function refresh(){
     if(!config.configured){$('settings').showModal();return;}
+    if(project==='milo')loadFunnel(true);
     $('refresh').disabled=true;$('refresh').textContent='Обновляем…';$('settings-status').textContent='Запускаем обновление…';
     try{await api('refresh',{method:'POST'});pollTimer=setTimeout(poll,10000);}
     catch(error){$('settings-status').textContent=error.message;notice(error.message,true);$('refresh').disabled=false;}

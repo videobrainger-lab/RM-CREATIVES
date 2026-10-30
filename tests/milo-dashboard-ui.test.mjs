@@ -43,3 +43,14 @@ test('missing previous expense remains unavailable rather than becoming zero',as
  const s=miloFixture();s.crm.miloDelivery.sendpulseCosts.coverage.from='2026-10-01';
  const {html}=await render(s);assert.ok(html.includes('нет сравнения расходов'));
 });
+test('all four CRM cards include own kitchen metrics and comparisons only with full attribution',async()=>{
+ const s=miloFixture(),c=s.crm.miloDelivery;
+ c.daily=[{date:'2026-10-15',channel:'google',orders:3,amountCents:5000},{date:'2026-09-15',channel:'google',orders:3,amountCents:3000}];
+ c.kitchenDaily=[{date:'2026-10-15',kitchen:'center',orders:1,amountCents:1000},{date:'2026-10-15',kitchen:'highway',orders:2,amountCents:4000},{date:'2026-09-15',kitchen:'center',orders:1,amountCents:1000},{date:'2026-09-15',kitchen:'highway',orders:2,amountCents:2000}];
+ const {html}=await render(s),cards=html.split('aria-label="Показатели по кухне"').slice(1).map(x=>x.split('</p></div>')[0]);
+ assert.equal(cards.length,4);for(const card of cards){assert.ok(card.includes('Центр'));assert.ok(card.includes('Трасса'));assert.ok(!card.includes('нет сравнения по кухне'));}
+ assert.ok(cards[1].includes('10,00'));assert.ok(cards[1].includes('40,00'));assert.ok(cards[2].includes('20,00'));assert.ok(cards[3].includes('0,04'));assert.ok(cards[3].includes('0,07'));assert.ok(!cards[2].includes('Не распределены</span><strong>16,67'));
+});
+test('unassigned historical kitchens suppress per-kitchen percentages on all four cards',async()=>{
+ const {html}=await render(miloFixture());const parts=html.match(/нет сравнения по кухне/g)||[];assert.equal(parts.length,12);assert.equal((html.match(/Разбивка неполная/g)||[]).length,4);
+});

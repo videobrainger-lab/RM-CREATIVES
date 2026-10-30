@@ -12,3 +12,7 @@
 .crm-overview{grid-template-columns:repeat(2,minmax(0,1fr))}
 .paid-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:700px){.crm-overview,.paid-cards{grid-template-columns:1fr}}
+
+.orders-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:12px}.orders-card .metric{border:0;padding:0;min-height:0;background:none}.order-kitchens{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.order-kitchens div{border-left:1px solid var(--line);padding-left:12px}.order-kitchens span{display:block;color:var(--muted);font-size:11px}.order-kitchens strong{display:block;font-size:24px;font-weight:500}.order-kitchens div:last-child{grid-column:1/-1}.order-kitchens div:last-child strong{font-size:18px}.kitchen-note{grid-column:1/-1;color:var(--muted);font-size:10px}@media(max-width:420px){.orders-card{grid-template-columns:1fr}.order-kitchens{padding-top:12px;border-top:1px solid var(--line)}}
+
+.milo-funnel{margin:32px 0 44px}.funnel-cards{grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:12px}.funnel-cards .metric{min-width:0}.funnel-cards .metric-label,.funnel-cards .metric-hint{overflow-wrap:anywhere}.funnel-status{padding:18px 0;color:var(--muted)}@media(max-width:1200px){.funnel-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:700px){.funnel-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:420px){.funnel-cards{grid-template-columns:1fr}}
