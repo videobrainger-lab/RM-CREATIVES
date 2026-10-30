@@ -5,17 +5,41 @@ function normalizeOrderId(value){
   if(!id||id.length>180)throw Error('Invalid order ID');
   return id;
 }
-function deliveryKitchen(comment){
-  const lines=String(comment||'').split('\n').filter(l=>/^(?:🛵\s*доставка\s*·\s*)?кухня\s*:/iu.test(l.trim()));
-  const kitchens=new Set(lines.map(l=>{
-    const v=l.split(':').slice(1).join(':').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
-    if(['aleksandra caka iela 74a','центр','centrs'].includes(v))return 'center';
-    if(['karla ulmana gatve 199','трасса','trase'].includes(v))return 'highway';
-    return 'unknown';
-  }));
-  if(kitchens.size>1)throw Error('Conflicting kitchen');
-  return [...kitchens][0]||'unknown';
+const kitchenLabel=value=>{
+  const v=String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+  return ({'aleksandra caka iela 74a':'center','центр':'center','centrs':'center','karla ulmana gatve 199':'highway','трасса':'highway','trase':'highway'})[v]||'unknown';
+};
+// Optional original checkout fields are an explicit input, not inferred from page/UTM/address.
+// The current five-column sheet supplies only the structured system header below.
+function deliveryRouting(comment,raw={}){
+  const candidates=[],lines=String(comment||'').split('\n').map(x=>x.trim()).filter(Boolean);
+  // Verified notification envelope: order number first, fulfillment header second.
+  // Never discover a kitchen by scanning an address or a quoted line in customer comments.
+  if(/^🆕\s*ЗАКАЗ\s*№\s*\d+$/u.test(lines[0]||'')){
+    const pickup=/^🥡\s*самовывоз\s*:\s*(.+)$/iu.exec(lines[1]||''),delivery=/^🛵\s*доставка\s*·\s*кухня\s*:\s*(.+)$/iu.exec(lines[1]||'');
+    if(pickup||delivery)candidates.push({kitchen:kitchenLabel((pickup||delivery)[1]),fulfillment:pickup?'pickup':'delivery'});
+  }
+  // Historical CSV imports use their own verified envelope, not a free-text kitchen search.
+  if(/^Импорт CSV(?:\s|[.:]|$)/u.test(lines[0]||'')&&/^Плат[её]жная система\s*:/iu.test(lines[1]||'')){
+    let i=/^utm_source=[^;\n]+;\s*utm_medium=[^;\n]+$/i.test(lines[2]||'')?3:2;
+    for(;i<lines.length;i++){
+      const legacy=/^кухня\s*:\s*(.+)$/iu.exec(lines[i]);
+      if(!legacy)break;
+      candidates.push({kitchen:kitchenLabel(legacy[1]),fulfillment:'unknown'});
+    }
+  }
+  const code=String(raw.MILO_kitchen||'').trim(),address=String(raw.MILO_kitchen_address||'').trim(),mode=String(raw.MILO_fulfillment||'').trim();
+  if(code||address||mode){
+    if(code&&!['home','centre'].includes(code)||mode&&!['delivery','pickup'].includes(mode))throw Error('Invalid checkout routing');
+    const kitchen=code?({home:'highway',centre:'center'})[code]:kitchenLabel(address);
+    if(address&&(kitchenLabel(address)==='unknown'||kitchenLabel(address)!==kitchen))throw Error('Conflicting checkout kitchen');
+    if(kitchen!=='unknown')candidates.unshift({kitchen,fulfillment:mode||'unknown'});
+  }
+  const kitchens=new Set(candidates.map(x=>x.kitchen)),modes=new Set(candidates.map(x=>x.fulfillment).filter(x=>x!=='unknown'));
+  if(kitchens.size>1||modes.size>1)throw Error('Conflicting fulfillment routing');
+  return {kitchen:candidates[0]?.kitchen||'unknown',fulfillment:[...modes][0]||mode||'unknown'};
 }
+function deliveryKitchen(comment,raw){return deliveryRouting(comment,raw).kitchen;}
 function sheetChannel(source,comment){
   const s=String(source||'').trim().toLowerCase();
   const explicit=/^(?:utm_source|ответ об источнике|источник)\s*[:=]\s*sendpulse\s*$/im.test(String(comment||''));
@@ -33,14 +57,14 @@ function sheetCents(value){
   if(typeof value!=='number'||!Number.isFinite(value)||value<0||Math.abs(value*100-Math.round(value*100))>1e-6||!Number.isSafeInteger(Math.round(value*100)))throw Error('Invalid EUR amount');
   return Math.round(value*100);
 }
-function deliverySheetSnapshot(rows,metadata){
+function deliverySheetSnapshot(rows,metadata,routingByOrderId={}){
   if(!Array.isArray(rows)||JSON.stringify(rows[0])!==JSON.stringify(DELIVERY_HEADERS)||rows.length>50001)throw Error('Unexpected delivery schema');
   const ids=new Map(),daily=new Map(),kitchens=new Map();let duplicatesRemoved=0;
   for(const row of rows.slice(1)){
     if(row.every(v=>v===''||v===null||v===undefined))continue;
-    const id=normalizeOrderId(row[1]),date=sheetDate(row[0]),amountCents=sheetCents(row[3]),channel=sheetChannel(row[2],row[4]),kitchen=deliveryKitchen(row[4]);
+    const id=normalizeOrderId(row[1]),date=sheetDate(row[0]),amountCents=sheetCents(row[3]),channel=sheetChannel(row[2],row[4]),{kitchen,fulfillment}=deliveryRouting(row[4],routingByOrderId[id]);
     if(date<metadata.coverage.from||date>metadata.coverage.to)throw Error('Order outside source coverage');
-    const order={date,amountCents,channel,kitchen};
+    const order={date,amountCents,channel,kitchen,fulfillment};
     if(ids.has(id)){if(JSON.stringify(ids.get(id))!==JSON.stringify(order))throw Error('Conflicting duplicate order');duplicatesRemoved++;continue;}
     ids.set(id,order);
     for(const [map,dimension,value] of [[daily,'channel',channel],[kitchens,'kitchen',kitchen]]){

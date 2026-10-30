@@ -16,14 +16,16 @@ export function monthlyEmailExpense(from,to,monthlyCents) {
   }
   return cents/100;
 }
+// Storage spans history; the UI's 366-day selection limit must not expire ingestion.
+function validateHistory(from,to){validateRange(from,from);validateRange(to,to);if(from>to)throw Error('Invalid history range');}
 export function validateDeliveryImport(s) {
   if (![1, 2].includes(s?.version) || s.project !== 'milo-delivery') throw Error('Invalid delivery source');
-  validateRange(s.coverage?.from, s.coverage?.to);
+  validateHistory(s.coverage?.from, s.coverage?.to);
   if (!Number.isFinite(Date.parse(s.updatedAt)) || !sheetUrl(s.sourceUrl) || typeof s.sourceName !== 'string' || s.sourceName.length > 150 || !Array.isArray(s.daily) || s.daily.length > 6000) throw Error('Invalid delivery metadata');
   const v2 = s.version === 2, keys = new Set();
   if (v2 && (s.allSources !== true || s.currency !== 'EUR')) throw Error('Require exhaustive EUR order import');
   const completeThrough = s.completeThrough || s.coverage.to;
-  validateRange(s.coverage.from, completeThrough);
+  validateHistory(s.coverage.from, completeThrough);
   if (completeThrough > s.coverage.to) throw Error('Invalid complete-through date');
   for (const r of s.daily) {
     validateRange(r.date, r.date);

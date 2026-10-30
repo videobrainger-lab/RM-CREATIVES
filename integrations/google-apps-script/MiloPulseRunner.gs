@@ -2,14 +2,14 @@
 // User properties belong to the trigger owner, not all spreadsheet editors.
 function miloPulseConfig_(){
   const p=PropertiesService.getUserProperties();
-  const sheetId=p.getProperty('MILO_PULSE_SPREADSHEET_ID'),password=p.getProperty('MILO_PULSE_PASSWORD');
-  if(p.getProperty('MILO_PULSE_ENABLED')!=='true'||!sheetId||!password)throw Error('MILO Pulse activation is incomplete');
-  return {sheetId,password};
+  const sheetId=p.getProperty('MILO_PULSE_SPREADSHEET_ID'),token=p.getProperty('MILO_PULSE_SYNC_TOKEN');
+  if(p.getProperty('MILO_PULSE_ENABLED')!=='true'||!sheetId||!token||token.length<32)throw Error('MILO Pulse activation is incomplete');
+  return {sheetId,token};
 }
 function miloPulsePost_(payload,cfg){
   const response=UrlFetchApp.fetch('https://rmcreatives.com/internal/milo-delivery-sync',{
     method:'post',contentType:'application/json',payload:JSON.stringify(payload),
-    headers:{Authorization:'Basic '+Utilities.base64Encode('rm:'+cfg.password)},
+    headers:{Authorization:'Bearer '+cfg.token},
     muteHttpExceptions:true,followRedirects:false,validateHttpsCertificates:true
   });
   if(response.getResponseCode()!==200)throw Error('MILO Pulse sync was not accepted');
@@ -36,7 +36,7 @@ function miloPulseDeliverySync(){
   catch(error){
     if(cfg){try{miloPulsePost_({status:'error'},cfg);}catch(ignored){}}
     // Never log upstream response text, credentials, IDs, comments, or order records.
-    throw Error('MILO Pulse sync failed; previous snapshot retained. Check authorization, schema and source consistency.');
+    throw Error('MILO Pulse sync was not confirmed. Check current snapshot, authorization, schema and source consistency before retry.');
   }finally{lock.releaseLock();}
 }
 // Safe inspection: does not transmit or alter orders. No raw values in the result.
