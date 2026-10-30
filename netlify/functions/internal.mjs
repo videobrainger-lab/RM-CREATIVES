@@ -1,3 +1,4 @@
+import {acceptDeliverySync,deliverySyncFreshness} from '../lib/kpi-delivery-sync.mjs';
 import { validateServicesImport } from '../lib/kpi-services.mjs';
 import { validateDeliveryImport } from '../lib/kpi-delivery.mjs';
 import { env, headers, equal, session, authenticated, sameOrigin, json } from '../lib/kpi-auth.mjs';
@@ -25,8 +26,8 @@ export default async function handler(req) {
   if (req.method === 'GET' && path === '/internal') return html(dashboardPage);
   try {
     if (path === '/internal/status' && req.method === 'GET') {
-      const [snapshot,settings,status,crm,miloDelivery,miloServices,seo,seoStatus] = await Promise.all([getSnapshot(),getSettings(),store().get('sync-status',{type:'json'}),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'}),store().get('crm-milo-services',{type:'json'}),store().get('seo-milo',{type:'json'}),store().get('seo-sync-status',{type:'json'})]);
-      return json({configured:Boolean(settings?.windsorKey),coverage:snapshot?.coverage||null,updatedAt:snapshot?.updatedAt||null,crmDenta:crm?{updatedAt:crm.updatedAt,coverage:crm.coverage}:null,crmMiloServices:miloServices?{updatedAt:miloServices.updatedAt,coverage:miloServices.coverage}:null,crmMiloDelivery:miloDelivery?{updatedAt:miloDelivery.updatedAt,coverage:miloDelivery.coverage}:null,seoMilo:seo?{updatedAt:seo.updatedAt,sources:seo.sources}:null,seoStatus:seoStatus||{status:'not_loaded'},status:status||{status:'needs_key'},today:todayRiga(),projects:PROJECTS});
+      const [snapshot,settings,status,crm,miloDelivery,miloServices,seo,seoStatus,deliverySyncStatus] = await Promise.all([getSnapshot(),getSettings(),store().get('sync-status',{type:'json'}),store().get('crm-denta',{type:'json'}),store().get('crm-milo-delivery',{type:'json'}),store().get('crm-milo-services',{type:'json'}),store().get('seo-milo',{type:'json'}),store().get('seo-sync-status',{type:'json'}),store().get('milo-delivery-sync-status',{type:'json'})]);
+      return json({miloDeliverySync:deliverySyncFreshness(deliverySyncStatus,env('RM_MILO_DELIVERY_SYNC_ENABLED')==='true'),configured:Boolean(settings?.windsorKey),coverage:snapshot?.coverage||null,updatedAt:snapshot?.updatedAt||null,crmDenta:crm?{updatedAt:crm.updatedAt,coverage:crm.coverage}:null,crmMiloServices:miloServices?{updatedAt:miloServices.updatedAt,coverage:miloServices.coverage}:null,crmMiloDelivery:miloDelivery?{updatedAt:miloDelivery.updatedAt,coverage:miloDelivery.coverage}:null,seoMilo:seo?{updatedAt:seo.updatedAt,sources:seo.sources}:null,seoStatus:seoStatus||{status:'not_loaded'},status:status||{status:'needs_key'},today:todayRiga(),projects:PROJECTS});
     }
     if (path === '/internal/data' && req.method === 'GET') {
       const query = new URL(req.url).searchParams;
@@ -62,6 +63,13 @@ export default async function handler(req) {
       const result = await fetch(target,{method:'POST',headers:{Authorization:'Basic '+Buffer.from('rm:'+env('RM_DASHBOARD_PASSWORD')).toString('base64')}});
       if (!result.ok) return json({error:'Не удалось запустить обновление.'},502);
       return json({ok:true,status:'running'},202);
+    }
+    if(path==='/internal/milo-delivery-sync'&&req.method==='POST'){
+      if(env('RM_MILO_DELIVERY_SYNC_ENABLED')!=='true')return json({error:'Автообновление заказов ещё не включено.'},409);
+      if(!req.headers.get('content-type')?.includes('application/json'))return json({error:'Ожидается JSON.'},415);
+      const body=await req.text();if(body.length>1000000)return json({error:'Слишком большой запрос.'},413);
+      try{return json({ok:true,...await acceptDeliverySync(store(),JSON.parse(body),{today:todayRiga()})});}
+      catch{return json({error:'Заказы не обновлены. Последний достоверный срез сохранён.'},422);}
     }
     if (path === '/internal/crm-import' && req.method === 'POST') {
       if (!req.headers.get('content-type')?.includes('application/json')) return json({error:'Ожидается JSON.'},415);

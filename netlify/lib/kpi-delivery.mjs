@@ -31,6 +31,21 @@ export function validateDeliveryImport(s) {
     if (!(v2 ? CHANNELS : ['google', 'meta', 'other']).includes(r.channel) || keys.has(k) || r.date < s.coverage.from || r.date > s.coverage.to || !Number.isSafeInteger(r.orders) || r.orders < 0 || !Number.isSafeInteger(r.amountCents) || r.amountCents < 0 || (r.orders === 0 && r.amountCents !== 0)) throw Error('Invalid delivery counts');
     keys.add(k);
   }
+  let kitchenDaily;
+  if(s.kitchenDaily){
+    if(!v2||!Array.isArray(s.kitchenDaily)||s.kitchenDaily.length>6000)throw Error('Invalid kitchen data');
+    const keys=new Set(),byDate=new Map();
+    for(const r of s.kitchenDaily){
+      validateRange(r.date,r.date);const key=r.date+':'+r.kitchen;
+      if(!['center','highway','unknown'].includes(r.kitchen)||keys.has(key)||r.date<s.coverage.from||r.date>s.coverage.to||!Number.isSafeInteger(r.orders)||r.orders<0||!Number.isSafeInteger(r.amountCents)||r.amountCents<0||(r.orders===0&&r.amountCents!==0))throw Error('Invalid kitchen counts');
+      keys.add(key);const day=byDate.get(r.date)||{orders:0,amountCents:0};day.orders+=r.orders;day.amountCents+=r.amountCents;byDate.set(r.date,day);
+    }
+    for(const date of new Set([...s.daily.map(r=>r.date),...byDate.keys()])){
+      const rows=s.daily.filter(r=>r.date===date),k=byDate.get(date);
+      if(!k||sum(rows,'orders')!==k.orders||sum(rows,'amountCents')!==k.amountCents)throw Error('Kitchen totals do not reconcile');
+    }
+    kitchenDaily=s.kitchenDaily.map(({date,kitchen,orders,amountCents})=>({date,kitchen,orders,amountCents}));
+  }
   let sendpulseCosts;
   if (s.sendpulseCosts) {
     const c = s.sendpulseCosts;
@@ -45,7 +60,7 @@ export function validateDeliveryImport(s) {
     if (c.emailSubscription && (!Number.isSafeInteger(c.emailSubscription.monthlyCents) || c.emailSubscription.monthlyCents<0 || c.emailSubscription.basis!=='owner_declared')) throw Error('Invalid email subscription');
     sendpulseCosts = {...(c.emailSubscription?{emailSubscription:{monthlyCents:c.emailSubscription.monthlyCents,basis:'owner_declared'}}:{}),currency:c.currency,complete:c.complete,coverage:{from:c.coverage.from,to:c.coverage.to},sourceUrl:c.sourceUrl,daily:c.daily.map(({date,spendMicros})=>({date,spendMicros}))};
   }
-  return {version:s.version,project:s.project,sourceName:s.sourceName,sourceUrl:s.sourceUrl,updatedAt:s.updatedAt,coverage:{from:s.coverage.from,to:s.coverage.to},...(v2 ? {allSources:true,currency:'EUR',completeThrough} : {}),...(sendpulseCosts ? {sendpulseCosts} : {}),daily:s.daily.map(({date,channel,orders,amountCents})=>({date,channel,orders,amountCents}))};
+  return {version:s.version,project:s.project,sourceName:s.sourceName,sourceUrl:s.sourceUrl,updatedAt:s.updatedAt,coverage:{from:s.coverage.from,to:s.coverage.to},...(v2 ? {allSources:true,currency:'EUR',completeThrough} : {}),...(sendpulseCosts ? {sendpulseCosts} : {}),...(kitchenDaily?{kitchenDaily}:{}),daily:s.daily.map(({date,channel,orders,amountCents})=>({date,channel,orders,amountCents}))};
 }
 export function buildDeliveryReport(s, from, to, ads = []) {
   if (!s) return null;
@@ -76,6 +91,13 @@ export function buildDeliveryReport(s, from, to, ads = []) {
   allTotal.averageOrderValue=complete&&allTotal.orders>0?allTotal.amount/allTotal.orders:null;
   allTotal.ordersPerDay=complete&&allTotal.orders!==null?allTotal.orders/calendarDays:null;
   allTotal.calendarDays=calendarDays;
+  const kitchens=['center','highway','unknown'].map(kitchen=>{
+    const selected=s.kitchenDaily?.filter(r=>inRange(r)&&r.kitchen===kitchen);
+    const orders=!available?null:selected?sum(selected,'orders'):kitchen==='unknown'?allTotal.orders:null;
+    const amount=!available?null:selected?sum(selected,'amountCents')/100:kitchen==='unknown'?allTotal.amount:null;
+    return {kitchen,orders,amount,averageOrderValue:complete&&orders>0?amount/orders:null,ordersPerDay:complete&&orders!==null?orders/calendarDays:null};
+  });
+  const kitchenComplete=complete&&Boolean(s.kitchenDaily)&&kitchens.find(k=>k.kitchen==='unknown').orders===0;
   const otherRows = rows.filter(r => !PAID_DELIVERY_CHANNELS.includes(r.channel));
-  return {available,complete,partial:available && !complete,coverage:s.coverage,completeThrough:s.completeThrough || s.coverage.to,sourceName:s.sourceName,sourceUrl:s.sourceUrl,updatedAt:s.updatedAt,channels,allTotal,unpaid:{orders:available && v2 ? sum(otherRows,'orders') : null,amount:available && v2 ? sum(otherRows,'amountCents') / 100 : null},total:{orders,amount,spend,roas:complete && amount !== null && spend > 0 ? amount / spend : null,costOrder:complete && spend !== null && orders > 0 ? spend / orders : null},missingCosts:channels.filter(r=>r.spend===null).map(r=>r.channel),method:'orders_received_not_payment'};
+  return {available,complete,partial:available && !complete,coverage:s.coverage,completeThrough:s.completeThrough || s.coverage.to,sourceName:s.sourceName,sourceUrl:s.sourceUrl,updatedAt:s.updatedAt,channels,allTotal,kitchens,kitchenComplete,kitchenCoverage:Boolean(s.kitchenDaily),unpaid:{orders:available && v2 ? sum(otherRows,'orders') : null,amount:available && v2 ? sum(otherRows,'amountCents') / 100 : null},total:{orders,amount,spend,roas:complete && amount !== null && spend > 0 ? amount / spend : null,costOrder:complete && spend !== null && orders > 0 ? spend / orders : null},missingCosts:channels.filter(r=>r.spend===null).map(r=>r.channel),method:'orders_received_not_payment'};
 }
